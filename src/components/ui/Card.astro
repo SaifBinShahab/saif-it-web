@@ -13,7 +13,7 @@ const Tag = href ? "a" : as;
   href={href}
   target={href?.startsWith("http") ? "_blank" : undefined}
   rel={href?.startsWith("http") ? "noopener noreferrer" : undefined}
-  class={`hover-lift block h-full rounded-2xl border border-[var(--border)] bg-[var(--bg-elevated)] p-6 ${className}`}
+  class={`hover-lift flex h-full flex-col rounded-2xl border border-[var(--border)] bg-[var(--bg-elevated)] p-6 ${className}`}
 >
   <slot />
 </Tag>

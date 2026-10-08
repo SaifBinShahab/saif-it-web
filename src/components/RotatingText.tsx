@@ -28,7 +28,7 @@ export default function RotatingText({
 
   return (
     <span
-      className={`inline-block min-w-[1px] transition-all duration-300 ${
+      className={`block transition-all duration-300 ${
         visible ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"
       } ${className}`}
     >

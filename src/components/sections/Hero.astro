@@ -12,8 +12,16 @@ import { site, rotatingRoles, profilePhoto } from "@/data/siteConfig";
         {site.fullName}
       </p>
       <h1 class="font-heading text-4xl font-semibold leading-tight md:text-6xl">
-        I'm {site.name} —<br />
-        <RotatingText client:load phrases={rotatingRoles} className="text-[var(--secondary)]" />
+        <span class="block">I'm {site.name} —</span>
+        <!--
+          Fixed-height box sized for exactly two lines at this font-size/line-height
+          (leading-tight = 1.25). This is what stops the rotating role text from
+          pushing the rest of the page down when it wraps from one line to two.
+          If you change the heading's text size, recompute: 2 * font-size * 1.25.
+        -->
+        <span class="mt-1 flex min-h-[5.625rem] items-start md:min-h-[9.375rem]">
+          <RotatingText client:load phrases={rotatingRoles} className="text-[var(--secondary)]" />
+        </span>
       </h1>
       <p class="mt-6 max-w-xl text-lg leading-relaxed text-[var(--text-muted)]">
         {site.description}

@@ -36,7 +36,7 @@ export const socialLinks = [
 // Optional profile photo. Leave `src` empty/undefined to render the
 // geometric frame without an image — the Hero section adapts either way.
 export const profilePhoto = {
-  src: "/images/profile.jpg", // e.g. "/images/profile.jpg"
+  src: "/sign-light.png", // e.g. "/images/profile.jpg"
   alt: "Saif",
 };
 
@@ -52,7 +52,9 @@ export const contact = {
 };
 
 export const youtube = {
-  channelId: "SaifBinShahab-141", // or set PUBLIC_YT_CHANNEL_ID in .env
+  // Must be the real channel ID (starts with "UC...", 24 chars) — a @handle
+  // or custom URL will not work with the RSS feed. Or set PUBLIC_YT_CHANNEL_ID in .env.
+  channelId: "",
   maxVideos: 3,
   manualVideos: [
     // {

@@ -14,7 +14,7 @@ const variants = {
 };
 ---
 <span
-  class={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-mono tracking-wide transition-colors duration-200 hover:bg-[var(--accent)]/10 ${variants[variant]} ${className}`}
+  class={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-mono tracking-wide transition-all duration-200 hover:-translate-y-0.5 hover:scale-[1.04] hover:border-[var(--accent)] hover:text-[var(--accent)] hover:bg-[rgb(var(--accent-rgb)/0.12)] ${variants[variant]} ${className}`}
 >
   <slot />
 </span>

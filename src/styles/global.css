@@ -8,6 +8,7 @@
   --text: #12181B;
   --text-muted: #6B7580;
   --accent: #B08D57;
+  --accent-rgb: 176 141 87;
   --secondary: #2F4F44;
   --signal: #3E6E6E;
   --border: rgba(18, 24, 27, 0.1);
@@ -20,6 +21,7 @@
   --text: #F4F1EA;
   --text-muted: #9AA4AC;
   --accent: #B08D57;
+  --accent-rgb: 176 141 87;
   --secondary: #4A7367;
   --signal: #59918E;
   --border: rgba(244, 241, 234, 0.1);
@@ -28,12 +30,24 @@
 
 * { scroll-behavior: smooth; }
 
-html, body {
+/*
+  Background color lives on <html> only, not <body>. This matters: our
+  background animation (BackgroundField/CursorGlow) is a fixed, negative
+  z-index element. A negative z-index stacking context paints BEFORE its
+  ancestor's own in-flow box — so if <body> also carried an opaque
+  background-color, that opaque fill would paint over the animation and
+  hide it completely, even though it's technically "behind" in z-order.
+  Leaving body transparent lets the animation show through, while <html>'s
+  background still covers the full page (it paints as the root canvas
+  layer, beneath everything, including negative z-index elements).
+*/
+html {
   background-color: var(--bg);
   color: var(--text);
 }
 
 body {
+  background-color: transparent;
   font-family: theme('fontFamily.body');
   transition: background-color 0.3s ease, color 0.3s ease;
 }

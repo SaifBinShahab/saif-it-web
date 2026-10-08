@@ -3,23 +3,42 @@ import { useEffect, useState } from "react";
 export type Testimonial = { name: string; title?: string; quote: string };
 
 // Auto-rotating quote carousel with manual prev/next controls.
+const TRANSITION_MS = 350;
+
 export default function Testimonials({ items }: { items: Testimonial[] }) {
   const [index, setIndex] = useState(0);
+  const [visible, setVisible] = useState(true);
+
+  function goTo(next: number) {
+    const reduceMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduceMotion) {
+      setIndex(next);
+      return;
+    }
+    setVisible(false);
+    setTimeout(() => {
+      setIndex(next);
+      setVisible(true);
+    }, TRANSITION_MS);
+  }
 
   useEffect(() => {
     if (items.length <= 1) return;
-    const id = setInterval(() => setIndex((i) => (i + 1) % items.length), 6000);
+    const id = setInterval(() => goTo((index + 1) % items.length), 6000);
     return () => clearInterval(id);
-  }, [items.length]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [index, items.length]);
 
   if (items.length === 0) return null;
   const current = items[index];
 
   function prev() {
-    setIndex((i) => (i - 1 + items.length) % items.length);
+    goTo((index - 1 + items.length) % items.length);
   }
   function next() {
-    setIndex((i) => (i + 1) % items.length);
+    goTo((index + 1) % items.length);
   }
 
   return (
@@ -31,11 +50,20 @@ export default function Testimonials({ items }: { items: Testimonial[] }) {
         />
       </svg>
 
-      <p className="font-heading text-xl leading-relaxed md:text-2xl">"{current.quote}"</p>
-      <p className="mt-6 font-mono text-sm text-[var(--text-muted)]">
-        {current.name}
-        {current.title ? ` — ${current.title}` : ""}
-      </p>
+      <div
+        className="transition-all ease-out"
+        style={{
+          transitionDuration: `${TRANSITION_MS}ms`,
+          opacity: visible ? 1 : 0,
+          transform: visible ? "translateY(0)" : "translateY(8px)",
+        }}
+      >
+        <p className="font-heading text-xl leading-relaxed md:text-2xl">"{current.quote}"</p>
+        <p className="mt-6 font-mono text-sm text-[var(--text-muted)]">
+          {current.name}
+          {current.title ? ` — ${current.title}` : ""}
+        </p>
+      </div>
 
       {items.length > 1 && (
         <div className="mt-8 flex items-center justify-center gap-4">
@@ -50,7 +78,7 @@ export default function Testimonials({ items }: { items: Testimonial[] }) {
             {items.map((_, i) => (
               <button
                 key={i}
-                onClick={() => setIndex(i)}
+                onClick={() => goTo(i)}
                 aria-label={`Go to testimonial ${i + 1}`}
                 className={`h-1.5 w-4 rounded-full transition-colors ${
                   i === index ? "bg-[var(--accent)]" : "bg-[var(--border)]"

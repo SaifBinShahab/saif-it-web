@@ -20,7 +20,7 @@ export default function BackgroundField() {
     const isDark = () => document.documentElement.getAttribute("data-theme") !== "light";
 
     type Node = { x: number; y: number; vx: number; vy: number };
-    const density = Math.min(60, Math.floor((width * height) / 28000));
+    const density = Math.min(60, Math.floor((width * height) / 20000));
     const nodes: Node[] = Array.from({ length: density }, () => ({
       x: Math.random() * width,
       y: Math.random() * height,
@@ -57,7 +57,7 @@ export default function BackgroundField() {
           const b = nodes[j];
           const d = Math.hypot(a.x - b.x, a.y - b.y);
           if (d < LINK_DIST) {
-            ctx!.strokeStyle = `rgba(${lineColor},${0.06 * (1 - d / LINK_DIST)})`;
+            ctx!.strokeStyle = `rgba(${lineColor},${0.15 * (1 - d / LINK_DIST)})`;
             ctx!.lineWidth = 1;
             ctx!.beginPath();
             ctx!.moveTo(a.x, a.y);
@@ -87,7 +87,7 @@ export default function BackgroundField() {
     <canvas
       ref={canvasRef}
       aria-hidden="true"
-      className="pointer-events-none fixed inset-0 -z-10 h-full w-full"
+      className="pointer-events-none fixed inset-0 -z-20 h-full w-full"
     />
   );
 }

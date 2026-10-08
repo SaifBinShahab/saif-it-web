@@ -1,0 +1,31 @@
+---
+// Homepage — sections assembled in AIDA order (Attention -> Interest ->
+// Desire -> Action). Each section is a standalone, reusable component, so
+// reordering the funnel is just reordering these lines.
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+import Hero from "@/components/sections/Hero.astro";                 // Attention
+import FeaturedBlogs from "@/components/sections/FeaturedBlogs.astro"; // Attention -> Interest
+import Experience from "@/components/sections/Experience.astro";       // Interest
+import Skills from "@/components/sections/Skills.astro";               // Interest
+import Numbers from "@/components/sections/Numbers.astro";             // Interest -> Desire
+import Projects from "@/components/sections/Projects.astro";           // Desire
+import Achievements from "@/components/sections/Achievements.astro";   // Desire
+import Works from "@/components/sections/Works.astro";                 // Desire -> Action
+import Testimonials from "@/components/sections/Testimonials.astro";   // Desire (social proof, right before the ask)
+import Socials from "@/components/sections/Socials.astro";             // Trust + soft action
+import Contact from "@/components/sections/Contact.astro";             // Action
+---
+<BaseLayout>
+  <Hero />
+  <FeaturedBlogs />
+  <Experience />
+  <Skills />
+  <Numbers />
+  <Projects />
+  <Achievements />
+  <Works />
+  <Testimonials />
+  <Socials />
+  <Contact />
+</BaseLayout>

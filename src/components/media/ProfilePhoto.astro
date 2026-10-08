@@ -1,0 +1,70 @@
+---
+// Fully modular, optional profile photo with a custom geometric frame that
+// echoes the brand's star-polygon/tessellation motif. Renders correctly
+// whether or not a `src` is provided:
+//  - with src: photo shown inside a clipped hexagonal frame, brass outline ring.
+//  - without src: the ornament renders alone, so the layout never breaks.
+interface Props {
+  src?: string;
+  alt?: string;
+  size?: number; // px, square bounding box
+  class?: string;
+}
+const { src, alt = "", size = 280, class: className = "" } = Astro.props;
+const clipId = `profile-hex-${Math.random().toString(36).slice(2, 8)}`;
+---
+<div class={`relative inline-block ${className}`} style={`width:${size}px; height:${size}px;`} data-reveal>
+  <svg
+    viewBox="0 0 100 100"
+    width={size}
+    height={size}
+    class="absolute inset-0"
+    aria-hidden={src ? "true" : "false"}
+    role={src ? undefined : "img"}
+  >
+    <defs>
+      <clipPath id={clipId} clipPathUnits="objectBoundingBox">
+        <!-- gentle hexagonal / star-adjacent silhouette -->
+        <path d="M0.5,0.02 L0.93,0.26 L0.98,0.74 L0.5,0.98 L0.02,0.74 L0.07,0.26 Z" />
+      </clipPath>
+    </defs>
+
+    {src && (
+      <image
+        href={src}
+        x="0" y="0" width="1" height="1"
+        preserveAspectRatio="xMidYMid slice"
+        clip-path={`url(#${clipId})`}
+      />
+    )}
+
+    <!-- outer frame line -->
+    <path
+      d="M50,2 L93,26 L98,74 L50,98 L2,74 L7,26 Z"
+      fill="none"
+      stroke="var(--accent)"
+      stroke-width="1"
+      opacity="0.9"
+    />
+    <!-- inner tessellation accent lines -->
+    <path
+      d="M50,2 L50,98 M7,26 L93,74 M93,26 L7,74"
+      fill="none"
+      stroke="var(--accent)"
+      stroke-width="0.35"
+      opacity="0.35"
+    />
+
+    {!src && (
+      <text
+        x="50" y="54"
+        text-anchor="middle"
+        font-family="JetBrains Mono, monospace"
+        font-size="7"
+        fill="var(--text-muted)"
+      >
+      </text>
+    )}
+
+  </svg>
+</div>

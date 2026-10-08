@@ -1,0 +1,58 @@
+---
+import Container from "@/components/ui/Container.astro";
+import ThemeToggle from "@/components/effects/ThemeToggle.tsx";
+import { nav, site } from "@/data/siteConfig";
+---
+<header class="sticky top-0 z-50 border-b border-[var(--border)] bg-[var(--bg)]/80 backdrop-blur">
+  <Container class="flex h-16 items-center justify-between">
+    <a href="/" class="flex items-center gap-2 font-heading text-lg font-semibold tracking-wide">
+      <!-- Wordmark logo — swap for an <img>/SVG in /public if you design a mark -->
+      <span class="flex h-8 w-8 items-center justify-center rounded-full border border-[var(--accent)] font-mono text-sm text-[var(--accent)]">
+        {site.name.charAt(0)}
+      </span>
+      <span>{site.name}</span>
+    </a>
+
+    <nav class="hidden items-center gap-8 md:flex">
+      {nav.map((item) => (
+        <a
+          href={item.href}
+          class="font-body text-sm text-[var(--text-muted)] transition-colors duration-200 hover:text-[var(--accent)]"
+        >
+          {item.label}
+        </a>
+      ))}
+    </nav>
+
+    <div class="flex items-center gap-3">
+      <ThemeToggle client:load />
+      <button
+        id="mobile-menu-toggle"
+        class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[var(--border)] md:hidden"
+        aria-label="Open menu"
+        aria-expanded="false"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+          <path d="M4 7h16M4 12h16M4 17h16" />
+        </svg>
+      </button>
+    </div>
+  </Container>
+
+  <nav id="mobile-menu" class="hidden border-t border-[var(--border)] px-6 py-4 md:hidden">
+    {nav.map((item) => (
+      <a href={item.href} class="block py-2 font-body text-sm text-[var(--text-muted)]">
+        {item.label}
+      </a>
+    ))}
+  </nav>
+</header>
+
+<script>
+  const toggle = document.getElementById("mobile-menu-toggle");
+  const menu = document.getElementById("mobile-menu");
+  toggle?.addEventListener("click", () => {
+    const isOpen = menu?.classList.toggle("hidden") === false;
+    toggle.setAttribute("aria-expanded", String(isOpen));
+  });
+</script>

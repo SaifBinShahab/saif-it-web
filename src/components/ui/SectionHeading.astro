@@ -1,0 +1,22 @@
+---
+// Consistent section heading: small kicker label + heading + optional subtext.
+interface Props {
+  kicker?: string;
+  title: string;
+  subtitle?: string;
+  align?: "left" | "center";
+}
+const { kicker, title, subtitle, align = "left" } = Astro.props;
+const alignClass = align === "center" ? "text-center mx-auto" : "text-left";
+---
+<div class={`max-w-2xl ${alignClass}`} data-reveal>
+  {kicker && (
+    <p class="mb-3 font-mono text-xs uppercase tracking-[0.2em] text-[var(--accent)]">
+      {kicker}
+    </p>
+  )}
+  <h2 class="accent-underline pb-2 text-3xl font-semibold md:text-4xl">{title}</h2>
+  {subtitle && (
+    <p class="mt-5 text-[var(--text-muted)] leading-relaxed">{subtitle}</p>
+  )}
+</div>

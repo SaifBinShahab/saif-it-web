@@ -1,0 +1,46 @@
+---
+// Modular button/CTA — usable as a link (href) or a submit button.
+// variant: "primary" | "secondary" | "ghost"
+interface Props {
+  href?: string;
+  type?: "button" | "submit";
+  variant?: "primary" | "secondary" | "ghost";
+  size?: "sm" | "md";
+  class?: string;
+  target?: string;
+}
+const {
+  href,
+  type = "button",
+  variant = "primary",
+  size = "md",
+  class: className = "",
+  target,
+} = Astro.props;
+
+const base =
+  "inline-flex items-center justify-center gap-2 rounded-full font-body font-medium transition-all duration-200 border focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2";
+const sizes = {
+  sm: "px-4 py-2 text-sm",
+  md: "px-6 py-3 text-base",
+};
+const variants = {
+  primary:
+    "bg-[var(--accent)] text-ink border-[var(--accent)] hover:brightness-110 hover:-translate-y-0.5",
+  secondary:
+    "bg-transparent text-[var(--text)] border-[var(--border)] hover:border-[var(--accent)] hover:-translate-y-0.5",
+  ghost:
+    "bg-transparent text-[var(--text)] border-transparent hover:text-[var(--accent)]",
+};
+const classes = `${base} ${sizes[size]} ${variants[variant]} ${className}`;
+const Tag = href ? "a" : "button";
+---
+<Tag
+  href={href}
+  type={!href ? type : undefined}
+  target={target}
+  rel={target === "_blank" ? "noopener noreferrer" : undefined}
+  class={classes}
+>
+  <slot />
+</Tag>

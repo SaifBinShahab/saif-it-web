@@ -1,0 +1,11 @@
+---
+// Standalone Contact page — reuses the same Contact section (and therefore
+// the same ContactForm island) used on the homepage.
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Contact from "@/components/sections/Contact.astro";
+---
+<BaseLayout title="Contact">
+  <div class="pt-10">
+    <Contact />
+  </div>
+</BaseLayout>

@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #F4F1EA;
+  --bg-elevated: #ffffff;
+  --text: #12181B;
+  --text-muted: #6B7580;
+  --accent: #B08D57;
+  --secondary: #2F4F44;
+  --signal: #3E6E6E;
+  --border: rgba(18, 24, 27, 0.1);
+  --card-hover-shadow: 0 12px 32px rgba(18, 24, 27, 0.08);
+}
+
+[data-theme="dark"] {
+  --bg: #12181B;
+  --bg-elevated: #171F23;
+  --text: #F4F1EA;
+  --text-muted: #9AA4AC;
+  --accent: #B08D57;
+  --secondary: #4A7367;
+  --signal: #59918E;
+  --border: rgba(244, 241, 234, 0.1);
+  --card-hover-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+* { scroll-behavior: smooth; }
+
+html, body {
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+body {
+  font-family: theme('fontFamily.body');
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+h1, h2, h3, h4 { font-family: theme('fontFamily.heading'); }
+
+[lang="bn"] { font-family: theme('fontFamily.body-bn'); }
+[lang="bn"] h1, [lang="bn"] h2, [lang="bn"] h3 { font-family: theme('fontFamily.heading-bn'); }
+[lang="ar"] { font-family: theme('fontFamily.arabic'); }
+
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] { opacity: 1; transform: none; transition: none; }
+  * { scroll-behavior: auto; }
+}
+
+.hover-lift {
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--card-hover-shadow);
+  border-color: var(--accent);
+}
+
+.accent-underline {
+  position: relative;
+}
+.accent-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -0.35rem;
+  height: 2px;
+  width: 2.5rem;
+  background: var(--accent);
+}

@@ -1,0 +1,70 @@
+---
+import Navbar from "@/components/nav/Navbar.astro";
+import Footer from "@/components/nav/Footer.astro";
+import BackgroundField from "@/components/effects/BackgroundField.tsx";
+import CursorGlow from "@/components/effects/CursorGlow.tsx";
+import "@/styles/global.css";
+import { site } from "@/data/siteConfig";
+
+interface Props {
+  title?: string;
+  description?: string;
+  lang?: "en" | "bn";
+  // Set false on pages where the ambient background field would be
+  // distracting (rarely needed — it's designed to be subtle everywhere).
+  showBackgroundField?: boolean;
+  showCursorGlow?: boolean;
+}
+const {
+  title,
+  description = site.description,
+  lang = "en",
+  showBackgroundField = true,
+  showCursorGlow = true,
+} = Astro.props;
+
+const pageTitle = title ? `${title} — ${site.name}` : `${site.fullName} — ${site.role}`;
+---
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Tiro+Bangla&family=Hind+Siliguri:wght@400;600&family=Amiri&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- No-FOUC theme init: dark by default, respects saved preference -->
+    <script is:inline>
+      (function () {
+        var saved = localStorage.getItem("theme");
+        var theme = saved === "light" ? "light" : "dark";
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
+  </head>
+  <body class="font-body antialiased">
+    {showBackgroundField && <BackgroundField client:load />}
+    {showCursorGlow && <CursorGlow client:load />}
+
+    <Navbar />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+
+    <script>
+      import { initScrollReveal } from "@/lib/scrollReveal";
+      initScrollReveal();
+      document.addEventListener("astro:page-load", initScrollReveal);
+    </script>
+  </body>
+</html>

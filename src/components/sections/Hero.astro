@@ -1,0 +1,32 @@
+---
+import Container from "@/components/ui/Container.astro";
+import Button from "@/components/ui/Button.astro";
+import RotatingText from "@/components/RotatingText.tsx";
+import ProfilePhoto from "@/components/media/ProfilePhoto.astro";
+import { site, rotatingRoles, profilePhoto } from "@/data/siteConfig";
+---
+<section class="relative overflow-hidden pt-20 pb-24 md:pt-28 md:pb-32">
+  <Container class="grid items-center gap-12 md:grid-cols-[1.3fr_0.7fr]">
+    <div data-reveal>
+      <p class="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-[var(--accent)]">
+        {site.fullName}
+      </p>
+      <h1 class="font-heading text-4xl font-semibold leading-tight md:text-6xl">
+        I'm {site.name} —<br />
+        <RotatingText client:load phrases={rotatingRoles} className="text-[var(--secondary)]" />
+      </h1>
+      <p class="mt-6 max-w-xl text-lg leading-relaxed text-[var(--text-muted)]">
+        {site.description}
+      </p>
+      <div class="mt-10 flex flex-wrap gap-4">
+        <Button href="/works" variant="primary">Explore My Work</Button>
+        <Button href="/contact" variant="secondary">Get in Touch</Button>
+      </div>
+    </div>
+
+    <!-- Modular: renders with or without an actual photo, see profilePhoto in siteConfig -->
+    <div class="hidden justify-self-center md:flex">
+      <ProfilePhoto src={profilePhoto.src} alt={profilePhoto.alt} size={280} />
+    </div>
+  </Container>
+</section>

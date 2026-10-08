@@ -1,0 +1,19 @@
+---
+import Container from "@/components/ui/Container.astro";
+import CountUp from "@/components/effects/CountUp.tsx";
+import { impactStats } from "@/data/siteConfig";
+---
+<section class="border-y border-[var(--border)] bg-[var(--bg-elevated)]/40 py-16">
+  <Container>
+    <div class="grid grid-cols-2 gap-8 md:grid-cols-4">
+      {impactStats.map((stat) => (
+        <div class="text-center" data-reveal>
+          <p class="font-heading text-4xl font-semibold text-[var(--accent)] md:text-5xl">
+            <CountUp client:visible value={stat.value} suffix={stat.suffix} />
+          </p>
+          <p class="mt-2 text-sm text-[var(--text-muted)]">{stat.label}</p>
+        </div>
+      ))}
+    </div>
+  </Container>
+</section>

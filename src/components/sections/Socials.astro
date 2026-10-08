@@ -1,0 +1,47 @@
+---
+import Container from "@/components/ui/Container.astro";
+import SectionHeading from "@/components/ui/SectionHeading.astro";
+import Card from "@/components/ui/Card.astro";
+import { socialLinks, youtube } from "@/data/siteConfig";
+import { getLatestVideos } from "@/lib/youtube";
+
+const channelId = youtube.channelId || import.meta.env.PUBLIC_YT_CHANNEL_ID || "";
+const fetched = await getLatestVideos(channelId, youtube.maxVideos);
+const videos = (fetched.length > 0 ? fetched : youtube.manualVideos).slice(0, youtube.maxVideos);
+---
+<section class="py-20 md:py-28">
+  <Container>
+    <SectionHeading kicker="Elsewhere" title="Follow Along" />
+
+    <div class="mt-10 flex flex-wrap gap-4">
+      {socialLinks.map((s) => (
+        <a
+          href={s.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="hover-lift flex items-center gap-2 rounded-full border border-[var(--border)] px-5 py-2.5 text-sm"
+        >
+          {s.label}
+        </a>
+      ))}
+    </div>
+
+    {videos.length > 0 && (
+      <div class="mt-14">
+        <h3 class="mb-6 font-mono text-sm uppercase tracking-wide text-[var(--text-muted)]">
+          Latest on YouTube
+        </h3>
+        <div class="grid gap-6 md:grid-cols-3">
+          {videos.map((v) => (
+            <Card href={`https://youtube.com/watch?v=${v.id}`} data-reveal>
+              <div class="-mx-6 -mt-6 mb-4 aspect-video overflow-hidden rounded-t-2xl">
+                <img src={v.thumbnail} alt={v.title} class="h-full w-full object-cover" loading="lazy" />
+              </div>
+              <p class="font-heading text-base font-semibold leading-snug">{v.title}</p>
+            </Card>
+          ))}
+        </div>
+      </div>
+    )}
+  </Container>
+</section>

@@ -1,0 +1,19 @@
+---
+// Generic modular card shell — used by Projects, Achievements, Works, and
+// anywhere else a bordered, hover-lifted surface is needed.
+interface Props {
+  as?: "div" | "article" | "a";
+  href?: string;
+  class?: string;
+}
+const { as = "article", href, class: className = "" } = Astro.props;
+const Tag = href ? "a" : as;
+---
+<Tag
+  href={href}
+  target={href?.startsWith("http") ? "_blank" : undefined}
+  rel={href?.startsWith("http") ? "noopener noreferrer" : undefined}
+  class={`hover-lift block h-full rounded-2xl border border-[var(--border)] bg-[var(--bg-elevated)] p-6 ${className}`}
+>
+  <slot />
+</Tag>

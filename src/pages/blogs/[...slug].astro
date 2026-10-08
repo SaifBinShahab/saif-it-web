@@ -3,33 +3,80 @@ import { getCollection, type CollectionEntry } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Container from "@/components/ui/Container.astro";
 import Tag from "@/components/ui/Tag.astro";
+import Button from "@/components/ui/Button.astro";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("blog", ({ data }) => !data.draft);
-  return posts.map((post) => ({ params: { slug: post.slug }, props: { post } }));
+  // Ascending (oldest first) so "Previous" = published before this post,
+  // "Next" = published after — matches natural reading order.
+  const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
+    (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf()
+  );
+  return posts.map((post, index) => ({
+    params: { slug: post.slug },
+    props: {
+      post,
+      prevPost: index > 0 ? posts[index - 1] : null,
+      nextPost: index < posts.length - 1 ? posts[index + 1] : null,
+    },
+  }));
 }
 
-interface Props { post: CollectionEntry<"blog"> }
-const { post } = Astro.props;
+interface Props {
+  post: CollectionEntry<"blog">;
+  prevPost: CollectionEntry<"blog"> | null;
+  nextPost: CollectionEntry<"blog"> | null;
+}
+const { post, prevPost, nextPost } = Astro.props;
 const { Content } = await post.render();
 ---
 <BaseLayout title={post.data.title} description={post.data.description} lang={post.data.language}>
   <Container class="py-20 md:py-28">
     <article class="mx-auto max-w-2xl">
-      <p class="mb-3 font-mono text-xs uppercase tracking-wide text-[var(--accent)]">
-        {post.data.pillar.replace("-", " ")}
-      </p>
       <h1 class="font-heading text-3xl font-semibold leading-tight md:text-4xl">{post.data.title}</h1>
       <p class="mt-3 font-mono text-sm text-[var(--text-muted)]">
         {post.data.pubDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
       </p>
+
+      {post.data.banner && (
+        <div class="mt-6 overflow-hidden rounded-2xl border border-[var(--border)]">
+          <img
+            src={post.data.banner}
+            alt={post.data.title}
+            class="w-full cursor-zoom-in object-cover"
+            loading="eager"
+            data-lightbox-src={post.data.banner}
+            data-lightbox-caption={post.data.title}
+          />
+        </div>
+      )}
+
       <div class="mt-4 flex flex-wrap gap-2">
-        {post.data.tags.map((t: string) => <Tag>{t}</Tag>)}
+        {post.data.tags.map((t: string) => (
+          <Tag href={`/blogs?tag=${encodeURIComponent(t)}`}>{t}</Tag>
+        ))}
       </div>
 
       <div class="prose prose-brand mt-10 max-w-none prose-headings:font-heading prose-a:text-[var(--accent)]">
         <Content />
       </div>
+
+      {(prevPost || nextPost) && (
+        <nav
+          class="mt-16 flex flex-col gap-4 border-t border-[var(--border)] pt-8 sm:flex-row sm:justify-between"
+          aria-label="Post navigation"
+        >
+          {prevPost ? (
+            <Button href={`/blogs/${prevPost.slug}`} variant="secondary" class="sm:max-w-[48%]">
+              ← Previous: {prevPost.data.title}
+            </Button>
+          ) : <span />}
+          {nextPost && (
+            <Button href={`/blogs/${nextPost.slug}`} variant="secondary" class="ml-auto sm:max-w-[48%]">
+              Next: {nextPost.data.title} →
+            </Button>
+          )}
+        </nav>
+      )}
     </article>
   </Container>
 </BaseLayout>

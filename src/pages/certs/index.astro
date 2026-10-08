@@ -1,0 +1,11 @@
+---
+// Reuses the exact same Achievements section as the homepage, with
+// showAll — the same modularity pattern as /works and /contact.
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Achievements from "@/components/sections/Achievements.astro";
+---
+<BaseLayout title="Certifications">
+  <div class="pt-10">
+    <Achievements showAll />
+  </div>
+</BaseLayout>

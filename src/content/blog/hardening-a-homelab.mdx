@@ -5,7 +5,29 @@ pubDate: 2026-07-10
 pillar: "cybersecurity"
 language: "en"
 tags: ["homelab", "networking", "proxmox"]
+banner: "/images/blog/homelab-banner.webp"
 featured: true
 ---
 
 Sample post body. Replace with real content.
+
+Here's a small VLAN segmentation example on OpenWrt — this fence renders with a copy button in the top-right corner:
+
+```bash
+# Create a guest VLAN and isolate it from the trusted LAN
+uci set network.guest=interface
+uci set network.guest.proto='static'
+uci set network.guest.ipaddr='192.168.20.1'
+uci set network.guest.netmask='255.255.255.0'
+
+uci add firewall zone
+uci set firewall.@zone[-1].name='guest'
+uci set firewall.@zone[-1].network='guest'
+uci set firewall.@zone[-1].input='REJECT'
+uci set firewall.@zone[-1].forward='REJECT'
+uci commit
+```
+
+And an example of an inline image — click it to open the full-size lightbox viewer:
+
+![Network segmentation diagram](/images/blog/homelab-network-diagram.webp)

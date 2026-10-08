@@ -72,13 +72,15 @@ const clipId = `profile-hex-${Math.random().toString(36).slice(2, 8)}`;
       opacity="0.9"
     />
     <!-- inner tessellation accent lines -->
-    <path
-      d="M50,2 L50,98 M7,26 L93,74 M93,26 L7,74"
-      fill="none"
-      stroke="var(--accent)"
-      stroke-width="0.35"
-      opacity="0.35"
-    />
+    {!hasPhoto && (
+      <path
+        d="M50,2 L50,98 M7,26 L93,74 M93,26 L7,74"
+        fill="none"
+        stroke="var(--accent)"
+        stroke-width="0.35"
+        opacity="0.35"
+      />
+    )}
 
     {!hasPhoto && (
       <text
@@ -88,7 +90,6 @@ const clipId = `profile-hex-${Math.random().toString(36).slice(2, 8)}`;
         font-size="7"
         fill="var(--text-muted)"
       >
-        add photo
       </text>
     )}
   </svg>

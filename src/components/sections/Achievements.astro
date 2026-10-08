@@ -1,32 +1,78 @@
 ---
+// Reusable Achievements/Certs section. On the homepage this shows only
+// entries marked `featured: true` plus a "View All Certs" button; the
+// /certs page reuses this exact component with showAll to list everything.
+// Cards are sorted by the custom `order` field (ascending) you set per file.
 import { getCollection } from "astro:content";
 import Container from "@/components/ui/Container.astro";
 import SectionHeading from "@/components/ui/SectionHeading.astro";
 import Card from "@/components/ui/Card.astro";
 import Tag from "@/components/ui/Tag.astro";
+import Button from "@/components/ui/Button.astro";
 
-const items = (await getCollection("achievements")).sort(
-  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
-);
+interface Props {
+  showAll?: boolean;
+}
+const { showAll = false } = Astro.props;
+
+const all = (await getCollection("achievements")).sort((a, b) => a.data.order - b.data.order);
+const items = showAll ? all : all.filter((item) => item.data.featured);
 ---
 <section class="py-20 md:py-28">
   <Container>
-    <SectionHeading kicker="Credentials" title="Achievements & Certifications" />
+    <SectionHeading
+      kicker="Credentials"
+      title={showAll ? "All Achievements & Certifications" : "Achievements & Certifications"}
+    />
     <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {items.map((item) => (
-        <Card href={item.data.credentialUrl} data-reveal>
-          <div class="flex items-start justify-between gap-3">
-            <h3 class="font-heading text-lg font-semibold leading-snug">{item.data.title}</h3>
-          </div>
+        <Card
+          class={item.data.image ? "cursor-pointer" : undefined}
+          data-lightbox-src={item.data.image}
+          data-lightbox-caption={item.data.title}
+          data-reveal
+        >
+          {item.data.image && (
+            <div class="-mx-6 -mt-6 mb-4 aspect-video overflow-hidden rounded-t-2xl">
+              <img
+                src={item.data.image}
+                alt={item.data.title}
+                class="h-full w-full object-cover"
+                loading="lazy"
+              />
+            </div>
+          )}
+          <h3 class="font-heading text-lg font-semibold leading-snug">{item.data.title}</h3>
           <p class="mt-2 text-sm text-[var(--secondary)]">{item.data.issuer}</p>
           <p class="mt-1 font-mono text-xs text-[var(--text-muted)]">
             {item.data.date.toLocaleDateString("en-US", { year: "numeric", month: "short" })}
           </p>
-          <div class="mt-auto flex flex-wrap gap-2 pt-4">
-            {item.data.tags.map((t: string) => <Tag>{t}</Tag>)}
+          <div class="mt-auto pt-4">
+            <div class="flex flex-wrap gap-2">
+              {item.data.tags.map((t: string) => <Tag>{t}</Tag>)}
+            </div>
+            {item.data.credentialUrl && (
+              <div class="mt-4">
+                <Button
+                  href={item.data.credentialUrl}
+                  variant="secondary"
+                  size="sm"
+                  target="_blank"
+                  onclick="event.stopPropagation()"
+                >
+                  View Credential
+                </Button>
+              </div>
+            )}
           </div>
         </Card>
       ))}
     </div>
+
+    {!showAll && (
+      <div class="mt-12 text-center">
+        <Button href="/certs" variant="secondary">View All Certs</Button>
+      </div>
+    )}
   </Container>
 </section>

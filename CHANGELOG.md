@@ -1,6 +1,22 @@
 # CHANGELOG
 
+## v5.0.0
+
+[-] Removed the pillar tag thingy.
+[+] Blogs banner feature added.
+[+] Blogs banner now show as thumbnail.
+[+] Next-Previous blog buttons added.
+[+] Code snippet copy button added.
+[+] Blog search feature added.
+[+] Filter by tags feature added.
+[+] Certs card show banner as thumnail.
+[+] Certs card have a button to view credential.
+[+] Lightbox added to show pictures in the site in an enlarged blur blox.
+[+] Featured certs feature with button to show all certs.
+[+] Certs cards custom ordering feature added.
+
 ## v4.0.0
+
 [+]Bug fixes.
     - Experience dates now shown properly with "show only year" support.
 [+] Experience and Projects now show stuff below the frontmatter, the body.

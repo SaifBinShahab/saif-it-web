@@ -4,13 +4,12 @@ const blog = defineCollection({
   type: "content", // .mdx
   schema: z.object({
     title: z.string(),
-    description: z.string(),
+    description: z.string().optional(),
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
-    pillar: z.enum(["cybersecurity", "islamic-knowledge", "intersection", "personal"]),
     language: z.enum(["en", "bn"]).default("en"),
     tags: z.array(z.string()).default([]),
-    cover: z.string().optional(),
+    banner: z.string().optional(), // e.g. "/images/blog/my-post.webp" — thumbnail on cards, full image on the post
     draft: z.boolean().default(false),
     featured: z.boolean().default(false),
   }),
@@ -53,9 +52,11 @@ const achievements = defineCollection({
     title: z.string(),
     issuer: z.string(),
     date: z.coerce.date(),
-    credentialUrl: z.string().url().optional(),
-    badgeImage: z.string().optional(),
+    credentialUrl: z.string().url().optional(), // shows a "View Credential" button when set
+    image: z.string().optional(), // thumbnail shown on the card + full image in the lightbox
     tags: z.array(z.string()).default([]),
+    order: z.number().default(0), // custom display order, ascending
+    featured: z.boolean().default(false), // shown on homepage when true
   }),
 });
 

@@ -3,6 +3,7 @@ import Navbar from "@/components/nav/Navbar.astro";
 import Footer from "@/components/nav/Footer.astro";
 import BackgroundField from "@/components/effects/BackgroundField.tsx";
 import CursorGlow from "@/components/effects/CursorGlow.tsx";
+import Lightbox from "@/components/effects/Lightbox.tsx";
 import "@/styles/global.css";
 import { site, brandAssets } from "@/data/siteConfig";
 
@@ -62,6 +63,7 @@ const faviconDark = brandAssets.favicon.dark || brandAssets.favicon.light || "/f
   <body class="font-body antialiased">
     {showBackgroundField && <BackgroundField client:load />}
     {showCursorGlow && <CursorGlow client:load />}
+    <Lightbox client:load />
 
     <Navbar />
     <main>
@@ -71,8 +73,13 @@ const faviconDark = brandAssets.favicon.dark || brandAssets.favicon.light || "/f
 
     <script>
       import { initScrollReveal } from "@/lib/scrollReveal";
+      import { initCodeCopy } from "@/lib/codeCopy";
       initScrollReveal();
-      document.addEventListener("astro:page-load", initScrollReveal);
+      initCodeCopy();
+      document.addEventListener("astro:page-load", () => {
+        initScrollReveal();
+        initCodeCopy();
+      });
     </script>
   </body>
 </html>

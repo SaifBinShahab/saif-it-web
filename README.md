@@ -48,3 +48,22 @@ remove the component from `BaseLayout.astro`; to turn off per-page, pass
 
 Static output (`npm run build` → `dist/`). Works on Cloudflare Pages, Netlify,
 Vercel, or any static host — no server runtime required.
+
+## Blog: banner, search, tags, prev/next, code copy
+
+- **Banner** → set `banner: "/images/blog/my-post.webp"` in a post's frontmatter. Shows as the card thumbnail (homepage + blog list) and as the full image at the top of the post.
+- **Search** → the `/blogs` page is powered by `BlogList.tsx`, which searches title, description, tags, and the post's full markdown content (stripped to plain text at build time in `lib/text.ts`).
+- **Clickable tags** → tags are clickable only on the `/blogs` list (the filter bar at the top) and on an individual post page (each tag links to `/blogs?tag=<tag>`, which pre-filters the list). Card tags in grids elsewhere are static.
+- **Previous/Next** → shown at the bottom of each post, based on chronological order (oldest → newest). No extra frontmatter needed — it's computed from `pubDate`.
+- **Code copy button** → added automatically to every fenced code block via `lib/codeCopy.ts`. No setup per post.
+
+## Image lightbox
+
+`Lightbox.tsx` is mounted once, globally, in `BaseLayout`. Anything with a `data-lightbox-src="..."` attribute opens it (used by Certs cards and blog banners), and so does every image inside blog post body content (`.prose img`) — no per-image setup needed for the latter, just use a normal `![alt](src)` in your markdown.
+
+## Certs / Achievements
+
+- `image` → thumbnail on the card, and the image shown in the lightbox when the card is clicked.
+- `credentialUrl` → when set, shows a "View Credential" button (click doesn't trigger the lightbox).
+- `order` → custom display order, ascending, same pattern as Projects/Experience/Works.
+- `featured` → set `true` to show on the homepage. The homepage section always shows only featured entries, with a "View All Certs" button to `/certs`, which reuses the same section with `showAll`.

@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v6.0.0
+
+[+] Minor bug fixes.
+[+] Made the contact form universal and modular. Use anywhere in the site with optional custom labels.
+[+] E-book landing page added.
+[+] New FAQ modular component added.
+
 ## v5.0.0
 
 [-] Removed the pillar tag thingy.

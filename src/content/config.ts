@@ -4,9 +4,10 @@ const blog = defineCollection({
   type: "content", // .mdx
   schema: z.object({
     title: z.string(),
-    description: z.string().optional(),
+    description: z.string(),
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
+    pillar: z.enum(["cybersecurity", "islamic-knowledge", "intersection", "personal"]),
     language: z.enum(["en", "bn"]).default("en"),
     tags: z.array(z.string()).default([]),
     banner: z.string().optional(), // e.g. "/images/blog/my-post.webp" — thumbnail on cards, full image on the post
@@ -68,7 +69,7 @@ const works = defineCollection({
     description: z.string(),
     cta: z.object({
       label: z.string(),
-      href: z.string().url(),
+      href: z.string(), // internal path (e.g. "/ebook") or an external URL
     }),
     price: z.string().optional(), // e.g. "Free", "$9", "৳299"
     cover: z.string().optional(),

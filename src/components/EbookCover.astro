@@ -1,0 +1,43 @@
+---
+// Stylized e-book cover, built from real text/CSS (not a raster image) so
+// Bangla renders correctly everywhere. Echoes the brand's geometric
+// tessellation motif via the inline SVG overlay. Reusable anywhere a
+// cover visual is needed — hero, Works cards, share previews.
+interface Props {
+  title: string;
+  subtitle?: string;
+  author?: string;
+  class?: string;
+}
+const { title, subtitle, author, class: className = "" } = Astro.props;
+---
+<div class={`relative mx-auto aspect-[3/4] w-full max-w-[320px] ${className}`} data-reveal>
+  <!-- spine shadow, for a subtle book-like depth -->
+  <div class="absolute inset-y-2 left-0 w-3 rounded-l-xl bg-black/30 blur-[2px]"></div>
+
+  <div class="relative flex h-full w-full flex-col justify-between overflow-hidden rounded-xl border border-[var(--accent)]/60 bg-gradient-to-br from-[#1A2227] to-[#0E1316] p-7 shadow-2xl">
+    <svg
+      viewBox="0 0 200 260"
+      class="pointer-events-none absolute inset-0 h-full w-full opacity-[0.18]"
+      aria-hidden="true"
+    >
+      <path d="M100,10 L185,60 L185,200 L100,250 L15,200 L15,60 Z" fill="none" stroke="var(--accent)" stroke-width="1" />
+      <path d="M100,10 L100,250 M15,60 L185,200 M185,60 L15,200" fill="none" stroke="var(--accent)" stroke-width="0.4" />
+    </svg>
+
+    <div class="relative">
+      {subtitle && (
+        <p class="font-mono text-[0.65rem] uppercase tracking-[0.25em] text-[var(--accent)]">{subtitle}</p>
+      )}
+    </div>
+
+    <div class="relative">
+      <h2 class="font-heading-bn text-2xl font-semibold leading-snug text-[var(--text)]" style="color: #F4F1EA;" lang="bn">
+        {title}
+      </h2>
+      {author && (
+        <p class="mt-4 font-body-bn text-sm text-[var(--accent)]" lang="bn">{author}</p>
+      )}
+    </div>
+  </div>
+</div>

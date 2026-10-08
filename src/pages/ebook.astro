@@ -1,0 +1,298 @@
+---
+// Bangla, AIDA-structured sales landing page for "সবার জন্য সাইবার নিরাপত্তা".
+// Each section is written to resolve a specific doubt before the reader can
+// ask it — by the time they reach the order form, the common objections
+// (language, difficulty, format, what happens after paying) are already
+// answered. FAQ near the bottom catches anything left over.
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Container from "@/components/ui/Container.astro";
+import SectionHeading from "@/components/ui/SectionHeading.astro";
+import Button from "@/components/ui/Button.astro";
+import Card from "@/components/ui/Card.astro";
+import Tag from "@/components/ui/Tag.astro";
+import FAQ from "@/components/FAQ.astro";
+import EbookCover from "@/components/EbookCover.astro";
+import ContactForm from "@/components/forms/ContactForm.tsx";
+import { site } from "@/data/siteConfig";
+
+const accessKey = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY || "";
+
+const whyPoints = [
+  {
+    title: "সহজ ও স্পষ্ট বাংলা",
+    body: "জটিল টেকনিক্যাল শব্দের ভিড় নেই। প্রতিটি বিষয় এমনভাবে বোঝানো হয়েছে, যা যেকোনো পাঠক সহজেই অনুসরণ করতে পারবেন।",
+  },
+  {
+    title: "বাস্তব অভিজ্ঞতা থেকে লেখা",
+    body: "একজন প্র্যাকটিসিং সাইবার সিকিউরিটি স্পেশালিস্ট হিসেবে বাস্তব ক্লায়েন্ট ও ঘটনার অভিজ্ঞতা থেকে এই বই লেখা — শুধু থিওরি নয়।",
+  },
+  {
+    title: "ধাপে ধাপে করণীয়",
+    body: "প্রতিটি অধ্যায়ে শুধু সমস্যার কথা বলা হয়নি — ঠিক কী করতে হবে, তা পরিষ্কারভাবে বলা হয়েছে।",
+  },
+  {
+    title: "প্রতিদিনের জীবনের জন্য",
+    body: "ভারী থিওরি নয় — আপনার ফোন, ফেসবুক, bKash, ওয়াইফাই নিয়ে প্রতিদিনের বাস্তব পরিস্থিতির কথা মাথায় রেখে লেখা।",
+  },
+];
+
+const insideTopics = [
+  "মোবাইল ফোন ও অ্যাপের নিরাপত্তা",
+  "bKash, Nagad, Rocket নিরাপদভাবে ব্যবহারের নিয়ম",
+  "শক্তিশালী পাসওয়ার্ড তৈরি ও সংরক্ষণের সঠিক অভ্যাস",
+  "ফেসবুক ও সোশ্যাল মিডিয়া অ্যাকাউন্ট সুরক্ষিত রাখা",
+  "পাবলিক ওয়াইফাই ব্যবহারে প্রয়োজনীয় সতর্কতা",
+  "বাসার রাউটার ও হোম নেটওয়ার্ক নিরাপদ রাখা",
+  "সন্তানদের অনলাইন নিরাপত্তা নিশ্চিত করা",
+  "প্রতারণামূলক কল ও মেসেজ চেনার উপায়",
+];
+
+const audience = [
+  "স্মার্টফোন ব্যবহারকারী যে কেউ",
+  "সন্তানদের অনলাইন নিরাপত্তা নিয়ে চিন্তিত অভিভাবক",
+  "ছোট ব্যবসার মালিক",
+  "শিক্ষার্থী",
+  "যাদের টেকনিক্যাল ব্যাকগ্রাউন্ড নেই, কিন্তু নিরাপদ থাকতে চান",
+];
+
+const formatPoints = [
+  {
+    title: "ডিজিটাল ই-বুক (PDF)",
+    body: "ফোন, ট্যাব বা কম্পিউটার — যেকোনো ডিভাইসে, যেকোনো সময়, যেকোনো জায়গায় পড়তে পারবেন।",
+  },
+  {
+    title: "আনলিমিটেড ডাউনলোড",
+    body: "একবার সংগ্রহ করলে যতবার প্রয়োজন ততবার ডাউনলোড করতে পারবেন। ফোন পরিবর্তন করলে বা ফাইল হারিয়ে ফেললেও দুশ্চিন্তা নেই।",
+  },
+  {
+    title: "সহজ বাংলায় লেখা",
+    body: "ভারী ইংরেজি টেকনিক্যাল বই নয় — সহজ, স্পষ্ট বাংলায় লেখা, যা সবাই বুঝবেন।",
+  },
+];
+
+const faqItems = [
+  {
+    q: "বইটি কি সম্পূর্ণ বাংলায় লেখা?",
+    a: "হ্যাঁ, পুরো বইটি সহজ ও স্পষ্ট বাংলায় লেখা। তবে কিছু টেকনিক্যাল শব্দ (যেমন OTP, HTTPS, VPN) ইংরেজিতেই রাখা হয়েছে, কারণ এগুলো বাংলায় অনুবাদ করলে বরং বোঝা কঠিন হয়ে যায়।",
+  },
+  {
+    q: "আমার কোনো টেকনিক্যাল জ্ঞান নেই, আমি কি বুঝতে পারব?",
+    a: "হ্যাঁ। বইটি এমনভাবে লেখা হয়েছে যেন প্রযুক্তির সাথে পরিচিত না থাকা মানুষও শুরু থেকেই সহজে অনুসরণ করতে পারেন।",
+  },
+  {
+    q: "\u201cআনলিমিটেড ডাউনলোড\u201d বলতে কী বোঝানো হচ্ছে?",
+    a: "একবার কিনলে আপনি যতবার প্রয়োজন ততবার ফাইলটি ডাউনলোড করতে পারবেন। ফোন পরিবর্তন করলে বা ফাইল হারিয়ে ফেললেও নতুন করে কেনার দরকার নেই।",
+  },
+  {
+    q: "আমি বইটি কীভাবে পাবো?",
+    a: "নিচের ফর্ম পূরণ করে সাবমিট করুন। এরপর আমরা bKash/Nagad/Rocket পেমেন্টের বিস্তারিত জানিয়ে যোগাযোগ করব, এবং পেমেন্ট সম্পন্ন হলে ডাউনলোড লিংক পাঠিয়ে দেওয়া হবে।",
+  },
+  {
+    q: "আমি কি মোবাইল দিয়ে বইটি পড়তে পারব?",
+    a: "হ্যাঁ। এটি একটি ডিজিটাল PDF ই-বুক, তাই ফোন, ট্যাব বা কম্পিউটার — যেকোনো ডিভাইসে পড়া যাবে।",
+  },
+  {
+    q: "রিফান্ড নীতি কী?",
+    a: "এটি একটি ডিজিটাল পণ্য হওয়ায় সাধারণত রিফান্ড প্রযোজ্য নয়। তবে কোনো সমস্যা হলে সরাসরি যোগাযোগ করুন — আমরা সমাধানের চেষ্টা করব।",
+  },
+  {
+    q: "অফার মূল্য ২৫০ টাকা কতদিন থাকবে?",
+    a: "বর্তমানে ই-বুকটি ৩৯০ টাকার পরিবর্তে ২৫০ টাকায় পাওয়া যাচ্ছে। অফার মূল্য পরিবর্তন হতে পারে, তাই এখনই সংগ্রহ করাই ভালো।",
+  },
+];
+---
+<BaseLayout
+  title="সবার জন্য সাইবার নিরাপত্তা — ই-বুক"
+  description="মোবাইল ব্যাংকিং, ফেসবুক, পাসওয়ার্ড ও হোম নেটওয়ার্ক — প্রতিদিনের ডিজিটাল জীবনের নিরাপত্তা শিখুন সহজ বাংলায়।"
+  lang="bn"
+>
+  <!-- 1. ATTENTION -->
+  <section class="pt-16 pb-20 md:pt-24 md:pb-28">
+    <Container class="grid items-center gap-12 md:grid-cols-[1.1fr_0.9fr]">
+      <div data-reveal>
+        <p class="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-[var(--accent)]">ডিজিটাল ই-বুক</p>
+        <h1 class="font-heading-bn text-3xl font-semibold leading-tight md:text-5xl">
+          আপনার অনলাইন জীবন, আরও নিরাপদ — একদম সহজ বাংলায়
+        </h1>
+        <p class="mt-6 max-w-xl text-lg leading-relaxed text-[var(--text-muted)]">
+          মোবাইল ব্যাংকিং থেকে ফেসবুক অ্যাকাউন্ট, পাসওয়ার্ড থেকে হোম ওয়াইফাই — প্রতিদিনের ডিজিটাল জীবনের নিরাপত্তা শিখুন এমনভাবে, যা যেকোনো মানুষ সহজেই বুঝবেন। আগে থেকে কোনো টেকনিক্যাল জ্ঞান লাগবে না।
+        </p>
+
+        <div class="mt-6 flex flex-wrap gap-2">
+          <Tag variant="highlight">✓ সহজ ও স্পষ্ট বাংলা</Tag>
+          <Tag variant="highlight">✓ আনলিমিটেড ডাউনলোড</Tag>
+          <Tag variant="highlight">✓ যেকোনো ডিভাইসে পড়ুন</Tag>
+        </div>
+
+        <div class="mt-8 flex flex-wrap items-center gap-5">
+          <Button href="#pricing" variant="primary" size="md">অফার মূল্যে সংগ্রহ করুন — ২৫০ টাকা</Button>
+          <a href="#why" class="font-body text-sm text-[var(--text-muted)] underline-offset-4 hover:text-[var(--accent)] hover:underline">
+            আগে বইটি সম্পর্কে জানতে চাই ↓
+          </a>
+        </div>
+        <p class="mt-3 font-mono text-xs text-[var(--text-muted)]">
+          মূল্য <span class="line-through">৳৩৯০</span> — বর্তমান অফার মূল্য <span class="text-[var(--accent)]">৳২৫০</span>
+        </p>
+      </div>
+
+      <EbookCover
+        title="সবার জন্য সাইবার নিরাপত্তা"
+        subtitle="ই-বুক"
+        author={`লিখেছেন — ${site.fullName}`}
+        class="md:ml-auto"
+      />
+    </Container>
+  </section>
+
+  <!-- 2. INTEREST: the problem -->
+  <section class="py-16 md:py-20">
+    <Container>
+      <SectionHeading
+        kicker="বাস্তবতা"
+        title="প্রতিদিন যত মানুষ অনলাইনে প্রতারিত হচ্ছেন"
+        subtitle="বাংলাদেশে প্রতিদিন অসংখ্য মানুষ bKash/Nagad প্রতারণা, ফেসবুক অ্যাকাউন্ট হ্যাক হওয়া, কিংবা প্রতারণামূলক কলের শিকার হচ্ছেন। বেশিরভাগ ক্ষেত্রেই দেখা যায় — সহজ কিছু অভ্যাস জানা থাকলে এসব এড়ানো যেত।"
+      />
+      <p class="mt-6 max-w-2xl text-[var(--text-muted)] leading-relaxed" data-reveal>
+        সমস্যা হলো, সাইবার নিরাপত্তা নিয়ে যা কিছু পাওয়া যায় তার বেশিরভাগই ইংরেজিতে, অথবা এত টেকনিক্যাল যে সাধারণ মানুষের জন্য বোঝা কঠিন হয়ে যায়। ফলে প্রয়োজনীয় জ্ঞানটুকু অনেকের কাছেই পৌঁছায় না।
+      </p>
+    </Container>
+  </section>
+
+  <!-- 3. INTEREST -> DESIRE: why this book -->
+  <section id="why" class="py-16 md:py-20">
+    <Container>
+      <SectionHeading kicker="কেন এই বই" title="এই বইটি অন্যদের থেকে আলাদা কেন?" />
+      <div class="mt-12 grid gap-6 sm:grid-cols-2">
+        {whyPoints.map((p) => (
+          <Card data-reveal>
+            <h3 class="font-heading-bn text-lg font-semibold">{p.title}</h3>
+            <p class="mt-3 text-sm leading-relaxed text-[var(--text-muted)]">{p.body}</p>
+          </Card>
+        ))}
+      </div>
+    </Container>
+  </section>
+
+  <!-- 4. DESIRE: what's inside -->
+  <section class="py-16 md:py-20">
+    <Container>
+      <SectionHeading kicker="বইয়ের ভেতরে" title="যা যা শিখবেন" />
+      <div class="mt-10 grid gap-4 sm:grid-cols-2" data-reveal>
+        {insideTopics.map((topic) => (
+          <div class="flex items-start gap-3">
+            <span class="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-[var(--accent)] text-[var(--accent)]">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                <path d="M5 13l4 4L19 7" />
+              </svg>
+            </span>
+            <p class="text-sm leading-relaxed text-[var(--text-muted)]">{topic}</p>
+          </div>
+        ))}
+      </div>
+    </Container>
+  </section>
+
+  <!-- 5. DESIRE: who it's for -->
+  <section class="py-16 md:py-20">
+    <Container>
+      <SectionHeading kicker="কাদের জন্য" title="এই বই কাদের জন্য?" />
+      <div class="mt-8 flex flex-wrap gap-2" data-reveal>
+        {audience.map((a) => <Tag variant="skill">{a}</Tag>)}
+      </div>
+      <p class="mt-6 max-w-2xl text-sm leading-relaxed text-[var(--text-muted)]" data-reveal>
+        টেকনোলজি নিয়ে আগের কোনো জ্ঞান না থাকলেও সমস্যা নেই — বইটি শুরু থেকেই সহজভাবে বোঝানো শুরু হয়।
+      </p>
+    </Container>
+  </section>
+
+  <!-- 6. DESIRE: format & convenience (unlimited downloads, device-agnostic, simple Bangla) -->
+  <section class="py-16 md:py-20">
+    <Container>
+      <SectionHeading kicker="ফরম্যাট ও সুবিধা" title="কীভাবে পড়বেন, কীভাবে পাবেন" />
+      <div class="mt-12 grid gap-6 md:grid-cols-3">
+        {formatPoints.map((p) => (
+          <Card data-reveal>
+            <h3 class="font-heading-bn text-lg font-semibold">{p.title}</h3>
+            <p class="mt-3 text-sm leading-relaxed text-[var(--text-muted)]">{p.body}</p>
+          </Card>
+        ))}
+      </div>
+    </Container>
+  </section>
+
+  <!-- 7. ACTION: pricing + order form -->
+  <section id="pricing" class="py-16 md:py-20">
+    <Container class="grid gap-12 md:grid-cols-2">
+      <div data-reveal>
+        <SectionHeading kicker="মূল্য" title="আজই সংগ্রহ করুন" />
+        <div class="mt-8 rounded-2xl border border-[var(--accent)]/50 bg-[var(--bg-elevated)] p-6">
+          <p class="font-mono text-sm text-[var(--text-muted)]">
+            প্রকৃত মূল্য <span class="line-through">৳৩৯০</span>
+          </p>
+          <p class="mt-1 font-heading text-4xl font-semibold text-[var(--accent)]">৳২৫০</p>
+          <p class="mt-1 text-xs text-[var(--text-muted)]">বর্তমান অফার মূল্য</p>
+          <ul class="mt-6 space-y-2">
+            <li class="text-sm text-[var(--text-muted)]">✓ সহজ ও স্পষ্ট বাংলায় সম্পূর্ণ বই</li>
+            <li class="text-sm text-[var(--text-muted)]">✓ আনলিমিটেড ডাউনলোড</li>
+            <li class="text-sm text-[var(--text-muted)]">✓ যেকোনো ডিভাইসে পড়ার সুবিধা</li>
+          </ul>
+        </div>
+      </div>
+
+      <div data-reveal>
+        <h3 class="font-heading-bn text-xl font-semibold">অর্ডার করতে ফর্মটি পূরণ করুন</h3>
+        <p class="mt-2 text-sm text-[var(--text-muted)]">
+          ফর্ম সাবমিট করার পর আমরা bKash/Nagad/Rocket পেমেন্টের বিস্তারিত সহ শীঘ্রই আপনার সাথে যোগাযোগ করব।
+        </p>
+        <div class="mt-6">
+          {accessKey ? (
+            <ContactForm
+              client:visible
+              accessKey={accessKey}
+              subject="ই-বুক অর্ডার: সবার জন্য সাইবার নিরাপত্তা"
+              defaultMessage="আমি সবার জন্য সাইবার নিরাপত্তা ই-বুকটি সংগ্রহ করতে চাই।"
+              labels={{
+                namePlaceholder: "আপনার নাম",
+                contactPlaceholder: "ইমেইল অথবা ফোন নম্বর",
+                messagePlaceholder: "বার্তা",
+                submitLabel: "অর্ডার করুন",
+                submittingLabel: "পাঠানো হচ্ছে…",
+                successMessage: "ধন্যবাদ! আপনার অনুরোধ পেয়েছি — পেমেন্টের বিস্তারিত সহ শীঘ্রই যোগাযোগ করা হবে।",
+                errorMessage: "দুঃখিত, কিছু একটা সমস্যা হয়েছে। আবার চেষ্টা করুন অথবা সরাসরি ইমেইল করুন।",
+              }}
+            />
+          ) : (
+            <p class="rounded-lg border border-dashed border-[var(--border)] p-4 text-sm text-[var(--text-muted)]">
+              অর্ডার ফর্ম চালু করতে <code class="font-mono">PUBLIC_WEB3FORMS_ACCESS_KEY</code> .env ফাইলে সেট করুন।
+            </p>
+          )}
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  <!-- 8. Remaining doubts -->
+  <section id="faq" class="py-16 md:py-20">
+    <Container class="max-w-3xl">
+      <SectionHeading kicker="প্রশ্ন ও উত্তর" title="আপনার প্রশ্নের উত্তর" />
+      <div class="mt-10">
+        <FAQ items={faqItems} />
+      </div>
+    </Container>
+  </section>
+
+  <!-- 9. Final push -->
+  <section class="border-t border-[var(--border)] py-20 text-center md:py-24">
+    <Container class="max-w-xl">
+      <h2 class="font-heading-bn text-2xl font-semibold leading-snug md:text-3xl" data-reveal>
+        আজই নিজেকে ও পরিবারকে নিরাপদ রাখার প্রথম ধাপ নিন
+      </h2>
+      <p class="mt-4 font-body-bn text-sm text-[var(--accent)]" data-reveal>
+        আপনার হাতে যা আছে, সেটা বোঝা, আর সেটা যত্নের সাথে রাখা
+      </p>
+      <div class="mt-8" data-reveal>
+        <Button href="#pricing" variant="primary" size="md">অফার মূল্যে সংগ্রহ করুন — ২৫০ টাকা</Button>
+      </div>
+    </Container>
+  </section>
+</BaseLayout>

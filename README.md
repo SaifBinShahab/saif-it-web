@@ -1,5 +1,7 @@
 # Saif — Personal Portfolio
 
+Open source version of the portfolio website.
+
 Astro + React, dark-by-default with a light toggle, built around a modular
 component system so sections, cards, tags, buttons, and forms can be reused
 across pages with minimal effort.
@@ -7,8 +9,14 @@ across pages with minimal effort.
 ## Setup
 
 ```bash
+# Install packages and dependencies.
 npm install
+
+# Run the dev server. (Runs vite with hot loading).
 npm run dev
+
+# Build site.
+npm run build
 ```
 
 No `.env` file needed — the two pieces of "config" the site talks to externally (Web3Forms, YouTube) are both public identifiers, not secrets, so they live directly in `src/data/siteConfig.ts` (see below). If you'd still rather keep them out of source control for your own reasons, nothing stops you from wiring them to `import.meta.env` yourself — the components just read whatever `contact.web3formsAccessKey` / `youtube.channelId` resolve to.
@@ -22,7 +30,7 @@ No `.env` file needed — the two pieces of "config" the site talks to externall
 - **Profile photo** → drop images in `public/images/`, then set `profilePhoto.light` / `profilePhoto.dark` in `siteConfig.ts`. Provide one, both, or neither — the geometric frame adapts either way (photo-less renders the ornament alone; one photo is used for both themes; two photos swap automatically with the theme toggle).
 - **Logo** → set `brandAssets.logo.light` / `brandAssets.logo.dark` in `siteConfig.ts` to image paths (SVG recommended). Leave both blank to keep the default letter + wordmark. Swapping is instant and flash-free — both images render in the DOM and CSS shows the right one for the active theme.
 - **Favicon** → set `brandAssets.favicon.light` / `brandAssets.favicon.dark` in `siteConfig.ts` (defaults to `public/favicon-light.svg` / `public/favicon-dark.svg`, which are placeholders — replace with your real mark). Unlike the logo/photo, the favicon is a `<link>` element that CSS can't target, so it's swapped by a tiny inline script that runs before first paint (initial load) and again on manual toggle.
-- **Contact form (and the e-book order form)** → Web3Forms. Set `contact.web3formsAccessKey` in `siteConfig.ts`. Get a free key at https://web3forms.com — it's a public, client-exposed identifier by design (Web3Forms embeds it in the page on every one of their users' sites), so there's no security reason to hide it in `.env`.
+- **Contact form (and the e-book order form)** → Web3Forms. Set `contact.web3formsAccessKey` in `siteConfig.ts`. Get a free key at [https://web3forms.com] — it's a public, client-exposed identifier by design (Web3Forms embeds it in the page on every one of their users' sites), so there's no security reason to hide it in `.env`.
 - **YouTube videos** → set `youtube.channelId` in `siteConfig.ts` (must be the real `UC...` ID, not a @handle) to auto-pull your latest uploads via the public RSS feed — no API key, no `.env`. To take manual control instead, fill in `youtube.manualVideos`; those are used automatically if the live fetch returns nothing.
 
 ## Font sizes — one place controls everything

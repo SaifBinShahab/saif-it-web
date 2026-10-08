@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v4.0.0
+[+]Bug fixes.
+    - Experience dates now shown properly with "show only year" support.
+[+] Experience and Projects now show stuff below the frontmatter, the body.
+[+] Markdown rendering according to brand.
+[+] Added some real Experience and Projects.
+
 ## v3.0.0
 
 [+] Added Dark/Light theming with button to change.

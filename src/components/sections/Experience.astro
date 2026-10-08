@@ -5,6 +5,9 @@ import SectionHeading from "@/components/ui/SectionHeading.astro";
 import Tag from "@/components/ui/Tag.astro";
 
 const entries = (await getCollection("experience")).sort((a, b) => a.data.order - b.data.order);
+const rendered = await Promise.all(
+  entries.map(async (entry) => ({ entry, Content: (await entry.render()).Content }))
+);
 
 function formatDate(value: string) {
   const isYearOnly = /^\d{4}$/.test(value);
@@ -26,19 +29,26 @@ function formatRange(start: string, end?: string) {
     <SectionHeading kicker="Path" title="Experience" />
 
     <ol class="relative mt-14 space-y-12 border-l border-[var(--border)] pl-8">
-      {entries.map((item) => (
+      {rendered.map(({ entry, Content }) => (
         <li class="relative" data-reveal>
           <span class="absolute -left-[2.35rem] top-1.5 h-3 w-3 rounded-full border-2 border-[var(--accent)] bg-[var(--bg)]"></span>
           <p class="font-mono text-xs uppercase tracking-wide text-[var(--text-muted)]">
-            {formatRange(item.data.startDate, item.data.endDate)}
+            {formatRange(entry.data.startDate, entry.data.endDate)}
           </p>
-          <h3 class="mt-1 font-heading text-xl font-semibold">{item.data.role}</h3>
-          <p class="text-sm text-[var(--secondary)]">{item.data.organization}</p>
-          <p class="mt-3 max-w-2xl text-sm leading-relaxed text-[var(--text-muted)]">
-            {item.data.summary}
-          </p>
+          <h3 class="mt-1 font-heading text-xl font-semibold">{entry.data.role}</h3>
+          <p class="text-sm text-[var(--secondary)]">{entry.data.organization}</p>
+          {entry.data.summary && (
+            <p class="mt-3 max-w-2xl text-sm leading-relaxed text-[var(--text-muted)]">
+              {entry.data.summary}
+            </p>
+          )}
+          {entry.body?.trim() && (
+            <div class="prose prose-brand prose-sm mt-3 max-w-2xl prose-headings:font-heading prose-headings:text-base prose-p:leading-relaxed prose-li:leading-relaxed">
+              <Content />
+            </div>
+          )}
           <div class="mt-4 flex flex-wrap gap-2">
-            {item.data.tags.map((t: string) => <Tag variant="skill">{t}</Tag>)}
+            {entry.data.tags.map((t: string) => <Tag variant="skill">{t}</Tag>)}
           </div>
         </li>
       ))}

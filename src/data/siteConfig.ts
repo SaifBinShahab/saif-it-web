@@ -4,12 +4,12 @@
 
 export const site = {
   name: "Saif",
-  fullName: "Saif Bin Shahab",
-  role: "Cybersecurity Specialist & Entrepreneur",
-  tagline: "Student of knowledge, in dunya and deen.",
+  fullName: "Saif Bin Sahab",
+  role: "Cybersecurity Specialist & Taalib al-'Ilm",
+  tagline: "Guard what's entrusted to you.",
   description:
-    "A humble seeker of knowledge stumbled upon 'Ilm, Cyber Security and IT; seeking only the pleasure of Allah.",
-  url: "https://saif-it.pages.dev",
+    "Cybersecurity specialist and student of Islamic knowledge, writing at the intersection of digital security and deen — where guarding a network and guarding the heart follow the same discipline.",
+  url: "https://saif.example.com", // TODO
   locale: "en",
 };
 
@@ -27,11 +27,10 @@ export const nav = [
 ];
 
 export const socialLinks = [
-  { label: "YouTube", href: "https://youtube.com/@SaifBinShahab-141", icon: "youtube" },
-  { label: "LinkedIn", href: "https://www.linkedin.com/in/saif-bin-shahab", icon: "linkedin" },
-  { label: "GitHub", href: "https://github.com/saifbinshahab", icon: "github" },
-  { label: "X", href: "https://x.com/saifbinshahab", icon: "x" },
-  { label: "Mastodon", href: "https://mastodon.social/@saifbinshahab", icon: "mastodon" },
+  { label: "YouTube", href: "https://youtube.com/@yourhandle", icon: "youtube" },
+  { label: "LinkedIn", href: "https://linkedin.com/in/yourhandle", icon: "linkedin" },
+  { label: "GitHub", href: "https://github.com/yourhandle", icon: "github" },
+  { label: "X", href: "https://x.com/yourhandle", icon: "x" },
 ];
 
 // Theme-aware brand assets. For each, provide a light-theme and a
@@ -44,8 +43,8 @@ export const socialLinks = [
 //    theme toggle, no page reload, no flash
 export const brandAssets = {
   logo: {
-    light: "/favicon-light.svg", // e.g. "/images/logo-light.svg" — shown on the light theme
-    dark: "/favicon-dark.svg", // e.g. "/images/logo-dark.svg" — shown on the dark theme
+    light: "", // e.g. "/images/logo-light.svg" — shown on the light theme
+    dark: "", // e.g. "/images/logo-dark.svg" — shown on the dark theme
   },
   favicon: {
     light: "/favicon-light.svg", // shown on the light theme
@@ -56,20 +55,20 @@ export const brandAssets = {
 // Optional profile photo, per theme. Leave both blank to render the
 // geometric frame without a photo — the Hero section adapts either way.
 export const profilePhoto = {
-  light: "/images/mark-light.webp", // e.g. "/images/profile-light.jpg"
-  dark: "/images/mark-dark.webp", // e.g. "/images/profile-dark.jpg"
+  light: "", // e.g. "/images/profile-light.jpg"
+  dark: "", // e.g. "/images/profile-dark.jpg"
   alt: "Saif",
 };
 
 export const impactStats = [
-  { label: "Years in tech", value: 9, suffix: "+" },
-  { label: "Clients served", value: 5, suffix: "+" },
-  { label: "Projects done", value: 25, suffix: "+" },
-  { label: "Articles published", value: 34, suffix: "+" },
+  { label: "Years in cybersecurity", value: 5, suffix: "+" },
+  { label: "Clients secured", value: 20, suffix: "+" },
+  { label: "Homelab uptime", value: 99, suffix: "%" },
+  { label: "Articles published", value: 30, suffix: "+" },
 ];
 
 export const contact = {
-  email: "saifbinshahab@proton.me"
+  email: "hello@saif.example.com", // TODO
 };
 
 export const youtube = {

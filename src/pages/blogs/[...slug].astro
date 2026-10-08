@@ -27,7 +27,7 @@ const { Content } = await post.render();
         {post.data.tags.map((t: string) => <Tag>{t}</Tag>)}
       </div>
 
-      <div class="prose prose-invert mt-10 max-w-none prose-headings:font-heading prose-a:text-[var(--accent)]">
+      <div class="prose prose-brand mt-10 max-w-none prose-headings:font-heading prose-a:text-[var(--accent)]">
         <Content />
       </div>
     </article>

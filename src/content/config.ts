@@ -21,6 +21,7 @@ const projects = defineCollection({
   schema: z.object({
     title: z.string(),
     problem: z.string(),
+    solution: z.string().optional(),
     outcome: z.string(),
     tags: z.array(z.string()).default([]),
     link: z.string().url().optional(),
@@ -38,7 +39,9 @@ const experience = defineCollection({
     // "2023" -> year only. "2023-06" or a full date -> year + month shown.
     startDate: z.string(),
     endDate: z.string().optional(), // omit for "Present"
-    summary: z.string(),
+    // Optional one-line lead-in. The full write-up (bullets, code, whatever)
+    // goes in the markdown body below the frontmatter and renders in full.
+    summary: z.string().optional(),
     tags: z.array(z.string()).default([]),
     order: z.number().default(0),
   }),

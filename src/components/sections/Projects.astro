@@ -6,6 +6,9 @@ import Card from "@/components/ui/Card.astro";
 import Tag from "@/components/ui/Tag.astro";
 
 const projects = (await getCollection("projects")).sort((a, b) => a.data.order - b.data.order);
+const rendered = await Promise.all(
+  projects.map(async (project) => ({ project, Content: (await project.render()).Content }))
+);
 ---
 <section class="py-20 md:py-28">
   <Container>
@@ -15,17 +18,28 @@ const projects = (await getCollection("projects")).sort((a, b) => a.data.order -
       subtitle="Real problems, and what actually resolved them."
     />
     <div class="mt-12 grid gap-6 md:grid-cols-2">
-      {projects.map((project) => (
+      {rendered.map(({ project, Content }) => (
         <Card href={project.data.link ?? project.data.repo} data-reveal>
           <h3 class="font-heading text-xl font-semibold">{project.data.title}</h3>
           <p class="mt-4 text-sm leading-relaxed text-[var(--text-muted)]">
             <span class="font-mono text-xs uppercase tracking-wide text-[var(--signal)]">Problem — </span>
             {project.data.problem}
           </p>
+          {project.data.solution && (
+            <p class="mt-3 text-sm leading-relaxed text-[var(--text-muted)]">
+              <span class="font-mono text-xs uppercase tracking-wide text-[var(--accent)]">Solution — </span>
+              {project.data.solution}
+            </p>
+          )}
           <p class="mt-3 text-sm leading-relaxed text-[var(--text-muted)]">
             <span class="font-mono text-xs uppercase tracking-wide text-[var(--secondary)]">Outcome — </span>
             {project.data.outcome}
           </p>
+          {project.body?.trim() && (
+            <div class="prose prose-brand prose-sm mt-3 max-w-none prose-headings:font-heading prose-headings:text-base prose-p:leading-relaxed prose-li:leading-relaxed">
+              <Content />
+            </div>
+          )}
           <div class="mt-auto flex flex-wrap gap-2 pt-5">
             {project.data.tags.map((t: string) => <Tag variant="highlight">{t}</Tag>)}
           </div>

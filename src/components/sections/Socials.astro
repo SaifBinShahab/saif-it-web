@@ -5,7 +5,7 @@ import Card from "@/components/ui/Card.astro";
 import { socialLinks, youtube } from "@/data/siteConfig";
 import { getLatestVideos } from "@/lib/youtube";
 
-const channelId = youtube.channelId || import.meta.env.PUBLIC_YT_CHANNEL_ID || "";
+const channelId = youtube.channelId;
 const fetched = await getLatestVideos(channelId, youtube.maxVideos);
 const videos = (fetched.length > 0 ? fetched : youtube.manualVideos).slice(0, youtube.maxVideos);
 ---

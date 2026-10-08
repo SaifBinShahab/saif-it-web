@@ -13,6 +13,16 @@ export const site = {
   locale: "en",
 };
 
+// Base font-size scale, applied site-wide. The actual per-size values
+// (xs, sm, base, lg…6xl) live in src/styles/global.css as CSS variables —
+// this is just the multiplier. 1 = 100% (default). To scale a single page
+// (e.g. ebook.astro) instead of the whole site, pass fontScale to that
+// page's <BaseLayout> (or set it in a blog post's frontmatter) rather than
+// changing this value.
+export const typography = {
+  baseFontScale: 1,
+};
+
 export const rotatingRoles = [
   "Cyber Security Specialist",
   "Software Developer",
@@ -69,11 +79,17 @@ export const impactStats = [
 
 export const contact = {
   email: "hello@saif.example.com", // TODO
+  // Web3Forms access key. This is a public, client-exposed identifier (not
+  // a secret) — Web3Forms itself expects it embedded in the page, so it's
+  // safe to commit here rather than keeping it in .env. Get a free one at
+  // https://web3forms.com.
+  web3formsAccessKey: "",
 };
 
 export const youtube = {
   // Must be the real channel ID (starts with "UC...", 24 chars) — a @handle
-  // or custom URL will not work with the RSS feed. Or set PUBLIC_YT_CHANNEL_ID in .env.
+  // or custom URL will not work with the RSS feed. This is public info,
+  // same as the key above — no .env needed.
   channelId: "",
   maxVideos: 3,
   manualVideos: [

@@ -4,7 +4,7 @@ import SectionHeading from "@/components/ui/SectionHeading.astro";
 import ContactForm from "@/components/forms/ContactForm.tsx";
 import { contact } from "@/data/siteConfig";
 
-const accessKey = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY || "";
+const accessKey = contact.web3formsAccessKey;
 ---
 <section id="contact" class="py-20 md:py-28">
   <Container class="grid gap-12 md:grid-cols-2">
@@ -27,7 +27,7 @@ const accessKey = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY || "";
         <ContactForm client:visible accessKey={accessKey} />
       ) : (
         <p class="rounded-lg border border-dashed border-[var(--border)] p-4 text-sm text-[var(--text-muted)]">
-          Set <code class="font-mono">PUBLIC_WEB3FORMS_ACCESS_KEY</code> in your .env file to activate this form.
+          Set <code class="font-mono">contact.web3formsAccessKey</code> in <code class="font-mono">siteConfig.ts</code> to activate this form.
         </p>
       )}
     </div>

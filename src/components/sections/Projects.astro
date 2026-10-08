@@ -4,6 +4,7 @@ import Container from "@/components/ui/Container.astro";
 import SectionHeading from "@/components/ui/SectionHeading.astro";
 import Card from "@/components/ui/Card.astro";
 import Tag from "@/components/ui/Tag.astro";
+import { cardSizeClasses } from "@/lib/cardSize";
 
 const projects = (await getCollection("projects")).sort((a, b) => a.data.order - b.data.order);
 const rendered = await Promise.all(
@@ -19,7 +20,17 @@ const rendered = await Promise.all(
     />
     <div class="mt-12 grid gap-6 md:grid-cols-2">
       {rendered.map(({ project, Content }) => (
-        <Card href={project.data.link ?? project.data.repo} data-reveal>
+        <Card href={project.data.projectUrl} class={cardSizeClasses(project.data.size)} data-reveal>
+          {project.data.banner && (
+            <div class="-mx-6 -mt-6 mb-4 aspect-video overflow-hidden rounded-t-2xl">
+              <img
+                src={project.data.banner}
+                alt={project.data.title}
+                class="h-full w-full object-cover"
+                loading="lazy"
+              />
+            </div>
+          )}
           <h3 class="font-heading text-xl font-semibold">{project.data.title}</h3>
           <p class="mt-4 text-sm leading-relaxed text-[var(--text-muted)]">
             <span class="font-mono text-xs uppercase tracking-wide text-[var(--signal)]">Problem — </span>

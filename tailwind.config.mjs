@@ -6,6 +6,24 @@ export default {
   content: ["./src/**/*.{astro,html,js,jsx,ts,tsx,md,mdx}"],
   theme: {
     extend: {
+      // Every text-xs…text-6xl utility reads from the --fs-* variables
+      // defined in global.css, instead of a fixed value — so changing
+      // those variables (or the --font-scale override) restyles every
+      // heading, body paragraph, tag, and label across the whole site
+      // (and, on a per-page basis, via BaseLayout's fontScale prop) with
+      // no component changes needed.
+      fontSize: {
+        xs: "var(--fs-xs)",
+        sm: "var(--fs-sm)",
+        base: "var(--fs-base)",
+        lg: "var(--fs-lg)",
+        xl: "var(--fs-xl)",
+        "2xl": "var(--fs-2xl)",
+        "3xl": "var(--fs-3xl)",
+        "4xl": "var(--fs-4xl)",
+        "5xl": "var(--fs-5xl)",
+        "6xl": "var(--fs-6xl)",
+      },
       colors: {
         ink: "#12181B",       // Deep Ink - primary/base
         emerald: "#2F4F44",   // Muted Emerald - secondary

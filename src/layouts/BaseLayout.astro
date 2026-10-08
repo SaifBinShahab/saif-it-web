@@ -5,7 +5,7 @@ import BackgroundField from "@/components/effects/BackgroundField.tsx";
 import CursorGlow from "@/components/effects/CursorGlow.tsx";
 import Lightbox from "@/components/effects/Lightbox.tsx";
 import "@/styles/global.css";
-import { site, brandAssets } from "@/data/siteConfig";
+import { site, brandAssets, typography } from "@/data/siteConfig";
 
 interface Props {
   title?: string;
@@ -15,6 +15,10 @@ interface Props {
   // distracting (rarely needed — it's designed to be subtle everywhere).
   showBackgroundField?: boolean;
   showCursorGlow?: boolean;
+  // Scales every font-size on THIS page only (headings, body, tags — all
+  // of it), without touching the site-wide default in siteConfig.ts.
+  // 1 = 100%. e.g. fontScale={1.1} for a slightly larger custom page.
+  fontScale?: number;
 }
 const {
   title,
@@ -22,6 +26,7 @@ const {
   lang = "en",
   showBackgroundField = true,
   showCursorGlow = true,
+  fontScale = typography.baseFontScale,
 } = Astro.props;
 
 const pageTitle = title ? `${title} — ${site.name}` : `${site.fullName} — ${site.role}`;
@@ -32,7 +37,7 @@ const faviconLight = brandAssets.favicon.light || brandAssets.favicon.dark || "/
 const faviconDark = brandAssets.favicon.dark || brandAssets.favicon.light || "/favicon.svg";
 ---
 <!doctype html>
-<html lang={lang}>
+<html lang={lang} style={`--font-scale: ${fontScale}`}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -63,7 +68,7 @@ const faviconDark = brandAssets.favicon.dark || brandAssets.favicon.light || "/f
   <body class="font-body antialiased">
     {showBackgroundField && <BackgroundField client:load />}
     {showCursorGlow && <CursorGlow client:load />}
-    <Lightbox client:load />
+    <Lightbox client:only="react" />
 
     <Navbar />
     <main>

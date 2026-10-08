@@ -4,5 +4,7 @@ problem: "Relying on third-party platforms for services like file storage, media
 solution: "Deployed a self-hosted infrastructure running on Docker containers, with applications such as Nextcloud, Jellyfin, Gitea, and Syncthing. Secured the environment with a Traefik reverse proxy, a WAF, and automated SSL/TLS."
 outcome: "A scalable, secure, and private platform, enabling complete ownership of data and services while maintaining high availability and performance."
 tags: ["Docker", "Traefik", "WAF", "SSL/TLS", "Nextcloud", "Self-Hosted"]
+banner: "/images/projects/self-hosting-infra.webp"
+size: "2x1"
 order: 1
 ---

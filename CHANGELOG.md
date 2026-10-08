@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## v7.1.1
+
+[+] Bug fix: `Invalid hook call` warning from `Lightbox` is now fixed. It renders nothing until someone clicks, so I switched its mount to `client:only="react"`.
+[+] Single point font size and scale changing capability.
+[+] Per page custo font size and scaling support.
+[+] Blogs pages can change font scale in the frontmatter.
+[+] Works section's cards now have banner and thumbnail support.
+[+] Featured works and "show all works" button.
+[+] Custom card sizing. Instead of the previous default grid like view.
+[+] Projects now have projectsUrl option to view the project's repo or whatever.
+[+] No more .env for public infos (such as public keys), now use siteConfig.ts to put the public infos.
+
 ## v6.0.0
 
 [+] Minor bug fixes.

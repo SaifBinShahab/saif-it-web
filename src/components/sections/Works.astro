@@ -1,23 +1,44 @@
 ---
+// Reusable Works section — same featured/showAll pattern as Achievements.
+// Homepage shows only entries marked `featured: true` plus a "Show All
+// Works" button; /works reuses this exact component with showAll to list
+// everything. Cards are sorted by the custom `order` field (ascending).
 import { getCollection } from "astro:content";
 import Container from "@/components/ui/Container.astro";
 import SectionHeading from "@/components/ui/SectionHeading.astro";
 import Card from "@/components/ui/Card.astro";
 import Tag from "@/components/ui/Tag.astro";
 import Button from "@/components/ui/Button.astro";
+import { cardSizeClasses } from "@/lib/cardSize";
 
-const items = (await getCollection("works")).sort((a, b) => a.data.order - b.data.order);
+interface Props {
+  showAll?: boolean;
+}
+const { showAll = false } = Astro.props;
+
+const all = (await getCollection("works")).sort((a, b) => a.data.order - b.data.order);
+const items = showAll ? all : all.filter((item) => item.data.featured);
 ---
 <section id="works" class="py-20 md:py-28">
   <Container>
     <SectionHeading
       kicker="Offerings"
-      title="Works"
+      title={showAll ? "All Works" : "Works"}
       subtitle="E-books, tools, and software built from real practice — available to use or download."
     />
     <div class="mt-12 grid gap-6 md:grid-cols-2">
       {items.map((item) => (
-        <Card data-reveal>
+        <Card class={cardSizeClasses(item.data.size)} data-reveal>
+          {item.data.banner && (
+            <div class="-mx-6 -mt-6 mb-4 aspect-video overflow-hidden rounded-t-2xl">
+              <img
+                src={item.data.banner}
+                alt={item.data.title}
+                class="h-full w-full object-cover"
+                loading="lazy"
+              />
+            </div>
+          )}
           <p class="mb-2 font-mono text-xs uppercase tracking-wide text-[var(--accent)]">
             {item.data.kind}
           </p>
@@ -32,7 +53,12 @@ const items = (await getCollection("works")).sort((a, b) => a.data.order - b.dat
               {item.data.price && (
                 <span class="font-mono text-sm text-[var(--secondary)]">{item.data.price}</span>
               )}
-              <Button href={item.data.cta.href} variant="primary" size="sm" target="_blank">
+              <Button
+                href={item.data.cta.href}
+                variant="primary"
+                size="sm"
+                target={item.data.cta.href.startsWith("http") ? "_blank" : undefined}
+              >
                 {item.data.cta.label}
               </Button>
             </div>
@@ -40,5 +66,11 @@ const items = (await getCollection("works")).sort((a, b) => a.data.order - b.dat
         </Card>
       ))}
     </div>
+
+    {!showAll && (
+      <div class="mt-12 text-center">
+        <Button href="/works" variant="secondary">Show All Works</Button>
+      </div>
+    )}
   </Container>
 </section>

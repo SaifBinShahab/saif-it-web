@@ -13,9 +13,9 @@ import Tag from "@/components/ui/Tag.astro";
 import FAQ from "@/components/FAQ.astro";
 import EbookCover from "@/components/EbookCover.astro";
 import ContactForm from "@/components/forms/ContactForm.tsx";
-import { site } from "@/data/siteConfig";
+import { site, contact } from "@/data/siteConfig";
 
-const accessKey = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY || "";
+const accessKey = contact.web3formsAccessKey;
 
 const whyPoints = [
   {
@@ -263,7 +263,7 @@ const faqItems = [
             />
           ) : (
             <p class="rounded-lg border border-dashed border-[var(--border)] p-4 text-sm text-[var(--text-muted)]">
-              অর্ডার ফর্ম চালু করতে <code class="font-mono">PUBLIC_WEB3FORMS_ACCESS_KEY</code> .env ফাইলে সেট করুন।
+              অর্ডার ফর্ম চালু করতে <code class="font-mono">siteConfig.ts</code>-এ <code class="font-mono">contact.web3formsAccessKey</code> সেট করুন।
             </p>
           )}
         </div>

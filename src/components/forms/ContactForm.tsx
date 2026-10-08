@@ -3,7 +3,7 @@ import { useState } from "react";
 // Modular contact form (name, phone/email, message) posting to Web3Forms.
 // Drop this component anywhere — homepage Contact section, /contact page,
 // an order form on a sales page — with no per-page wiring needed beyond
-// the PUBLIC_WEB3FORMS_ACCESS_KEY env var.
+// passing accessKey (see contact.web3formsAccessKey in siteConfig.ts).
 //
 // `subject` tags the notification email (useful to tell "ebook order" apart
 // from a general inquiry). `defaultMessage` pre-fills the message field.

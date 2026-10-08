@@ -29,7 +29,12 @@ interface Props {
 const { post, prevPost, nextPost } = Astro.props;
 const { Content } = await post.render();
 ---
-<BaseLayout title={post.data.title} description={post.data.description} lang={post.data.language}>
+<BaseLayout
+  title={post.data.title}
+  description={post.data.description}
+  lang={post.data.language}
+  fontScale={post.data.fontScale}
+>
   <Container class="py-20 md:py-28">
     <article class="mx-auto max-w-2xl">
       <h1 class="font-heading text-3xl font-semibold leading-tight md:text-4xl">{post.data.title}</h1>

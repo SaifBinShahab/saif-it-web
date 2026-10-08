@@ -1,11 +1,12 @@
 ---
 // Standalone Works page — reuses the exact same Works section used on the
-// homepage, demonstrating the section-level modularity the site is built for.
+// homepage (showAll lists everything, not just featured entries),
+// demonstrating the section-level modularity the site is built for.
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Works from "@/components/sections/Works.astro";
 ---
 <BaseLayout title="Works">
   <div class="pt-10">
-    <Works />
+    <Works showAll />
   </div>
 </BaseLayout>

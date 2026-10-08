@@ -34,8 +34,10 @@ const experience = defineCollection({
   schema: z.object({
     role: z.string(),
     organization: z.string(),
-    startDate: z.coerce.date(),
-    endDate: z.coerce.date().optional(), // omit for "Present"
+    // String, not coerce.date(): keep whatever granularity you write.
+    // "2023" -> year only. "2023-06" or a full date -> year + month shown.
+    startDate: z.string(),
+    endDate: z.string().optional(), // omit for "Present"
     summary: z.string(),
     tags: z.array(z.string()).default([]),
     order: z.number().default(0),

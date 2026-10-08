@@ -1,0 +1,30 @@
+---
+// Site logo, theme-aware. Falls back to a simple letter+wordmark (the
+// original default look) if no logo images are configured in
+// brandAssets.logo — so the nav never breaks while you're between
+// designs. Reusable anywhere the logo needs to appear (nav, footer,
+// share cards, etc).
+import ThemedImage from "@/components/media/ThemedImage.astro";
+import { site, brandAssets } from "@/data/siteConfig";
+
+interface Props {
+  class?: string;
+}
+const { class: className = "h-8 w-auto" } = Astro.props;
+const hasLogoImage = Boolean(brandAssets.logo.light || brandAssets.logo.dark);
+---
+{hasLogoImage ? (
+  <ThemedImage
+    light={brandAssets.logo.light}
+    dark={brandAssets.logo.dark}
+    alt={site.fullName}
+    class={className}
+  />
+) : (
+  <>
+    <span class="flex h-8 w-8 items-center justify-center rounded-full border border-[var(--accent)] font-mono text-sm text-[var(--accent)]">
+      {site.name.charAt(0)}
+    </span>
+    <span>{site.name}</span>
+  </>
+)}

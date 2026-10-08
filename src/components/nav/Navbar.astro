@@ -1,16 +1,13 @@
 ---
 import Container from "@/components/ui/Container.astro";
 import ThemeToggle from "@/components/effects/ThemeToggle.tsx";
-import { nav, site } from "@/data/siteConfig";
+import LogoMark from "@/components/nav/LogoMark.astro";
+import { nav } from "@/data/siteConfig";
 ---
 <header class="sticky top-0 z-50 border-b border-[var(--border)] bg-[var(--bg)]/80 backdrop-blur">
   <Container class="flex h-16 items-center justify-between">
     <a href="/" class="flex items-center gap-2 font-heading text-lg font-semibold tracking-wide">
-      <!-- Wordmark logo — swap for an <img>/SVG in /public if you design a mark -->
-      <span class="flex h-8 w-8 items-center justify-center rounded-full border border-[var(--accent)] font-mono text-sm text-[var(--accent)]">
-        <img src="/sign-light.png">
-      </span>
-      <span>{site.name}</span>
+      <LogoMark />
     </a>
 
     <nav class="hidden items-center gap-8 md:flex">

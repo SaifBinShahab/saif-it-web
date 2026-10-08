@@ -32,9 +32,9 @@ import { site, rotatingRoles, profilePhoto } from "@/data/siteConfig";
       </div>
     </div>
 
-    <!-- Modular: renders with or without an actual photo, see profilePhoto in siteConfig -->
+    <!-- Modular: renders with or without actual photos, per theme; see profilePhoto in siteConfig -->
     <div class="hidden justify-self-center md:flex">
-      <ProfilePhoto src={profilePhoto.src} alt={profilePhoto.alt} size={280} />
+      <ProfilePhoto light={profilePhoto.light} dark={profilePhoto.dark} alt={profilePhoto.alt} size={280} />
     </div>
   </Container>
 </section>

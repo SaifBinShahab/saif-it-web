@@ -1,16 +1,23 @@
 ---
 // Fully modular, optional profile photo with a custom geometric frame that
-// echoes the brand's star-polygon/tessellation motif. Renders correctly
-// whether or not a `src` is provided:
-//  - with src: photo shown inside a clipped hexagonal frame, brass outline ring.
-//  - without src: the ornament renders alone, so the layout never breaks.
+// echoes the brand's star-polygon/tessellation motif. Supports separate
+// light/dark-theme images, and renders correctly in every combination:
+//  - light + dark given: both are clipped into the frame; CSS shows the
+//    right one for the active theme, swapping instantly with the toggle.
+//  - only one given: that image is used for both themes.
+//  - neither given: the ornament renders alone, so the layout never breaks.
 interface Props {
-  src?: string;
+  light?: string;
+  dark?: string;
   alt?: string;
   size?: number; // px, square bounding box
   class?: string;
 }
-const { src, alt = "", size = 280, class: className = "" } = Astro.props;
+const { light, dark, alt = "", size = 280, class: className = "" } = Astro.props;
+const resolvedLight = light || dark;
+const resolvedDark = dark || light;
+const hasBoth = Boolean(light && dark && light !== dark);
+const hasPhoto = Boolean(resolvedLight);
 const clipId = `profile-hex-${Math.random().toString(36).slice(2, 8)}`;
 ---
 <div class={`relative inline-block ${className}`} style={`width:${size}px; height:${size}px;`} data-reveal>
@@ -19,8 +26,8 @@ const clipId = `profile-hex-${Math.random().toString(36).slice(2, 8)}`;
     width={size}
     height={size}
     class="absolute inset-0"
-    aria-hidden={src ? "true" : "false"}
-    role={src ? undefined : "img"}
+    aria-hidden={hasPhoto ? "true" : "false"}
+    role={hasPhoto ? undefined : "img"}
   >
     <defs>
       <clipPath id={clipId} clipPathUnits="objectBoundingBox">
@@ -29,9 +36,27 @@ const clipId = `profile-hex-${Math.random().toString(36).slice(2, 8)}`;
       </clipPath>
     </defs>
 
-    {src && (
+    {hasPhoto && hasBoth && (
+      <>
+        <image
+          href={resolvedLight}
+          x="0" y="0" width="100" height="100"
+          preserveAspectRatio="xMidYMid slice"
+          clip-path={`url(#${clipId})`}
+          class="theme-light-only"
+        />
+        <image
+          href={resolvedDark}
+          x="0" y="0" width="100" height="100"
+          preserveAspectRatio="xMidYMid slice"
+          clip-path={`url(#${clipId})`}
+          class="theme-dark-only"
+        />
+      </>
+    )}
+    {hasPhoto && !hasBoth && (
       <image
-        href={src}
+        href={resolvedLight}
         x="0" y="0" width="100" height="100"
         preserveAspectRatio="xMidYMid slice"
         clip-path={`url(#${clipId})`}
@@ -47,7 +72,7 @@ const clipId = `profile-hex-${Math.random().toString(36).slice(2, 8)}`;
       opacity="0.9"
     />
     <!-- inner tessellation accent lines -->
-    {!src && (
+    {!hasPhoto && (
       <path
         d="M50,2 L50,98 M7,26 L93,74 M93,26 L7,74"
         fill="none"
@@ -57,7 +82,7 @@ const clipId = `profile-hex-${Math.random().toString(36).slice(2, 8)}`;
       />
     )}
 
-    {!src && (
+    {!hasPhoto && (
       <text
         x="50" y="54"
         text-anchor="middle"

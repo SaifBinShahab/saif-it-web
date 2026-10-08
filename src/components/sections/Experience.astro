@@ -6,11 +6,19 @@ import Tag from "@/components/ui/Tag.astro";
 
 const entries = (await getCollection("experience")).sort((a, b) => a.data.order - b.data.order);
 
-function formatRange(start: Date, end?: Date) {
-  const opts: Intl.DateTimeFormatOptions = { year: "numeric", month: "short" };
-  const startStr = start.toLocaleDateString("en-US", opts);
-  const endStr = end ? end.toLocaleDateString("en-US", opts) : "Present";
-  return `${startStr} — ${endStr}`;
+function formatDate(value: string) {
+  const isYearOnly = /^\d{4}$/.test(value);
+  const date = isYearOnly ? new Date(`${value}-01-01`) : new Date(value);
+  const opts: Intl.DateTimeFormatOptions = isYearOnly
+    ? { year: "numeric" }
+    : { year: "numeric", month: "short" };
+  return date.toLocaleDateString("en-US", opts);
+}
+
+function formatRange(start: string, end?: string) {
+  if (!end) return formatDate(start);
+  const endStr = end.trim().toLowerCase() === "present" ? "Present" : formatDate(end);
+  return `${formatDate(start)} — ${endStr}`;
 }
 ---
 <section class="py-20 md:py-28">

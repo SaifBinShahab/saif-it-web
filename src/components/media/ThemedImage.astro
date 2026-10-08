@@ -1,0 +1,31 @@
+---
+// Reusable light/dark image swapper for plain HTML contexts (logo, icons,
+// inline images). For SVG-embedded images (e.g. ProfilePhoto's clipped
+// frame), see ProfilePhoto.astro, which applies the same
+// .theme-light-only / .theme-dark-only classes directly to <image> tags.
+//
+// Behavior:
+//  - both light and dark given -> renders both, CSS shows the right one
+//  - only one given -> renders that one for both themes
+//  - neither given -> renders nothing (caller should fall back to a default)
+interface Props {
+  light?: string;
+  dark?: string;
+  alt?: string;
+  class?: string;
+}
+const { light, dark, alt = "", class: className = "" } = Astro.props;
+const resolvedLight = light || dark;
+const resolvedDark = dark || light;
+const hasBoth = Boolean(light && dark && light !== dark);
+---
+{resolvedLight && resolvedDark && (
+  hasBoth ? (
+    <>
+      <img src={resolvedLight} alt={alt} class={`theme-light-only ${className}`} />
+      <img src={resolvedDark} alt={alt} class={`theme-dark-only ${className}`} />
+    </>
+  ) : (
+    <img src={resolvedLight} alt={alt} class={className} />
+  )
+)}

@@ -18,7 +18,9 @@ npm run dev
 - **Skills** → `src/data/skills.ts`
 - **Blog posts** → `src/content/blog/*.mdx`
 - **Projects, experience, achievements, works, testimonials** → `src/content/*/*.md` (each folder is a content collection with its own schema in `src/content/config.ts`)
-- **Profile photo** → drop an image in `public/images/`, then set `profilePhoto.src` in `siteConfig.ts`. Leave it blank and the geometric frame renders on its own — nothing breaks either way.
+- **Profile photo** → drop images in `public/images/`, then set `profilePhoto.light` / `profilePhoto.dark` in `siteConfig.ts`. Provide one, both, or neither — the geometric frame adapts either way (photo-less renders the ornament alone; one photo is used for both themes; two photos swap automatically with the theme toggle).
+- **Logo** → set `brandAssets.logo.light` / `brandAssets.logo.dark` in `siteConfig.ts` to image paths (SVG recommended). Leave both blank to keep the default letter + wordmark. Swapping is instant and flash-free — both images render in the DOM and CSS shows the right one for the active theme.
+- **Favicon** → set `brandAssets.favicon.light` / `brandAssets.favicon.dark` in `siteConfig.ts` (defaults to `public/favicon-light.svg` / `public/favicon-dark.svg`, which are placeholders — replace with your real mark). Unlike the logo/photo, the favicon is a `<link>` element that CSS can't target, so it's swapped by a tiny inline script that runs before first paint (initial load) and again on manual toggle.
 - **Contact form endpoint** → Web3Forms, wired via `PUBLIC_WEB3FORMS_ACCESS_KEY` in `.env`. Get a free key at https://web3forms.com.
 - **YouTube videos** → set `PUBLIC_YT_CHANNEL_ID` in `.env` (or `youtube.channelId` in `siteConfig.ts`) to auto-pull your latest uploads via the public RSS feed (no API key). To take manual control instead, fill in `youtube.manualVideos` in `siteConfig.ts` — those are used automatically if the live fetch returns nothing.
 
@@ -51,6 +53,6 @@ Vercel, or any static host — no server runtime required.
 - Change opacity of background nodes; file: "src/components/effects/BackgroundField.tsx"; line: "ctx!.strokeStyle = `rgba(${lineColor},${0.15 * (1 - d / LINK_DIST)})`;". The value "0.15" is all you need to change.
 - Change density of nodes; line: "const density = Math.min(60, Math.floor((width * height) / 20000));". The value "20000" is all you need to play around with.
 - The velocity/speed of the nodes is "vx" and "vy".
-- "src/data/siteConfig.ts"; change site name, profile pic, youtube channel ID and so on.
-- The logo is set in "src/components/nav/Navbar.astro"; after the line "<!-- Wordmark logo... --->".
+- `src/data/siteConfig.ts`; change site name, profile pic, youtube channel ID and so on.
+- The logo is set in `src/data/siteConfig.ts` The code: "src/components/nav/LogoMark.astro" and "Navbar.astro".
 - Remove the inner tessellation lines by adding the "<path ... />" block inside "{!src && ( ... )}" block. file: "src/components/media/ProfilePhoto.astro"

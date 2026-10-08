@@ -1,7 +1,13 @@
 import { useEffect, useState } from "react";
+import { brandAssets } from "@/data/siteConfig";
+
+// Same fallback logic as BaseLayout's inline script — keep in sync if you
+// change how theme-aware assets resolve.
+const faviconLight = brandAssets.favicon.light || brandAssets.favicon.dark || "/favicon.svg";
+const faviconDark = brandAssets.favicon.dark || brandAssets.favicon.light || "/favicon.svg";
 
 // Reads/writes data-theme on <html>. Paired with an inline no-FOUC script
-// in BaseLayout that sets the initial theme before hydration.
+// in BaseLayout that sets the initial theme (and favicon) before hydration.
 export default function ThemeToggle({ className = "" }: { className?: string }) {
   const [theme, setTheme] = useState<"dark" | "light">("dark");
 
@@ -15,6 +21,9 @@ export default function ThemeToggle({ className = "" }: { className?: string }) 
     setTheme(next);
     document.documentElement.setAttribute("data-theme", next);
     localStorage.setItem("theme", next);
+    document
+      .getElementById("favicon")
+      ?.setAttribute("href", next === "light" ? faviconLight : faviconDark);
   }
 
   return (

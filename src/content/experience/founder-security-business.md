@@ -1,8 +1,8 @@
 ---
-role: "Founder & Security Consultant"
-organization: "Independent Practice"
-startDate: 2023-01-01
-summary: "Running a cybersecurity consultancy for SMEs — risk assessments, incident response, and security architecture, built on homelab-tested practices."
+role: "Founder & CEO"
+organization: "Vault47"
+startDate: "2024-12"
+summary: "Running a cybersecurity company for businesses and organizations — building secure and robust systems."
 tags: ["Consulting", "Incident Response", "Risk Assessment"]
 order: 1
 ---

@@ -94,3 +94,14 @@ h1, h2, h3, h4 { font-family: theme('fontFamily.heading'); }
   width: 2.5rem;
   background: var(--accent);
 }
+
+/*
+  Theme-swapped assets (logo, profile photo, etc). Render BOTH variants
+  in the markup and let CSS show/hide the right one — this swaps
+  instantly with the theme toggle, with no flash and no extra JS.
+  Works on <img> and SVG <image> elements alike.
+*/
+.theme-light-only { display: block; }
+.theme-dark-only { display: none; }
+[data-theme="dark"] .theme-light-only { display: none; }
+[data-theme="dark"] .theme-dark-only { display: block; }

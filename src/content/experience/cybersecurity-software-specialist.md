@@ -1,7 +1,7 @@
 ---
 role: "Cyber Security & Software Development Specialist"
 organization: "Independent / Freelance"
-startDate: "2017"
+startDate: "2014"
 endDate: "Present"
 summary: "Delivered a wide range of independent cybersecurity, IT infrastructure, and software development projects, blending technical depth with hands-on problem solving."
 tags: ["WAF", "IDS/IPS", "SIEM", "Docker", "Self-Hosting", "Automation"]

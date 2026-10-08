@@ -1,8 +1,8 @@
 ---
 role: "Software Engineer"
-organization: "Devs Core"
-startDate: "2021"
-endDate: "Present"
+organization: "Soft Co."
+startDate: "2016"
+endDate: "2019"
 tags: ["OpenWrt", "Linux", "System Administration", "Bug Fixing"]
 order: 5
 ---

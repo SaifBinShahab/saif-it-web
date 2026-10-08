@@ -1,7 +1,7 @@
 ---
 role: "WordPress Developer"
-organization: "Al Aqsa Food"
-startDate: "2024"
+organization: "E-Commerce Co."
+startDate: "2017"
 tags: ["WordPress", "WooCommerce", "LAMP", "SEO", "Cloudflare"]
 order: 3
 ---

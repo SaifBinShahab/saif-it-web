@@ -44,7 +44,7 @@ export default function CursorGlow() {
     <div
       ref={dotRef}
       aria-hidden="true"
-      className="pointer-events-none fixed left-0 top-0 -z-10 h-40 w-40 rounded-full opacity-[0.07] blur-3xl"
+      className="pointer-events-none fixed left-0 top-0 -z-10 h-40 w-40 rounded-full opacity-[0.25] blur-3xl"
       style={{ background: "radial-gradient(circle, var(--accent) 0%, transparent 70%)" }}
     />
   );

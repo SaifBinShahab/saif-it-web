@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v7.2.1
+
+[+] Minor config and visual changes.
+[+] Added some dummy content.
+
 ## v7.1.1
 
 [+] Bug fix: `Invalid hook call` warning from `Lightbox` is now fixed. It renders nothing until someone clicks, so I switched its mount to `client:only="react"`.

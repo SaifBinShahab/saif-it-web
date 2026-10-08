@@ -1,8 +1,8 @@
 ---
 role: "SEO Expert"
-organization: "Devs Core"
+organization: "Digital Marketing Co."
 startDate: "2021"
-endDate: "2024"
+endDate: "2019"
 tags: ["SEO", "Content Strategy", "WordPress"]
 order: 6
 ---

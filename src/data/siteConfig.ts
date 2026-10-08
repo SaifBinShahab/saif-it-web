@@ -4,12 +4,12 @@
 
 export const site = {
   name: "Saif",
-  fullName: "Saif Bin Sahab",
+  fullName: "Saif Bin Shahab",
   role: "Cybersecurity Specialist & Taalib al-'Ilm",
   tagline: "Guard what's entrusted to you.",
   description:
-    "Cybersecurity specialist and student of Islamic knowledge, writing at the intersection of digital security and deen — where guarding a network and guarding the heart follow the same discipline.",
-  url: "https://saif.example.com", // TODO
+    "A humble seeker of knowledge stumbled upon 'Ilm, Cyber Security and IT; seeking only the pleasure of Allah.",
+  url: "https://saif-it.pages.dev",
   locale: "en",
 };
 
@@ -24,9 +24,9 @@ export const typography = {
 };
 
 export const rotatingRoles = [
+  "Founder & Entrepreneur",
   "Cyber Security Specialist",
   "Software Developer",
-  "Founder & Entrepreneur",
   "Taalib al-'Ilm",
 ];
 
@@ -41,6 +41,7 @@ export const socialLinks = [
   { label: "LinkedIn", href: "https://linkedin.com/in/yourhandle", icon: "linkedin" },
   { label: "GitHub", href: "https://github.com/yourhandle", icon: "github" },
   { label: "X", href: "https://x.com/yourhandle", icon: "x" },
+  { label: "Mastodon", href: "https://mastodon.social/@yourhandle", icon: "mastodon" },
 ];
 
 // Theme-aware brand assets. For each, provide a light-theme and a
@@ -83,14 +84,14 @@ export const contact = {
   // a secret) — Web3Forms itself expects it embedded in the page, so it's
   // safe to commit here rather than keeping it in .env. Get a free one at
   // https://web3forms.com.
-  web3formsAccessKey: "",
+  web3formsAccessKey: "Touch_Some_Grass",
 };
 
 export const youtube = {
   // Must be the real channel ID (starts with "UC...", 24 chars) — a @handle
   // or custom URL will not work with the RSS feed. This is public info,
   // same as the key above — no .env needed.
-  channelId: "",
+  channelId: "UCCEE8e1Lcwmuhpqy1EqRBlg",
   maxVideos: 3,
   manualVideos: [
     // {

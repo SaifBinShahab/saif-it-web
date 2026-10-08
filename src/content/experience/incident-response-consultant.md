@@ -1,7 +1,7 @@
 ---
 role: "Cybersecurity Incident Response Consultant"
 organization: "Independent Consulting"
-startDate: "2023"
+startDate: "2025"
 tags: ["Incident Response", "Root Cause Analysis", "Risk Mitigation"]
 order: 2
 ---

@@ -5,6 +5,6 @@ solution: "Deployed a self-hosted infrastructure running on Docker containers, w
 outcome: "A scalable, secure, and private platform, enabling complete ownership of data and services while maintaining high availability and performance."
 tags: ["Docker", "Traefik", "WAF", "SSL/TLS", "Nextcloud", "Self-Hosted"]
 banner: "/images/projects/self-hosting-infra.webp"
-size: "2x1"
+size: "1x2"
 order: 1
 ---

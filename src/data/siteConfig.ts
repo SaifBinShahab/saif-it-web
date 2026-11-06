@@ -16,7 +16,7 @@ export const site = {
 // Base font-size scale, applied site-wide. The actual per-size values
 // (xs, sm, base, lg…6xl) live in src/styles/global.css as CSS variables —
 // this is just the multiplier. 1 = 100% (default). To scale a single page
-// (e.g. ebook.astro) instead of the whole site, pass fontScale to that
+// (e.g. works/cybersecurity-for-everyone-ebook.astro) instead of the whole site, pass fontScale to that
 // page's <BaseLayout> (or set it in a blog post's frontmatter) rather than
 // changing this value.
 export const typography = {

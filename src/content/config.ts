@@ -76,7 +76,7 @@ const works = defineCollection({
     description: z.string(),
     cta: z.object({
       label: z.string(),
-      href: z.string(), // internal path (e.g. "/ebook") or an external URL
+      href: z.string(), // internal path (e.g. "/works/cybersecurity-for-everyone-ebook") or an external URL
     }),
     price: z.string().optional(), // e.g. "Free", "$9", "৳299"
     banner: z.string().optional(), // e.g. "/images/works/my-ebook.webp" — thumbnail on the card

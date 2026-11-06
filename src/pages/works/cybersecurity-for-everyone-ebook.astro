@@ -1,9 +1,13 @@
 ---
 // Bangla, AIDA-structured sales landing page for "সবার জন্য সাইবার নিরাপত্তা".
-// Each section is written to resolve a specific doubt before the reader can
-// ask it — by the time they reach the order form, the common objections
-// (language, difficulty, format, what happens after paying) are already
-// answered. FAQ near the bottom catches anything left over.
+// Route: /works/cybersecurity-for-everyone-ebook (the /works index stays a
+// plain list of work cards). Each section is written to resolve a specific
+// doubt before the reader can ask it — by the time they reach the order
+// button, the common objections (language, difficulty, format, what happens
+// after paying) are already answered. FAQ near the bottom catches the rest.
+//
+// Ordering is a single outbound button. Its href is a placeholder (#pricing)
+// until the owner supplies the real checkout link; replace it in the markup below.
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Container from "@/components/ui/Container.astro";
 import SectionHeading from "@/components/ui/SectionHeading.astro";
@@ -12,10 +16,7 @@ import Card from "@/components/ui/Card.astro";
 import Tag from "@/components/ui/Tag.astro";
 import FAQ from "@/components/FAQ.astro";
 import EbookCover from "@/components/EbookCover.astro";
-import ContactForm from "@/components/forms/ContactForm.tsx";
-import { site, contact } from "@/data/siteConfig";
-
-const accessKey = contact.web3formsAccessKey;
+import { site } from "@/data/siteConfig";
 
 const whyPoints = [
   {
@@ -85,7 +86,7 @@ const faqItems = [
   },
   {
     q: "আমি বইটি কীভাবে পাবো?",
-    a: "নিচের ফর্ম পূরণ করে সাবমিট করুন। এরপর আমরা bKash/Nagad/Rocket পেমেন্টের বিস্তারিত জানিয়ে যোগাযোগ করব, এবং পেমেন্ট সম্পন্ন হলে ডাউনলোড লিংক পাঠিয়ে দেওয়া হবে।",
+    a: "নিচের \u201cঅর্ডার করুন\u201d বাটনে ক্লিক করুন। এরপর পেমেন্ট সম্পন্ন করে ডাউনলোড লিংক পাবেন। কোনো ধাপে আটকে গেলে সরাসরি যোগাযোগ করতে পারবেন।",
   },
   {
     q: "আমি কি মোবাইল দিয়ে বইটি পড়তে পারব?",
@@ -97,7 +98,7 @@ const faqItems = [
   },
   {
     q: "অফার মূল্য কতদিন থাকবে?",
-    a: "অফার মূল্য পরিবর্তন হতে পারে, তাই এখনই সংগ্রহ করাই ভালো।",
+    a: "অফার মূল্যের কোনো নির্দিষ্ট মেয়াদ নেই। মূল্য পরিবর্তন হলে এই পেজেই সর্বশেষ তথ্য দেখা যাবে।",
   },
 ];
 ---
@@ -220,7 +221,7 @@ const faqItems = [
     </Container>
   </section>
 
-  <!-- 7. ACTION: pricing + order form -->
+  <!-- 7. ACTION: pricing + order button -->
   <section id="pricing" class="py-16 md:py-20">
     <Container class="grid gap-12 md:grid-cols-2">
       <div data-reveal>
@@ -240,32 +241,12 @@ const faqItems = [
       </div>
 
       <div data-reveal>
-        <h3 class="font-heading-bn text-xl font-semibold">অর্ডার করতে ফর্মটি পূরণ করুন</h3>
+        <h3 class="font-heading-bn text-xl font-semibold">অর্ডার করুন</h3>
         <p class="mt-2 text-sm text-[var(--text-muted)]">
-          ফর্ম সাবমিট করার পর আমরা bKash/Nagad/Rocket পেমেন্টের বিস্তারিত সহ শীঘ্রই আপনার সাথে যোগাযোগ করব।
+          বইটি সংগ্রহ করতে নিচের বাটনে ক্লিক করুন। পেমেন্ট সম্পন্ন হলে ডাউনলোড লিংক পাবেন।
         </p>
         <div class="mt-6">
-          {accessKey ? (
-            <ContactForm
-              client:visible
-              accessKey={accessKey}
-              subject="ই-বুক অর্ডার: সবার জন্য সাইবার নিরাপত্তা"
-              defaultMessage="আমি সবার জন্য সাইবার নিরাপত্তা ই-বুকটি সংগ্রহ করতে চাই।"
-              labels={{
-                namePlaceholder: "আপনার নাম",
-                contactPlaceholder: "ইমেইল অথবা ফোন নম্বর",
-                messagePlaceholder: "বার্তা",
-                submitLabel: "অর্ডার করুন",
-                submittingLabel: "পাঠানো হচ্ছে…",
-                successMessage: "ধন্যবাদ! আপনার অনুরোধ পেয়েছি — পেমেন্টের বিস্তারিত সহ শীঘ্রই যোগাযোগ করা হবে।",
-                errorMessage: "দুঃখিত, কিছু একটা সমস্যা হয়েছে। আবার চেষ্টা করুন অথবা সরাসরি ইমেইল করুন।",
-              }}
-            />
-          ) : (
-            <p class="rounded-lg border border-dashed border-[var(--border)] p-4 text-sm text-[var(--text-muted)]">
-              অর্ডার ফর্ম চালু করতে <code class="font-mono">siteConfig.ts</code>-এ <code class="font-mono">contact.web3formsAccessKey</code> সেট করুন।
-            </p>
-          )}
+          <Button href="#pricing" variant="primary" size="md">অর্ডার করুন</Button>  <!--Update it accordingly with a valid order link. -->
         </div>
       </div>
     </Container>

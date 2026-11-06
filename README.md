@@ -30,7 +30,7 @@ No `.env` file needed — the two pieces of "config" the site talks to externall
 - **Profile photo** → drop images in `public/images/`, then set `profilePhoto.light` / `profilePhoto.dark` in `siteConfig.ts`. Provide one, both, or neither — the geometric frame adapts either way (photo-less renders the ornament alone; one photo is used for both themes; two photos swap automatically with the theme toggle).
 - **Logo** → set `brandAssets.logo.light` / `brandAssets.logo.dark` in `siteConfig.ts` to image paths (SVG recommended). Leave both blank to keep the default letter + wordmark. Swapping is instant and flash-free — both images render in the DOM and CSS shows the right one for the active theme.
 - **Favicon** → set `brandAssets.favicon.light` / `brandAssets.favicon.dark` in `siteConfig.ts` (defaults to `public/favicon-light.svg` / `public/favicon-dark.svg`, which are placeholders — replace with your real mark). Unlike the logo/photo, the favicon is a `<link>` element that CSS can't target, so it's swapped by a tiny inline script that runs before first paint (initial load) and again on manual toggle.
-- **Contact form (and the e-book order form)** → Web3Forms. Set `contact.web3formsAccessKey` in `siteConfig.ts`. Get a free key at [https://web3forms.com] — it's a public, client-exposed identifier by design (Web3Forms embeds it in the page on every one of their users' sites), so there's no security reason to hide it in `.env`.
+- **Contact form** → Web3Forms. Set `contact.web3formsAccessKey` in `siteConfig.ts`. Get a free key at [https://web3forms.com] — it's a public, client-exposed identifier by design (Web3Forms embeds it in the page on every one of their users' sites), so there's no security reason to hide it in `.env`.
 - **YouTube videos** → set `youtube.channelId` in `siteConfig.ts` (must be the real `UC...` ID, not a @handle) to auto-pull your latest uploads via the public RSS feed — no API key, no `.env`. To take manual control instead, fill in `youtube.manualVideos`; those are used automatically if the live fetch returns nothing.
 
 ## Font sizes — one place controls everything
@@ -48,7 +48,7 @@ Every heading, paragraph, tag, and label on the site is sized with Tailwind's no
 
 Change any `--fs-*` value there and every heading/body/tag using that size updates site-wide — no component edits needed.
 
-**Per-page override**, for cases like `ebook.astro` or an individual blog post wanting different sizing without touching the global values: every page goes through `<BaseLayout>`, which accepts a `fontScale` prop (default comes from `typography.baseFontScale` in `siteConfig.ts`, normally `1`). Passing e.g. `<BaseLayout fontScale={1.1}>` scales *every* `--fs-*` variable by 10% on that page only, by setting `--font-scale` on that page's `<html>` element.
+**Per-page override**, for cases like `works/cybersecurity-for-everyone-ebook.astro` or an individual blog post wanting different sizing without touching the global values: every page goes through `<BaseLayout>`, which accepts a `fontScale` prop (default comes from `typography.baseFontScale` in `siteConfig.ts`, normally `1`). Passing e.g. `<BaseLayout fontScale={1.1}>` scales *every* `--fs-*` variable by 10% on that page only, by setting `--font-scale` on that page's `<html>` element.
 
 For blog posts specifically, this is also exposed as an optional `fontScale` frontmatter field — set `fontScale: 1.1` in a post's frontmatter and that post alone renders larger, with zero code changes.
 

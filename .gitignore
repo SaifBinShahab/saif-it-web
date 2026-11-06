@@ -3,3 +3,5 @@ node_modules/*
 .env
 pnpm-*
 TODO.md
+docs/*
+AGENTS.md

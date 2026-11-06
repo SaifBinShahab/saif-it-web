@@ -60,6 +60,7 @@ Projects, Works, and Achievements/Certs cards each accept an optional `size` fie
 
 - **Works** now follows the same featured/showAll pattern as Blogs and Certs: mark an entry `featured: true` in frontmatter to show it on the homepage. The homepage section shows only featured entries plus a "Show All Works" button to `/works`, which reuses the identical `Works` component with `showAll`.
 - **Works banners** — optional `banner: "/images/works/my-thing.webp"`, shown as the card thumbnail (same pattern as blog/cert images).
+- **E-book landing page** — `/works/cybersecurity-for-everyone-ebook` is a standalone Bangla sales page (the `/works` list stays a plain card grid). Its hero book is a CSS 3D scene: pointer-drag rotates it, cards tilt on hover, and the cover art lives at `public/images/works/ebook-cover-art.svg` (replace that file to change the artwork — keep it text-free, the title is HTML text on top).
 - **Projects** now use a single `projectUrl` field (repo or live link — whichever's more relevant) instead of the old separate `link`/`repo` fields; the whole card becomes clickable when set. Projects also accept an optional `banner` thumbnail, same as Works.
 
 ## Modularity notes

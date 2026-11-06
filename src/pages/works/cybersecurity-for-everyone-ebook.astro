@@ -1,51 +1,122 @@
 ---
-// Bangla, AIDA-structured sales landing page for "সবার জন্য সাইবার নিরাপত্তা".
+// Cinematic, 3D-forward sales landing page for "সবার জন্য সাইবার নিরাপত্তা".
 // Route: /works/cybersecurity-for-everyone-ebook (the /works index stays a
-// plain list of work cards). Each section is written to resolve a specific
-// doubt before the reader can ask it — by the time they reach the order
-// button, the common objections (language, difficulty, format, what happens
-// after paying) are already answered. FAQ near the bottom catches the rest.
+// plain list of work cards).
 //
-// Ordering is a single outbound button. Its href is a placeholder (#pricing)
-// until the owner supplies the real checkout link; replace it in the markup below.
+// Language: Bangla throughout (technical terms stay in Latin script), per
+// BRAND.md. The layout is deliberately more expressive than the rest of the
+// site — CSS 3D book, pointer tilt, scroll reveals — while the copy stays
+// calm and factual (no fear hooks, no invented numbers/reviews).
+//
+// The order button is a placeholder href="#pricing" by the owner's request;
+// the real checkout link will replace it later.
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Container from "@/components/ui/Container.astro";
-import SectionHeading from "@/components/ui/SectionHeading.astro";
 import Button from "@/components/ui/Button.astro";
-import Card from "@/components/ui/Card.astro";
-import Tag from "@/components/ui/Tag.astro";
 import FAQ from "@/components/FAQ.astro";
-import EbookCover from "@/components/EbookCover.astro";
-import { site } from "@/data/siteConfig";
+
+const marqueeTopics = [
+  "মোবাইল নিরাপত্তা",
+  "bKash · Nagad · Rocket",
+  "পাসওয়ার্ড",
+  "ফেসবুক",
+  "পাবলিক Wi-Fi",
+  "হোম নেটওয়ার্ক",
+  "সন্তানদের অনলাইন সুরক্ষা",
+  "প্রতারণামূলক কল",
+];
+
+const insideTopics = [
+  {
+    n: "01",
+    title: "মোবাইল ও অ্যাপ",
+    body: "ফোনের লক, অ্যাপ পারমিশন আর আপডেট — প্রতিদিনের ফোন ব্যবহারে যেসব ছোট অভ্যাস বড় ঝুঁকি কমায়।",
+    icon: '<rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18h2"/>',
+    wide: true,
+  },
+  {
+    n: "02",
+    title: "মোবাইল ব্যাংকিং",
+    body: "bKash, Nagad, Rocket — PIN, OTP আর লেনদেনের সময়ের সতর্কতা।",
+    icon: '<rect x="2" y="5" width="20" height="14" rx="2.5"/><path d="M2 10h20"/><path d="M6 15h4"/>',
+  },
+  {
+    n: "03",
+    title: "পাসওয়ার্ড",
+    body: "শক্তিশালী পাসওয়ার্ড তৈরির সহজ নিয়ম ও নিরাপদে সংরক্ষণের উপায়।",
+    icon: '<circle cx="7.5" cy="15.5" r="4.5"/><path d="M10.7 12.3 21 2M17 6l3 3M14 9l2 2"/>',
+  },
+  {
+    n: "04",
+    title: "সোশ্যাল মিডিয়া",
+    body: "ফেসবুক অ্যাকাউন্ট সুরক্ষিত রাখা, প্রাইভেসি সেটিংস আর হ্যাক প্রতিরোধ।",
+    icon: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/>',
+  },
+  {
+    n: "05",
+    title: "পাবলিক Wi-Fi",
+    body: "ক্যাফে, বাস, বিমানবন্দরের ওয়াইফাই ব্যবহারে কী দেখে সিদ্ধান্ত নেবেন।",
+    icon: '<path d="M5 12.55a11 11 0 0 1 14 0"/><path d="M8.5 16.1a6 6 0 0 1 7 0"/><circle cx="12" cy="20" r="1"/>',
+  },
+  {
+    n: "06",
+    title: "হোম নেটওয়ার্ক",
+    body: "রাউটার, ওয়াইফাই পাসওয়ার্ড আর বাসার ডিভাইসগুলো নিরাপদ রাখা।",
+    icon: '<path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9 21v-6h6v6"/>',
+  },
+  {
+    n: "07",
+    title: "সন্তানদের সুরক্ষা",
+    body: "কিশোর-কিশোরীদের অনলাইন অভ্যাস নিয়ে অভিভাবকের করণীয়।",
+    icon: '<circle cx="12" cy="7" r="3.5"/><path d="M5 21v-2a7 7 0 0 1 14 0v2"/><path d="M17 8.5h4M19 6.5v4"/>',
+  },
+  {
+    n: "08",
+    title: "প্রতারণামূলক কল",
+    body: "ভুয়া কল, SMS আর লিংক চেনার ব্যবহারিক উপায়।",
+    icon: '<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.5 2.1L8 10a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.9.6 2.9.7a2 2 0 0 1 1.7 2z"/>',
+  },
+];
 
 const whyPoints = [
   {
+    n: "01",
     title: "সহজ ও স্পষ্ট বাংলা",
     body: "জটিল টেকনিক্যাল শব্দের ভিড় নেই। প্রতিটি বিষয় এমনভাবে বোঝানো হয়েছে, যা যেকোনো পাঠক সহজেই অনুসরণ করতে পারবেন।",
   },
   {
+    n: "02",
     title: "বাস্তব অভিজ্ঞতা থেকে লেখা",
     body: "একজন প্র্যাকটিসিং সাইবার সিকিউরিটি স্পেশালিস্ট হিসেবে বাস্তব ক্লায়েন্ট ও ঘটনার অভিজ্ঞতা থেকে এই বই লেখা — শুধু থিওরি নয়।",
   },
   {
+    n: "03",
     title: "ধাপে ধাপে করণীয়",
     body: "প্রতিটি অধ্যায়ে শুধু সমস্যার কথা বলা হয়নি — ঠিক কী করতে হবে, তা পরিষ্কারভাবে বলা হয়েছে।",
   },
   {
+    n: "04",
     title: "প্রতিদিনের জীবনের জন্য",
     body: "ভারী থিওরি নয় — আপনার ফোন, ফেসবুক, bKash, ওয়াইফাই নিয়ে প্রতিদিনের বাস্তব পরিস্থিতির কথা মাথায় রেখে লেখা।",
   },
 ];
 
-const insideTopics = [
-  "মোবাইল ফোন ও অ্যাপের নিরাপত্তা",
-  "bKash, Nagad, Rocket নিরাপদভাবে ব্যবহারের নিয়ম",
-  "শক্তিশালী পাসওয়ার্ড তৈরি ও সংরক্ষণের সঠিক অভ্যাস",
-  "ফেসবুক ও সোশ্যাল মিডিয়া অ্যাকাউন্ট সুরক্ষিত রাখা",
-  "পাবলিক ওয়াইফাই ব্যবহারে প্রয়োজনীয় সতর্কতা",
-  "বাসার রাউটার ও হোম নেটওয়ার্ক নিরাপদ রাখা",
-  "সন্তানদের অনলাইন নিরাপত্তা নিশ্চিত করা",
-  "প্রতারণামূলক কল ও মেসেজ চেনার উপায়",
+const formatPoints = [
+  {
+    title: "ডিজিটাল ই-বুক (PDF)",
+    body: "ফোন, ট্যাব বা কম্পিউটার — যেকোনো ডিভাইসে, যেকোনো সময়, যেকোনো জায়গায় পড়তে পারবেন।",
+    icon: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h5"/>',
+  },
+  {
+    title: "আনলিমিটেড ডাউনলোড",
+    body: "একবার সংগ্রহ করলে যতবার প্রয়োজন ততবার ডাউনলোড করতে পারবেন। ফোন পরিবর্তন করলে বা ফাইল হারিয়ে ফেললেও দুশ্চিন্তা নেই।",
+    icon: '<path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/>',
+  },
+  {
+    title: "যেকোনো ডিভাইসে",
+    body: "ডেস্কটপ, ট্যাব বা স্মার্টফোন — আলাদা অ্যাপ ছাড়াই খুলে পড়তে পারবেন।",
+    icon: '<rect x="2" y="4" width="14" height="10" rx="1.5"/><path d="M6 18h6"/><rect x="17" y="9" width="5" height="11" rx="1.2"/>',
+  },
 ];
 
 const audience = [
@@ -53,22 +124,7 @@ const audience = [
   "সন্তানদের অনলাইন নিরাপত্তা নিয়ে চিন্তিত অভিভাবক",
   "ছোট ব্যবসার মালিক",
   "শিক্ষার্থী",
-  "যাদের টেকনিক্যাল ব্যাকগ্রাউন্ড নেই, কিন্তু নিরাপদ থাকতে চান",
-];
-
-const formatPoints = [
-  {
-    title: "ডিজিটাল ই-বুক (PDF)",
-    body: "ফোন, ট্যাব বা কম্পিউটার — যেকোনো ডিভাইসে, যেকোনো সময়, যেকোনো জায়গায় পড়তে পারবেন।",
-  },
-  {
-    title: "আনলিমিটেড ডাউনলোড",
-    body: "একবার সংগ্রহ করলে যতবার প্রয়োজন ততবার ডাউনলোড করতে পারবেন। ফোন পরিবর্তন করলে বা ফাইল হারিয়ে ফেললেও দুশ্চিন্তা নেই।",
-  },
-  {
-    title: "সহজ বাংলায় লেখা",
-    body: "ভারী ইংরেজি টেকনিক্যাল বই নয় — সহজ, স্পষ্ট বাংলায় লেখা, যা সবাই বুঝবেন।",
-  },
+  "যাদের টেকনিক্যাল ব্যাকগ্রাউন্ড নেই",
 ];
 
 const faqItems = [
@@ -102,178 +158,1746 @@ const faqItems = [
   },
 ];
 ---
+
 <BaseLayout
   title="সবার জন্য সাইবার নিরাপত্তা — ই-বুক"
   description="মোবাইল ব্যাংকিং, ফেসবুক, পাসওয়ার্ড ও হোম নেটওয়ার্ক — প্রতিদিনের ডিজিটাল জীবনের নিরাপত্তা শিখুন সহজ বাংলায়।"
   lang="bn"
+  showBackgroundField={false}
+  showCursorGlow={false}
 >
-  <!-- 1. ATTENTION -->
-  <section class="pt-16 pb-20 md:pt-24 md:pb-28">
-    <Container class="grid items-center gap-12 md:grid-cols-[1.1fr_0.9fr]">
-      <div data-reveal>
-        <p class="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-[var(--accent)]">ডিজিটাল ই-বুক</p>
-        <h1 class="font-heading-bn text-3xl font-semibold leading-tight md:text-5xl">
-          আপনার অনলাইন জীবন, আরও নিরাপদ — একদম সহজ বাংলায়
-        </h1>
-        <p class="mt-6 max-w-xl text-lg leading-relaxed text-[var(--text-muted)]">
-          মোবাইল ব্যাংকিং থেকে ফেসবুক অ্যাকাউন্ট, পাসওয়ার্ড থেকে হোম ওয়াইফাই — প্রতিদিনের ডিজিটাল জীবনের নিরাপত্তা শিখুন এমনভাবে, যা যেকোনো মানুষ সহজেই বুঝবেন। আগে থেকে কোনো টেকনিক্যাল জ্ঞান লাগবে না।
-        </p>
+  <div class="eb-page">
+    <!-- ============ 1. HERO ============ -->
+    <section class="eb-hero">
+      <div class="eb-hero-bg" aria-hidden="true">
+        <div class="eb-aurora eb-aurora-1"></div>
+        <div class="eb-aurora eb-aurora-2"></div>
+        <div class="eb-aurora eb-aurora-3"></div>
+        <div class="eb-grid-lines"></div>
+      </div>
 
-        <div class="mt-6 flex flex-wrap gap-2">
-          <Tag variant="highlight">✓ সহজ ও স্পষ্ট বাংলা</Tag>
-          <Tag variant="highlight">✓ আনলিমিটেড ডাউনলোড</Tag>
-          <Tag variant="highlight">✓ যেকোনো ডিভাইসে পড়ুন</Tag>
+      <Container>
+        <div class="eb-hero-inner">
+          <div class="eb-hero-copy">
+          <p class="eb-eyebrow" data-reveal>
+            <span class="eb-dot"></span>
+            বাংলা ডিজিটাল ই-বুক
+          </p>
+
+          <h1 class="eb-h1" data-reveal>
+            আপনার অনলাইন জীবন,
+            <span class="eb-grad">আরও নিরাপদ।</span>
+          </h1>
+
+          <p class="eb-lede" data-reveal>
+            মোবাইল ব্যাংকিং থেকে ফেসবুক অ্যাকাউন্ট, পাসওয়ার্ড থেকে হোম ওয়াইফাই —
+            প্রতিদিনের ডিজিটাল জীবনের নিরাপত্তা শিখুন এমনভাবে, যা যেকোনো মানুষ
+            সহজেই বুঝবেন। আগে থেকে কোনো টেকনিক্যাল জ্ঞান লাগবে না।
+          </p>
+
+          <div class="eb-tags" data-reveal>
+            <span>সহজ বাংলা</span>
+            <span>শুরু থেকে</span>
+            <span>যেকোনো ডিভাইস</span>
+          </div>
+
+          <div class="eb-cta" data-reveal>
+            <Button href="#pricing" variant="primary" size="md">অর্ডার করুন</Button>
+            <Button href="#inside" variant="secondary" size="md">ভেতরে কী আছে</Button>
+          </div>
+
+          <p class="eb-note" data-reveal>
+            একবার সংগ্রহ করলে — যতবার প্রয়োজন, ততবার ডাউনলোড।
+          </p>
         </div>
 
-        <div class="mt-8 flex flex-wrap items-center gap-5">
-          <Button href="#pricing" variant="primary" size="md">অফার মূল্যে সংগ্রহ করুন</Button>
-          <a href="#why" class="font-body text-sm text-[var(--text-muted)] underline-offset-4 hover:text-[var(--accent)] hover:underline">
-            আগে বইটি সম্পর্কে জানতে চাই ↓
+        <!-- CSS 3D book scene -->
+        <div class="eb-stage" data-ebook-stage role="img" aria-label="বইয়ের থ্রি-ডি প্রিভিউ — ড্র্যাগ করে ঘোরানো যায়">
+          <div class="eb-stage-glow" aria-hidden="true"></div>
+
+          <div class="eb-orbit eb-orbit-1" aria-hidden="true"></div>
+          <div class="eb-orbit eb-orbit-2" aria-hidden="true"></div>
+          <div class="eb-orbit eb-orbit-3" aria-hidden="true"></div>
+
+          <div class="eb-shadow" aria-hidden="true"></div>
+
+          <div class="eb-float">
+            <div class="eb-book-tilt" data-book-tilt>
+              <div class="eb-book">
+                <div class="eb-face eb-back"></div>
+                <div class="eb-face eb-spine"></div>
+                <div class="eb-face eb-pages"></div>
+                <div class="eb-face eb-front">
+                  <img
+                    class="eb-cover-art"
+                    src="/images/works/ebook-cover-art.svg"
+                    alt=""
+                    width="640"
+                    height="870"
+                    loading="eager"
+                    fetchpriority="high"
+                  />
+                  <div class="eb-cover-shade" aria-hidden="true"></div>
+                  <div class="eb-cover-text">
+                    <span class="eb-cover-kicker">ই-বুক</span>
+                    <h2 class="eb-cover-title">সবার জন্য<br />সাইবার নিরাপত্তা</h2>
+                    <p class="eb-cover-author">সাইফ বিন শাহাব</p>
+                  </div>
+                  <div class="eb-sheen" aria-hidden="true"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <span class="eb-chip eb-chip-1">পাসওয়ার্ড</span>
+          <span class="eb-chip eb-chip-2">bKash</span>
+          <span class="eb-chip eb-chip-3">Wi-Fi</span>
+          <span class="eb-chip eb-chip-4">OTP</span>
+          <span class="eb-drag-hint">ড্র্যাগ করে ঘোরান</span>
+        </div>
+        </div>
+      </Container>
+    </section>
+
+    <!-- ============ 2. TOPIC MARQUEE ============ -->
+    <div class="eb-marquee" aria-hidden="true">
+      <div class="eb-marquee-track">
+        {[...marqueeTopics, ...marqueeTopics].map((t) => <span>{t}</span>)}
+      </div>
+    </div>
+
+    <!-- ============ 3. THE GAP ============ -->
+    <section class="eb-section" id="problem">
+      <Container>
+        <div class="eb-split">
+          <div class="eb-split-copy" data-reveal>
+            <p class="eb-kicker">বাস্তবতা</p>
+            <h2 class="eb-h2">
+              সমস্যাটা আপনার নয় —
+              <span class="eb-grad">ভাষার।</span>
+            </h2>
+            <p class="eb-body">
+              সাইবার নিরাপত্তা নিয়ে যা কিছু পাওয়া যায়, তার বেশিরভাগই ইংরেজিতে —
+              অথবা এত টেকনিক্যাল যে সাধারণ মানুষের জন্য বোঝা কঠিন হয়ে যায়।
+              ফলে প্রয়োজনীয় জ্ঞানটুকু অনেকের কাছেই পৌঁছায় না।
+            </p>
+          </div>
+
+          <div class="eb-gap-list">
+            <div class="eb-gap-row" data-reveal>
+              <span class="eb-gap-num">01</span>
+              <div>
+                <h3>ইংরেজিতে লেখা</h3>
+                <p>বাংলাভাষী পাঠকের জন্য সরাসরি লেখা বই খুব কম।</p>
+              </div>
+            </div>
+            <div class="eb-gap-row" data-reveal>
+              <span class="eb-gap-num">02</span>
+              <div>
+                <h3>অতিরিক্ত টেকনিক্যাল</h3>
+                <p>শুরুর পাঠকের কাছে শব্দগুলোই বাধা হয়ে দাঁড়ায়।</p>
+              </div>
+            </div>
+            <div class="eb-gap-row" data-reveal>
+              <span class="eb-gap-num">03</span>
+              <div>
+                <h3>প্রতিদিনের উদাহরণ কম</h3>
+                <p>ফোন, bKash, Wi-Fi নিয়ে বাস্তব উদাহরণ বিরল।</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Container>
+    </section>
+
+    <!-- ============ 4. INSIDE ============ -->
+    <section class="eb-section eb-section-dark" id="inside">
+      <div class="eb-section-glow" aria-hidden="true"></div>
+      <Container>
+        <div class="eb-head" data-reveal>
+          <p class="eb-kicker">বইয়ের ভেতরে</p>
+          <h2 class="eb-h2">আটটি বিষয়, একটাই লক্ষ্য — <span class="eb-grad">নিরাপদ থাকা।</span></h2>
+          <p class="eb-body">
+            প্রতিটি অধ্যায় বাস্তব জীবনের একটি পরিস্থিতি থেকে শুরু — আর শেষ হয়
+            ঠিক কী করতে হবে, সেই পরিষ্কার ধাপে।
+          </p>
+        </div>
+
+        <div class="eb-bento">
+          {insideTopics.map((t, i) => (
+            <article
+              class:list={["eb-card", "eb-tilt", "eb-tile", t.wide && "eb-tile-wide"]}
+              data-tilt
+              data-reveal
+            >
+              <div class="eb-tile-top">
+                <span class="eb-tile-num">{t.n}</span>
+                <span class="eb-tile-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" set:html={t.icon} />
+                </span>
+              </div>
+              <h3 class="eb-tile-title">{t.title}</h3>
+              <p class="eb-tile-body">{t.body}</p>
+              {t.wide && (
+                <div class="eb-tile-meta" aria-hidden="true">
+                  <span>ফোন</span>
+                  <span>bKash</span>
+                  <span>Wi-Fi</span>
+                  <span>ফেসবুক</span>
+                </div>
+              )}
+              {t.wide && (
+                <div class="eb-tile-art" aria-hidden="true">
+                  <span></span><span></span><span></span>
+                </div>
+              )}
+            </article>
+          ))}
+
+          <a class="eb-bento-cta eb-tilt" data-tilt href="#pricing">
+            <span class="eb-bento-cta-label">প্রস্তুত?</span>
+            <span class="eb-bento-cta-title">বইটি সংগ্রহ করুন</span>
+            <span class="eb-bento-cta-arrow" aria-hidden="true">↗</span>
           </a>
         </div>
-        <p class="mt-3 font-mono text-xs text-[var(--text-muted)]">
-          মূল্য <span class="line-through">৳TBA</span> — বর্তমান অফার মূল্য <span class="text-[var(--accent)]">৳TBA</span>
-        </p>
-      </div>
+      </Container>
+    </section>
 
-      <EbookCover
-        title="সবার জন্য সাইবার নিরাপত্তা"
-        subtitle="ই-বুক"
-        author={`লিখেছেন — ${site.fullName}`}
-        class="md:ml-auto"
-      />
-    </Container>
-  </section>
+    <!-- ============ 5. WHY THIS BOOK ============ -->
+    <section class="eb-section" id="why">
+      <Container>
+        <div class="eb-head" data-reveal>
+          <p class="eb-kicker">কেন এই বই</p>
+          <h2 class="eb-h2">একই বিষয়, <span class="eb-grad">ভিন্নভাবে বলা।</span></h2>
+        </div>
 
-  <!-- 2. INTEREST: the problem -->
-  <section class="py-16 md:py-20">
-    <Container>
-      <SectionHeading
-        kicker="বাস্তবতা"
-        title="প্রতিদিন যত মানুষ অনলাইনে প্রতারিত হচ্ছেন"
-        subtitle="বাংলাদেশে প্রতিদিন অসংখ্য মানুষ bKash/Nagad প্রতারণা, ফেসবুক অ্যাকাউন্ট হ্যাক হওয়া, কিংবা প্রতারণামূলক কলের শিকার হচ্ছেন। বেশিরভাগ ক্ষেত্রেই দেখা যায় — সহজ কিছু অভ্যাস জানা থাকলে এসব এড়ানো যেত।"
-      />
-      <p class="mt-6 max-w-2xl text-[var(--text-muted)] leading-relaxed" data-reveal>
-        সমস্যা হলো, সাইবার নিরাপত্তা নিয়ে যা কিছু পাওয়া যায় তার বেশিরভাগই ইংরেজিতে, অথবা এত টেকনিক্যাল যে সাধারণ মানুষের জন্য বোঝা কঠিন হয়ে যায়। ফলে প্রয়োজনীয় জ্ঞানটুকু অনেকের কাছেই পৌঁছায় না।
-      </p>
-    </Container>
-  </section>
+        <div class="eb-why-grid">
+          {whyPoints.map((p) => (
+            <article class="eb-card eb-tilt eb-why" data-tilt data-reveal>
+              <span class="eb-why-num">{p.n}</span>
+              <h3>{p.title}</h3>
+              <p>{p.body}</p>
+            </article>
+          ))}
+        </div>
+      </Container>
+    </section>
 
-  <!-- 3. INTEREST -> DESIRE: why this book -->
-  <section id="why" class="py-16 md:py-20">
-    <Container>
-      <SectionHeading kicker="কেন এই বই" title="এই বইটি অন্যদের থেকে আলাদা কেন?" />
-      <div class="mt-12 grid gap-6 sm:grid-cols-2">
-        {whyPoints.map((p) => (
-          <Card data-reveal>
-            <h3 class="font-heading-bn text-lg font-semibold">{p.title}</h3>
-            <p class="mt-3 text-sm leading-relaxed text-[var(--text-muted)]">{p.body}</p>
-          </Card>
-        ))}
-      </div>
-    </Container>
-  </section>
+    <!-- ============ 6. FORMAT ============ -->
+    <section class="eb-section eb-section-tint" id="format">
+      <Container>
+        <div class="eb-head" data-reveal>
+          <p class="eb-kicker">ফরম্যাট ও সুবিধা</p>
+          <h2 class="eb-h2">কীভাবে পড়বেন, <span class="eb-grad">কীভাবে পাবেন।</span></h2>
+        </div>
 
-  <!-- 4. DESIRE: what's inside -->
-  <section class="py-16 md:py-20">
-    <Container>
-      <SectionHeading kicker="বইয়ের ভেতরে" title="যা যা শিখবেন" />
-      <div class="mt-10 grid gap-4 sm:grid-cols-2" data-reveal>
-        {insideTopics.map((topic) => (
-          <div class="flex items-start gap-3">
-            <span class="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-[var(--accent)] text-[var(--accent)]">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                <path d="M5 13l4 4L19 7" />
-              </svg>
-            </span>
-            <p class="text-sm leading-relaxed text-[var(--text-muted)]">{topic}</p>
+        <div class="eb-format-grid">
+          {formatPoints.map((p, i) => (
+            <article class="eb-card eb-tilt eb-format" data-tilt data-reveal>
+              <span class="eb-format-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" set:html={p.icon} />
+              </span>
+              <span class="eb-format-index">0{i + 1}</span>
+              <h3>{p.title}</h3>
+              <p>{p.body}</p>
+            </article>
+          ))}
+        </div>
+      </Container>
+    </section>
+
+    <!-- ============ 7. AUDIENCE ============ -->
+    <section class="eb-section" id="audience">
+      <Container>
+        <div class="eb-audience" data-reveal>
+          <p class="eb-kicker">কাদের জন্য</p>
+          <h2 class="eb-h2">এই বই <span class="eb-grad">আপনার জন্য</span>, যদি —</h2>
+          <div class="eb-audience-chips">
+            {audience.map((a) => <span>{a}</span>)}
           </div>
-        ))}
-      </div>
-    </Container>
-  </section>
-
-  <!-- 5. DESIRE: who it's for -->
-  <section class="py-16 md:py-20">
-    <Container>
-      <SectionHeading kicker="কাদের জন্য" title="এই বই কাদের জন্য?" />
-      <div class="mt-8 flex flex-wrap gap-2" data-reveal>
-        {audience.map((a) => <Tag variant="skill">{a}</Tag>)}
-      </div>
-      <p class="mt-6 max-w-2xl text-sm leading-relaxed text-[var(--text-muted)]" data-reveal>
-        টেকনোলজি নিয়ে আগের কোনো জ্ঞান না থাকলেও সমস্যা নেই — বইটি শুরু থেকেই সহজভাবে বোঝানো শুরু হয়।
-      </p>
-    </Container>
-  </section>
-
-  <!-- 6. DESIRE: format & convenience (unlimited downloads, device-agnostic, simple Bangla) -->
-  <section class="py-16 md:py-20">
-    <Container>
-      <SectionHeading kicker="ফরম্যাট ও সুবিধা" title="কীভাবে পড়বেন, কীভাবে পাবেন" />
-      <div class="mt-12 grid gap-6 md:grid-cols-3">
-        {formatPoints.map((p) => (
-          <Card data-reveal>
-            <h3 class="font-heading-bn text-lg font-semibold">{p.title}</h3>
-            <p class="mt-3 text-sm leading-relaxed text-[var(--text-muted)]">{p.body}</p>
-          </Card>
-        ))}
-      </div>
-    </Container>
-  </section>
-
-  <!-- 7. ACTION: pricing + order button -->
-  <section id="pricing" class="py-16 md:py-20">
-    <Container class="grid gap-12 md:grid-cols-2">
-      <div data-reveal>
-        <SectionHeading kicker="মূল্য" title="আজই সংগ্রহ করুন" />
-        <div class="mt-8 rounded-2xl border border-[var(--accent)]/50 bg-[var(--bg-elevated)] p-6">
-          <p class="font-mono text-sm text-[var(--text-muted)]">
-            প্রকৃত মূল্য <span class="line-through">৳TBA</span>
+          <p class="eb-body eb-audience-note">
+            টেকনোলজি নিয়ে আগের কোনো জ্ঞান না থাকলেও সমস্যা নেই — বইটি শুরু থেকেই
+            সহজভাবে বোঝানো শুরু হয়।
           </p>
-          <p class="mt-1 font-heading text-4xl font-semibold text-[var(--accent)]">৳TBA</p>
-          <p class="mt-1 text-xs text-[var(--text-muted)]">বর্তমান অফার মূল্য</p>
-          <ul class="mt-6 space-y-2">
-            <li class="text-sm text-[var(--text-muted)]">✓ সহজ ও স্পষ্ট বাংলায় সম্পূর্ণ বই</li>
-            <li class="text-sm text-[var(--text-muted)]">✓ আনলিমিটেড ডাউনলোড</li>
-            <li class="text-sm text-[var(--text-muted)]">✓ যেকোনো ডিভাইসে পড়ার সুবিধা</li>
-          </ul>
         </div>
-      </div>
+      </Container>
+    </section>
 
-      <div data-reveal>
-        <h3 class="font-heading-bn text-xl font-semibold">অর্ডার করুন</h3>
-        <p class="mt-2 text-sm text-[var(--text-muted)]">
-          বইটি সংগ্রহ করতে নিচের বাটনে ক্লিক করুন। পেমেন্ট সম্পন্ন হলে ডাউনলোড লিংক পাবেন।
-        </p>
-        <div class="mt-6">
-          <Button href="#pricing" variant="primary" size="md">অর্ডার করুন</Button>  <!--Update it accordingly with a valid order link. -->
+    <!-- ============ 8. PRICING / ORDER ============ -->
+    <section class="eb-section eb-pricing-section" id="pricing">
+      <div class="eb-price-aura" aria-hidden="true"></div>
+      <Container>
+        <div class="eb-price" data-reveal>
+          <div class="eb-price-ring" aria-hidden="true"></div>
+
+          <div class="eb-price-copy">
+            <p class="eb-kicker">সংগ্রহ করুন</p>
+            <h2 class="eb-h2">একটি বই, <span class="eb-grad">সারাজীবনের অভ্যাস।</span></h2>
+            <p class="eb-body">
+              সহজ বাংলায় লেখা, শুরু থেকে পড়ার মতো — আর সংগ্রহ করার পর
+              যতবার প্রয়োজন ততবার ডাউনলোড।
+            </p>
+
+            <ul class="eb-price-list">
+              <li>✓ সম্পূর্ণ বই, সহজ ও স্পষ্ট বাংলায়</li>
+              <li>✓ আনলিমিটেড ডাউনলোড</li>
+              <li>✓ যেকোনো ডিভাইসে পড়ার সুবিধা</li>
+            </ul>
+          </div>
+
+          <div class="eb-price-buy">
+            <p class="eb-price-was">প্রকৃত মূল্য <s>৳TBA</s></p>
+            <p class="eb-price-now">৳TBA</p>
+            <p class="eb-price-caption">বর্তমান অফার মূল্য</p>
+
+            <div class="eb-price-cta">
+              <Button href="#pricing" variant="primary" size="md">অর্ডার করুন</Button>
+            </div>
+            <p class="eb-price-fine">ডিজিটাল PDF · আনলিমিটেড ডাউনলোড</p>
+          </div>
         </div>
-      </div>
-    </Container>
-  </section>
+      </Container>
+    </section>
 
-  <!-- 8. Remaining doubts -->
-  <section id="faq" class="py-16 md:py-20">
-    <Container class="max-w-3xl">
-      <SectionHeading kicker="প্রশ্ন ও উত্তর" title="আপনার প্রশ্নের উত্তর" />
-      <div class="mt-10">
-        <FAQ items={faqItems} />
-      </div>
-    </Container>
-  </section>
+    <!-- ============ 9. FAQ ============ -->
+    <section class="eb-section" id="faq">
+      <Container>
+        <div class="eb-split eb-faq-split">
+          <div data-reveal>
+            <p class="eb-kicker">প্রশ্ন ও উত্তর</p>
+            <h2 class="eb-h2">আপনার প্রশ্নের <span class="eb-grad">উত্তর।</span></h2>
+            <p class="eb-body">
+              আরও কিছু জানতে চাইলে সরাসরি যোগাযোগ করতে পারেন — উত্তর দিতে
+              আমরা খুশি হব।
+            </p>
+          </div>
 
-  <!-- 9. Final push -->
-  <section class="border-t border-[var(--border)] py-20 text-center md:py-24">
-    <Container class="max-w-xl">
-      <h2 class="font-heading-bn text-2xl font-semibold leading-snug md:text-3xl" data-reveal>
-        আজই নিজেকে ও পরিবারকে নিরাপদ রাখার প্রথম ধাপ নিন
-      </h2>
-      <p class="mt-4 font-body-bn text-sm text-[var(--accent)]" data-reveal>
-        আপনার হাতে যা আছে, সেটা বোঝা, আর সেটা যত্নের সাথে রাখা
-      </p>
-      <div class="mt-8" data-reveal>
-        <Button href="#pricing" variant="primary" size="md">অফার মূল্যে সংগ্রহ করুন</Button>
-      </div>
-    </Container>
-  </section>
+          <div class="eb-faq" data-reveal>
+            <FAQ items={faqItems} />
+          </div>
+        </div>
+      </Container>
+    </section>
+
+    <!-- ============ 10. FINAL CTA ============ -->
+    <section class="eb-final">
+      <div class="eb-final-glow" aria-hidden="true"></div>
+      <Container>
+        <div class="eb-final-inner" data-reveal>
+          <p class="eb-kicker">শুরু করুন</p>
+          <h2 class="eb-final-title">
+            আজই নিজেকে ও পরিবারকে
+            <span class="eb-grad">নিরাপদ রাখার প্রথম ধাপ নিন।</span>
+          </h2>
+          <p class="eb-final-tag">
+            আপনার হাতে যা আছে, সেটা বোঝা, আর সেটা যত্নের সাথে রাখা
+          </p>
+          <div class="eb-cta eb-cta-center">
+            <Button href="#pricing" variant="primary" size="md">অর্ডার করুন</Button>
+          </div>
+        </div>
+      </Container>
+    </section>
+  </div>
 </BaseLayout>
+
+<style>
+  /* ============================================================
+     Page-scoped design system. Deliberately more cinematic than the
+     rest of the site (3D book, glass panels, aurora glows) — approved
+     by the owner for this page only. Colors derive from the brand
+     variables, with brighter jade/brass used only for light and glow.
+     ============================================================ */
+  .eb-page {
+    --eb-jade: #52c4a4;
+    --eb-brass: #dcb47a;
+    --eb-panel: rgba(255, 255, 255, 0.045);
+    --eb-panel-strong: rgba(255, 255, 255, 0.075);
+    --eb-line: rgba(255, 255, 255, 0.09);
+    --eb-shadow: rgba(0, 0, 0, 0.55);
+    position: relative;
+    isolation: isolate;
+    overflow: clip;
+  }
+
+  :global([data-theme="light"]) .eb-page {
+    --eb-jade: #2f7f6b;
+    --eb-brass: #98743a;
+    --eb-panel: rgba(255, 255, 255, 0.62);
+    --eb-panel-strong: rgba(255, 255, 255, 0.82);
+    --eb-line: rgba(18, 24, 27, 0.1);
+    --eb-shadow: rgba(18, 24, 27, 0.16);
+  }
+
+  .eb-page :global(::selection) {
+    background: rgba(var(--accent-rgb) / 0.35);
+  }
+
+  /* ---------- shared type ---------- */
+  .eb-kicker {
+    font-family: theme("fontFamily.mono");
+    font-size: var(--fs-xs);
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--eb-brass);
+    margin-bottom: 0.9rem;
+  }
+
+  .eb-h1 {
+    font-size: calc(clamp(2.5rem, 5.6vw, 4.6rem) * var(--font-scale));
+    line-height: 1.06;
+    letter-spacing: -0.025em;
+    font-weight: 600;
+    margin-top: 0.4rem;
+  }
+
+  .eb-h2 {
+    font-size: calc(clamp(1.85rem, 3.4vw, 2.9rem) * var(--font-scale));
+    line-height: 1.18;
+    letter-spacing: -0.02em;
+    font-weight: 600;
+  }
+
+  .eb-lede {
+    margin-top: 1.6rem;
+    max-width: 34rem;
+    font-size: var(--fs-lg);
+    line-height: 1.85;
+    color: var(--text-muted);
+  }
+
+  .eb-body {
+    margin-top: 1.2rem;
+    max-width: 36rem;
+    font-size: var(--fs-base);
+    line-height: 1.9;
+    color: var(--text-muted);
+  }
+
+  .eb-grad {
+    background: linear-gradient(100deg, var(--eb-brass) 0%, #f2d9a8 42%, var(--eb-jade) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  :global([data-theme="light"]) .eb-grad {
+    background: linear-gradient(100deg, #8a6626 0%, #b08d57 45%, #2f7f6b 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* ---------- hero ---------- */
+  .eb-hero {
+    position: relative;
+    padding: clamp(3.25rem, 7vw, 6rem) 0 clamp(3.5rem, 7vw, 5rem);
+  }
+
+  .eb-hero-bg {
+    position: absolute;
+    inset: -10% -20% auto;
+    height: 130%;
+    z-index: -1;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .eb-aurora {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    opacity: 0.5;
+    animation: eb-drift 18s ease-in-out infinite alternate;
+  }
+
+  .eb-aurora-1 {
+    top: 2%;
+    right: 4%;
+    width: 42rem;
+    height: 34rem;
+    background: radial-gradient(circle, rgba(var(--accent-rgb) / 0.34), transparent 65%);
+  }
+
+  .eb-aurora-2 {
+    top: 24%;
+    right: 26%;
+    width: 30rem;
+    height: 30rem;
+    background: radial-gradient(circle, rgba(74, 115, 103, 0.42), transparent 65%);
+    animation-delay: -6s;
+  }
+
+  .eb-aurora-3 {
+    bottom: -18%;
+    left: -6%;
+    width: 34rem;
+    height: 26rem;
+    background: radial-gradient(circle, rgba(62, 110, 110, 0.22), transparent 68%);
+    animation-delay: -11s;
+  }
+
+  :global([data-theme="light"]) .eb-aurora {
+    opacity: 0.32;
+  }
+
+  .eb-grid-lines {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse 70% 60% at 60% 30%, #000 20%, transparent 78%);
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 60% 30%, #000 20%, transparent 78%);
+  }
+
+  :global([data-theme="light"]) .eb-grid-lines {
+    background-image:
+      linear-gradient(rgba(18, 24, 27, 0.055) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(18, 24, 27, 0.055) 1px, transparent 1px);
+  }
+
+  .eb-hero-inner {
+    display: grid;
+    align-items: center;
+    gap: clamp(2rem, 5vw, 4rem);
+  }
+
+  @media (min-width: 940px) {
+    .eb-hero-inner {
+      grid-template-columns: 1.02fr 0.98fr;
+    }
+  }
+
+  .eb-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: theme("fontFamily.mono");
+    font-size: var(--fs-xs);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--eb-brass);
+  }
+
+  .eb-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--eb-jade);
+    box-shadow: 0 0 0 4px rgba(82, 196, 164, 0.16), 0 0 18px var(--eb-jade);
+    animation: eb-pulse 2.6s ease-in-out infinite;
+  }
+
+  .eb-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.6rem;
+  }
+
+  .eb-tags span {
+    padding: 0.4rem 0.85rem;
+    border-radius: 999px;
+    border: 1px solid var(--eb-line);
+    background: var(--eb-panel);
+    font-size: var(--fs-xs);
+    color: var(--text-muted);
+    backdrop-filter: blur(10px);
+  }
+
+  .eb-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2rem;
+  }
+
+  .eb-cta-center {
+    justify-content: center;
+  }
+
+  .eb-note {
+    margin-top: 0.9rem;
+    font-family: theme("fontFamily.mono");
+    font-size: var(--fs-xs);
+    color: var(--text-muted);
+  }
+
+  /* ---------- 3D book ---------- */
+  .eb-stage {
+    --bw: clamp(186px, 20vw, 276px);
+    --bh: calc(var(--bw) * 1.36);
+    --bd: clamp(34px, 3.4vw, 50px);
+    position: relative;
+    display: grid;
+    place-items: center;
+    min-height: clamp(360px, 42vw, 480px);
+    perspective: 1500px;
+    touch-action: pan-y;
+    cursor: grab;
+    user-select: none;
+  }
+
+  .eb-stage:active {
+    cursor: grabbing;
+  }
+
+  .eb-stage-glow {
+    position: absolute;
+    width: 120%;
+    height: 120%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(var(--accent-rgb) / 0.18), transparent 62%);
+    filter: blur(30px);
+    pointer-events: none;
+  }
+
+  .eb-stage::after {
+    content: "";
+    position: absolute;
+    inset: 8% 6%;
+    border-radius: 50%;
+    border: 1px dashed rgba(255, 255, 255, 0.07);
+    pointer-events: none;
+  }
+
+  .eb-orbit {
+    position: absolute;
+    width: min(430px, 90%);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 1px solid rgba(var(--accent-rgb) / 0.16);
+    transform: rotateX(72deg) rotateZ(0deg);
+    pointer-events: none;
+  }
+
+  .eb-orbit-1 {
+    animation: eb-spin 26s linear infinite;
+  }
+
+  .eb-orbit-2 {
+    width: min(350px, 74%);
+    border-color: rgba(82, 196, 164, 0.14);
+    transform: rotateX(72deg) rotateZ(38deg);
+    animation: eb-spin 19s linear infinite reverse;
+  }
+
+  .eb-orbit-3 {
+    width: min(290px, 62%);
+    border-style: dashed;
+    border-color: rgba(255, 255, 255, 0.08);
+    transform: rotateX(72deg) rotateZ(-22deg);
+    animation: eb-spin 34s linear infinite;
+  }
+
+  .eb-float {
+    transform-style: preserve-3d;
+    animation: eb-float 7s ease-in-out infinite;
+    z-index: 2;
+  }
+
+  .eb-book-tilt {
+    transform-style: preserve-3d;
+    transform: rotateX(var(--brx, 6deg)) rotateY(var(--bry, -18deg));
+    will-change: transform;
+  }
+
+  .eb-book {
+    position: relative;
+    width: var(--bw);
+    height: var(--bh);
+    transform-style: preserve-3d;
+  }
+
+  .eb-face {
+    position: absolute;
+    inset: 0;
+    border-radius: 5px 10px 10px 5px;
+  }
+
+  .eb-front {
+    transform: translateZ(calc(var(--bd) / 2));
+    overflow: hidden;
+    background: #0a0f12;
+    box-shadow:
+      0 0 0 1px rgba(var(--accent-rgb) / 0.4),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+      0 45px 80px -34px rgba(0, 0, 0, 0.9);
+    transform-style: preserve-3d;
+  }
+
+  .eb-cover-art {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.92;
+  }
+
+  .eb-cover-shade {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(6, 10, 12, 0.1) 0%, rgba(6, 10, 12, 0.12) 38%, rgba(6, 10, 12, 0.94) 100%),
+      linear-gradient(90deg, rgba(6, 10, 12, 0.45) 0%, transparent 26%);
+  }
+
+  .eb-cover-text {
+    position: absolute;
+    inset: auto 0 0;
+    padding: 1.2rem 1.05rem 1.3rem 1.55rem;
+    color: #f4f1ea;
+  }
+
+  .eb-cover-kicker {
+    display: inline-block;
+    font-family: theme("fontFamily.mono");
+    font-size: 0.6rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--eb-brass);
+    margin-bottom: 0.5rem;
+  }
+
+  .eb-cover-title {
+    font-family: theme("fontFamily.heading-bn");
+    font-size: clamp(1.05rem, 1.6vw, 1.4rem);
+    line-height: 1.32;
+    font-weight: 600;
+    color: #f4f1ea;
+  }
+
+  .eb-cover-author {
+    margin-top: 0.55rem;
+    font-family: theme("fontFamily.body-bn");
+    font-size: 0.7rem;
+    color: rgba(244, 241, 234, 0.72);
+  }
+
+  .eb-sheen {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.16) 46%, transparent 60%);
+    transform: translateX(-30%);
+    animation: eb-sheen 9s ease-in-out infinite;
+    pointer-events: none;
+    mix-blend-mode: screen;
+  }
+
+  .eb-spine {
+    width: var(--bd);
+    height: 100%;
+    left: calc(var(--bd) / -2);
+    right: auto;
+    transform: rotateY(90deg);
+    border-radius: 2px;
+    background: linear-gradient(90deg, #5a4527 0%, #a67f4a 28%, #edcf95 52%, #8a6a3c 78%, #4a3a22 100%);
+    box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.45);
+  }
+
+  .eb-pages {
+    width: var(--bd);
+    height: 100%;
+    right: calc(var(--bd) / -2);
+    left: auto;
+    transform: rotateY(-90deg);
+    background: repeating-linear-gradient(
+      90deg,
+      #efe9dc 0px,
+      #efe9dc 1px,
+      #cfc7b6 2px,
+      #e6dfd0 3px
+    );
+    box-shadow: inset 0 0 16px rgba(0, 0, 0, 0.3);
+  }
+
+  .eb-back {
+    transform: rotateY(180deg) translateZ(calc(var(--bd) / 2));
+    background: linear-gradient(135deg, #162025 0%, #0a0e10 70%);
+    border-radius: 10px 5px 5px 10px;
+    box-shadow: inset 0 0 0 1px rgba(var(--accent-rgb) / 0.22);
+  }
+
+  .eb-shadow {
+    position: absolute;
+    bottom: 8%;
+    width: calc(var(--bw) * 1.25);
+    height: 52px;
+    border-radius: 50%;
+    background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.62), transparent 68%);
+    filter: blur(14px);
+    transform: rotateX(70deg);
+    animation: eb-shadow 7s ease-in-out infinite;
+  }
+
+  :global([data-theme="light"]) .eb-shadow {
+    background: radial-gradient(ellipse at center, rgba(18, 24, 27, 0.3), transparent 68%);
+  }
+
+  .eb-chip {
+    position: absolute;
+    z-index: 3;
+    padding: 0.42rem 0.85rem;
+    border-radius: 999px;
+    border: 1px solid var(--eb-line);
+    background: var(--eb-panel-strong);
+    backdrop-filter: blur(14px);
+    box-shadow: 0 14px 30px -14px var(--eb-shadow);
+    font-family: theme("fontFamily.mono");
+    font-size: var(--fs-xs);
+    color: var(--text);
+    white-space: nowrap;
+    animation: eb-float 6.5s ease-in-out infinite;
+  }
+
+  .eb-chip-1 {
+    top: 18%;
+    left: 2%;
+    animation-delay: -1.5s;
+  }
+
+  .eb-chip-2 {
+    top: 30%;
+    right: 0%;
+    animation-delay: -3.2s;
+  }
+
+  .eb-chip-3 {
+    bottom: 26%;
+    left: 6%;
+    animation-delay: -4.6s;
+  }
+
+  .eb-chip-4 {
+    bottom: 17%;
+    right: 4%;
+    animation-delay: -2.1s;
+  }
+
+  .eb-drag-hint {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: theme("fontFamily.mono");
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    opacity: 0.7;
+    white-space: nowrap;
+  }
+
+  /* ---------- marquee ---------- */
+  .eb-marquee {
+    overflow: hidden;
+    border-block: 1px solid var(--eb-line);
+    padding: 0.95rem 0;
+    mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  }
+
+  .eb-marquee-track {
+    display: flex;
+    width: max-content;
+    animation: eb-marquee 34s linear infinite;
+  }
+
+  .eb-marquee-track span {
+    position: relative;
+    padding: 0 1.6rem;
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  .eb-marquee-track span::after {
+    content: "✦";
+    position: absolute;
+    right: -0.35rem;
+    color: var(--eb-brass);
+    opacity: 0.55;
+    font-size: 0.6rem;
+  }
+
+  /* ---------- sections ---------- */
+  .eb-section {
+    position: relative;
+    padding: clamp(3.75rem, 8vw, 6.5rem) 0;
+  }
+
+  .eb-section-dark {
+    background:
+      radial-gradient(ellipse 60% 80% at 50% 0%, rgba(var(--accent-rgb) / 0.07), transparent 65%),
+      linear-gradient(180deg, rgba(0, 0, 0, 0.18), transparent 40%);
+  }
+
+  :global([data-theme="light"]) .eb-section-dark {
+    background:
+      radial-gradient(ellipse 60% 80% at 50% 0%, rgba(var(--accent-rgb) / 0.1), transparent 65%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.4), transparent 40%);
+  }
+
+  .eb-section-tint {
+    background: linear-gradient(180deg, transparent, rgba(74, 115, 103, 0.07), transparent);
+  }
+
+  .eb-section-glow {
+    position: absolute;
+    top: 8%;
+    left: 50%;
+    width: min(70rem, 120%);
+    height: 26rem;
+    transform: translateX(-50%);
+    background: radial-gradient(ellipse, rgba(82, 196, 164, 0.12), transparent 65%);
+    filter: blur(60px);
+    pointer-events: none;
+  }
+
+  .eb-head {
+    max-width: 42rem;
+  }
+
+  .eb-split {
+    display: grid;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+  }
+
+  @media (min-width: 900px) {
+    .eb-split {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .eb-gap-list {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .eb-gap-row {
+    display: flex;
+    gap: 1rem;
+    padding: 1.15rem 1.25rem;
+    border-radius: 16px;
+    border: 1px solid var(--eb-line);
+    background: var(--eb-panel);
+    backdrop-filter: blur(12px);
+    transition: border-color 0.3s ease, transform 0.3s ease;
+  }
+
+  .eb-gap-row:hover {
+    border-color: rgba(var(--accent-rgb) / 0.4);
+    transform: translateX(4px);
+  }
+
+  .eb-gap-num {
+    font-family: theme("fontFamily.mono");
+    font-size: var(--fs-xs);
+    color: var(--eb-brass);
+    padding-top: 0.15rem;
+  }
+
+  .eb-gap-row h3 {
+    font-size: var(--fs-base);
+    font-weight: 600;
+  }
+
+  .eb-gap-row p {
+    margin-top: 0.2rem;
+    font-size: var(--fs-sm);
+    line-height: 1.7;
+    color: var(--text-muted);
+  }
+
+  /* ---------- glass cards + tilt ---------- */
+  .eb-card {
+    position: relative;
+    border-radius: 20px;
+    border: 1px solid var(--eb-line);
+    background: linear-gradient(160deg, var(--eb-panel-strong), var(--eb-panel));
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 30px 60px -40px var(--eb-shadow);
+    backdrop-filter: blur(16px);
+    overflow: hidden;
+    transform: perspective(1000px) rotateX(var(--ty, 0deg)) rotateY(var(--tx, 0deg));
+    transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease;
+  }
+
+  .eb-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      420px circle at var(--mx, 50%) var(--my, 0%),
+      rgba(var(--accent-rgb) / 0.16),
+      transparent 58%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+
+  .eb-card:hover::before {
+    opacity: 1;
+  }
+
+  .eb-card:hover {
+    border-color: rgba(var(--accent-rgb) / 0.42);
+    box-shadow: 0 34px 70px -34px rgba(var(--accent-rgb) / 0.35);
+  }
+
+  /* ---------- bento ---------- */
+  .eb-bento {
+    display: grid;
+    gap: 0.9rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 2.6rem;
+  }
+
+  @media (min-width: 760px) {
+    .eb-bento {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .eb-tile-wide {
+      grid-column: span 2;
+      grid-row: span 2;
+    }
+  }
+
+  .eb-tile {
+    padding: 1.35rem;
+    display: flex;
+    flex-direction: column;
+    min-height: 10rem;
+  }
+
+  .eb-tile-top,
+  .eb-tile-title,
+  .eb-tile-body,
+  .eb-tile-meta {
+    position: relative;
+    z-index: 1;
+  }
+
+  .eb-tile-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.1rem;
+  }
+
+  .eb-tile-num {
+    font-family: theme("fontFamily.mono");
+    font-size: var(--fs-xs);
+    color: var(--eb-brass);
+    letter-spacing: 0.1em;
+  }
+
+  .eb-tile-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 12px;
+    border: 1px solid rgba(var(--accent-rgb) / 0.3);
+    background: rgba(var(--accent-rgb) / 0.08);
+    color: var(--eb-brass);
+  }
+
+  .eb-tile-icon :global(svg) {
+    width: 1.15rem;
+    height: 1.15rem;
+  }
+
+  .eb-tile-title {
+    font-size: var(--fs-lg);
+    font-weight: 600;
+    line-height: 1.35;
+  }
+
+  .eb-tile-body {
+    margin-top: 0.55rem;
+    font-size: var(--fs-sm);
+    line-height: 1.8;
+    color: var(--text-muted);
+  }
+
+  .eb-tile-wide {
+    justify-content: flex-end;
+    min-height: 20rem;
+    background:
+      radial-gradient(120% 90% at 85% 10%, rgba(82, 196, 164, 0.16), transparent 60%),
+      linear-gradient(160deg, var(--eb-panel-strong), var(--eb-panel));
+  }
+
+  .eb-tile-wide .eb-tile-body {
+    max-width: 24rem;
+  }
+
+  .eb-tile-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-top: 1rem;
+  }
+
+  .eb-tile-meta span {
+    padding: 0.25rem 0.6rem;
+    border-radius: 999px;
+    border: 1px solid rgba(var(--accent-rgb) / 0.28);
+    background: rgba(var(--accent-rgb) / 0.06);
+    font-family: theme("fontFamily.mono");
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+  }
+
+  .eb-tile-art {
+    position: absolute;
+    top: 8%;
+    left: 50%;
+    width: 9rem;
+    height: 9rem;
+    transform: translateX(-50%);
+    transform-style: preserve-3d;
+    pointer-events: none;
+    opacity: 0.9;
+  }
+
+  .eb-tile-art span {
+    position: absolute;
+    inset: 0;
+    border: 1px solid rgba(var(--accent-rgb) / 0.45);
+    border-radius: 16px;
+    background: rgba(var(--accent-rgb) / 0.07);
+    transform: rotateX(58deg) rotateZ(38deg) translateZ(calc(var(--i, 0) * 12px));
+    animation: eb-stack 8s ease-in-out infinite;
+  }
+
+  .eb-tile-art span:nth-child(1) { --i: 0; }
+  .eb-tile-art span:nth-child(2) { --i: 1; animation-delay: -2.6s; }
+  .eb-tile-art span:nth-child(3) { --i: 2; animation-delay: -5.2s; }
+
+  .eb-bento-cta {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: 10rem;
+    padding: 1.35rem;
+    border-radius: 20px;
+    border: 1px solid rgba(var(--accent-rgb) / 0.6);
+    background: linear-gradient(145deg, var(--eb-brass) 0%, #c9a468 45%, var(--eb-jade) 130%);
+    color: #0b1013;
+    overflow: hidden;
+    transform: perspective(1000px) rotateX(var(--ty, 0deg)) rotateY(var(--tx, 0deg));
+    transition: transform 0.28s ease, box-shadow 0.28s ease, filter 0.28s ease;
+  }
+
+  .eb-bento-cta:hover {
+    filter: brightness(1.06);
+    box-shadow: 0 34px 70px -30px rgba(var(--accent-rgb) / 0.55);
+  }
+
+  .eb-bento-cta-label {
+    font-family: theme("fontFamily.mono");
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    opacity: 0.72;
+  }
+
+  .eb-bento-cta-title {
+    margin-top: 0.35rem;
+    font-family: theme("fontFamily.heading-bn");
+    font-size: var(--fs-lg);
+    font-weight: 600;
+    line-height: 1.35;
+  }
+
+  .eb-bento-cta-arrow {
+    position: absolute;
+    top: 1rem;
+    right: 1.15rem;
+    font-size: 1.6rem;
+    line-height: 1;
+    transition: transform 0.25s ease;
+  }
+
+  .eb-bento-cta:hover .eb-bento-cta-arrow {
+    transform: translate(3px, -3px);
+  }
+
+  @media (max-width: 759px) {
+    .eb-bento-cta {
+      grid-column: span 2;
+      min-height: 8rem;
+    }
+  }
+
+  /* ---------- why ---------- */
+  .eb-why-grid {
+    display: grid;
+    gap: 0.9rem;
+    margin-top: 2.6rem;
+  }
+
+  @media (min-width: 760px) {
+    .eb-why-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .eb-why {
+    padding: 1.7rem;
+  }
+
+  .eb-why-num {
+    display: inline-block;
+    font-family: theme("fontFamily.mono");
+    font-size: var(--fs-xs);
+    letter-spacing: 0.16em;
+    color: var(--eb-brass);
+    margin-bottom: 1rem;
+  }
+
+  .eb-why h3 {
+    font-size: var(--fs-xl);
+    font-weight: 600;
+  }
+
+  .eb-why p {
+    margin-top: 0.6rem;
+    font-size: var(--fs-sm);
+    line-height: 1.85;
+    color: var(--text-muted);
+  }
+
+  /* ---------- format ---------- */
+  .eb-format-grid {
+    display: grid;
+    gap: 0.9rem;
+    margin-top: 2.6rem;
+  }
+
+  @media (min-width: 820px) {
+    .eb-format-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .eb-format {
+    padding: 1.7rem;
+    min-height: 15rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .eb-format-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 14px;
+    border: 1px solid rgba(82, 196, 164, 0.28);
+    background: rgba(82, 196, 164, 0.08);
+    color: var(--eb-jade);
+    margin-bottom: 1.5rem;
+  }
+
+  .eb-format-icon :global(svg) {
+    width: 1.35rem;
+    height: 1.35rem;
+  }
+
+  .eb-format-index {
+    position: absolute;
+    top: 1.4rem;
+    right: 1.5rem;
+    font-family: theme("fontFamily.mono");
+    font-size: var(--fs-xs);
+    color: var(--text-muted);
+    opacity: 0.6;
+  }
+
+  .eb-format h3 {
+    font-size: var(--fs-lg);
+    font-weight: 600;
+  }
+
+  .eb-format p {
+    margin-top: 0.6rem;
+    font-size: var(--fs-sm);
+    line-height: 1.85;
+    color: var(--text-muted);
+  }
+
+  /* ---------- audience ---------- */
+  .eb-audience {
+    text-align: center;
+    max-width: 48rem;
+    margin-inline: auto;
+  }
+
+  .eb-audience-chips {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.6rem;
+    margin-top: 1.8rem;
+  }
+
+  .eb-audience-chips span {
+    padding: 0.55rem 1rem;
+    border-radius: 999px;
+    border: 1px solid var(--eb-line);
+    background: var(--eb-panel);
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+    transition: border-color 0.25s ease, color 0.25s ease, transform 0.25s ease;
+  }
+
+  .eb-audience-chips span:hover {
+    border-color: rgba(var(--accent-rgb) / 0.5);
+    color: var(--text);
+    transform: translateY(-2px);
+  }
+
+  .eb-audience-note {
+    margin-inline: auto;
+    margin-top: 1.6rem;
+    text-align: center;
+  }
+
+  /* ---------- pricing ---------- */
+  .eb-pricing-section {
+    position: relative;
+    overflow: clip;
+  }
+
+  .eb-price-aura {
+    position: absolute;
+    inset: 10% 0 auto;
+    height: 30rem;
+    background: radial-gradient(ellipse 50% 60% at 50% 40%, rgba(var(--accent-rgb) / 0.18), transparent 68%);
+    filter: blur(40px);
+    pointer-events: none;
+  }
+
+  .eb-price {
+    position: relative;
+    display: grid;
+    gap: 2rem;
+    max-width: 56rem;
+    margin-inline: auto;
+    padding: clamp(1.5rem, 4vw, 3rem);
+    border-radius: 28px;
+    border: 1px solid transparent;
+    background:
+      linear-gradient(160deg, rgba(22, 30, 33, 0.96), rgba(10, 15, 17, 0.94)) padding-box,
+      linear-gradient(135deg, rgba(var(--accent-rgb) / 0.75), rgba(255, 255, 255, 0.08) 42%, rgba(82, 196, 164, 0.5)) border-box;
+    box-shadow: 0 50px 100px -50px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px);
+    overflow: hidden;
+  }
+
+  :global([data-theme="light"]) .eb-price {
+    background:
+      linear-gradient(160deg, rgba(255, 255, 255, 0.94), rgba(244, 241, 234, 0.92)) padding-box,
+      linear-gradient(135deg, rgba(var(--accent-rgb) / 0.7), rgba(18, 24, 27, 0.08) 42%, rgba(47, 127, 107, 0.45)) border-box;
+    box-shadow: 0 50px 90px -50px rgba(18, 24, 27, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  }
+
+  @media (min-width: 800px) {
+    .eb-price {
+      grid-template-columns: 1.15fr 0.85fr;
+      align-items: center;
+    }
+  }
+
+  .eb-price-ring {
+    position: absolute;
+    top: -55%;
+    right: -18%;
+    width: 30rem;
+    height: 30rem;
+    border-radius: 50%;
+    border: 1px solid rgba(var(--accent-rgb) / 0.18);
+    box-shadow: 0 0 90px rgba(var(--accent-rgb) / 0.12) inset;
+    animation: eb-spin 40s linear infinite;
+    pointer-events: none;
+  }
+
+  .eb-price-ring::before {
+    content: "";
+    position: absolute;
+    inset: 2.5rem;
+    border-radius: 50%;
+    border: 1px dashed rgba(82, 196, 164, 0.16);
+  }
+
+  .eb-price-copy {
+    position: relative;
+    z-index: 1;
+  }
+
+  .eb-price-list {
+    margin-top: 1.4rem;
+    display: grid;
+    gap: 0.55rem;
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+  }
+
+  .eb-price-buy {
+    position: relative;
+    z-index: 1;
+    padding: 1.5rem;
+    border-radius: 20px;
+    border: 1px solid var(--eb-line);
+    background: rgba(0, 0, 0, 0.16);
+    text-align: center;
+  }
+
+  :global([data-theme="light"]) .eb-price-buy {
+    background: rgba(255, 255, 255, 0.5);
+  }
+
+  .eb-price-was {
+    font-family: theme("fontFamily.mono");
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+  }
+
+  .eb-price-was s {
+    opacity: 0.7;
+  }
+
+  .eb-price-now {
+    margin-top: 0.25rem;
+    font-family: theme("fontFamily.heading");
+    font-size: calc(clamp(2.6rem, 6vw, 3.8rem) * var(--font-scale));
+    font-weight: 600;
+    line-height: 1.1;
+    background: linear-gradient(100deg, var(--eb-brass), #f3dcaa 55%, var(--eb-jade));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .eb-price-caption {
+    font-size: var(--fs-xs);
+    color: var(--text-muted);
+  }
+
+  .eb-price-cta {
+    display: flex;
+    justify-content: center;
+    margin-top: 1.4rem;
+  }
+
+  .eb-price-fine {
+    margin-top: 0.8rem;
+    font-family: theme("fontFamily.mono");
+    font-size: 0.66rem;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+  }
+
+  /* ---------- FAQ ---------- */
+  .eb-faq-split {
+    align-items: start;
+  }
+
+  .eb-faq {
+    border-radius: 20px;
+    border: 1px solid var(--eb-line);
+    background: var(--eb-panel);
+    padding: 0.4rem 1.4rem;
+    backdrop-filter: blur(12px);
+  }
+
+  /* ---------- final ---------- */
+  .eb-final {
+    position: relative;
+    padding: clamp(4.5rem, 9vw, 8rem) 0;
+    overflow: clip;
+    border-top: 1px solid var(--eb-line);
+  }
+
+  .eb-final::before,
+  .eb-final::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    transform: translate(-50%, -50%) rotateX(74deg);
+    pointer-events: none;
+  }
+
+  .eb-final::before {
+    width: min(58rem, 110vw);
+    border: 1px solid rgba(var(--accent-rgb) / 0.16);
+    box-shadow: inset 0 0 120px rgba(var(--accent-rgb) / 0.08);
+    animation: eb-spin 60s linear infinite;
+  }
+
+  .eb-final::after {
+    width: min(38rem, 78vw);
+    border: 1px dashed rgba(82, 196, 164, 0.2);
+    animation: eb-spin 44s linear infinite reverse;
+  }
+
+  .eb-final-glow {
+    position: absolute;
+    inset: auto 0 -40%;
+    height: 34rem;
+    background: radial-gradient(ellipse 55% 60% at 50% 100%, rgba(var(--accent-rgb) / 0.22), transparent 70%);
+    filter: blur(50px);
+    pointer-events: none;
+  }
+
+  .eb-final-inner {
+    position: relative;
+    text-align: center;
+    max-width: 52rem;
+    margin-inline: auto;
+  }
+
+  .eb-final-title {
+    font-size: calc(clamp(2rem, 4.4vw, 3.6rem) * var(--font-scale));
+    line-height: 1.16;
+    letter-spacing: -0.02em;
+    font-weight: 600;
+  }
+
+  .eb-final-title .eb-grad {
+    display: block;
+    margin-top: 0.15em;
+  }
+
+  .eb-final-tag {
+    margin-top: 1.2rem;
+    font-family: theme("fontFamily.body-bn");
+    font-size: var(--fs-sm);
+    color: var(--eb-brass);
+  }
+
+  .eb-final .eb-cta {
+    margin-top: 2rem;
+  }
+
+  /* ---------- motion ---------- */
+  @keyframes eb-drift {
+    from { transform: translate3d(0, 0, 0) scale(1); }
+    to { transform: translate3d(-2.5rem, 1.5rem, 0) scale(1.08); }
+  }
+
+  @keyframes eb-float {
+    0%, 100% { transform: translateY(-7px); }
+    50% { transform: translateY(9px); }
+  }
+
+  @keyframes eb-shadow {
+    0%, 100% { opacity: 0.85; transform: rotateX(70deg) scaleX(0.94); }
+    50% { opacity: 0.55; transform: rotateX(70deg) scaleX(1.04); }
+  }
+
+  @keyframes eb-spin {
+    from { rotate: 0deg; }
+    to { rotate: 360deg; }
+  }
+
+  @keyframes eb-sheen {
+    0%, 70% { transform: translateX(-40%); opacity: 0; }
+    80% { opacity: 0.9; }
+    100% { transform: translateX(45%); opacity: 0; }
+  }
+
+  @keyframes eb-marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  @keyframes eb-pulse {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+  }
+
+  @keyframes eb-stack {
+    0%, 100% { transform: rotateX(58deg) rotateZ(38deg) translateZ(calc(var(--i, 0) * 12px)); }
+    50% { transform: rotateX(58deg) rotateZ(44deg) translateZ(calc(var(--i, 0) * 18px)); }
+  }
+
+  @media (max-width: 640px) {
+    .eb-chip-2,
+    .eb-chip-4 {
+      display: none;
+    }
+
+    .eb-stage::after {
+      inset: 12% 2%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .eb-aurora,
+    .eb-float,
+    .eb-shadow,
+    .eb-orbit,
+    .eb-sheen,
+    .eb-marquee-track,
+    .eb-chip,
+    .eb-tile-art span,
+    .eb-price-ring,
+    .eb-final::before,
+    .eb-final::after,
+    .eb-dot {
+      animation: none !important;
+    }
+
+    .eb-card {
+      transform: none !important;
+    }
+
+    .eb-marquee-track {
+      transform: none;
+      width: auto;
+      flex-wrap: wrap;
+    }
+
+    .eb-marquee-track span:nth-child(n + 9) {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  // Pointer-driven 3D book rotation + card tilt. Vanilla, no deps.
+  (() => {
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
+
+    document.querySelectorAll("[data-ebook-stage]").forEach((stage) => {
+      const book = stage.querySelector("[data-book-tilt]");
+      if (!book) return;
+
+      let ry = -18;
+      let rx = 6;
+      let vy = 0;
+      let vx = 0;
+      let dragging = false;
+      let lastX = 0;
+      let lastY = 0;
+      let touchStartX = 0;
+      let touchStartY = 0;
+      let horizontal = false;
+      const startedAt = performance.now();
+
+      const paint = () => {
+        book.style.setProperty("--brx", rx.toFixed(2) + "deg");
+        book.style.setProperty("--bry", ry.toFixed(2) + "deg");
+      };
+
+      const frame = (now) => {
+        if (!dragging) {
+          vy *= 0.94;
+          vx *= 0.94;
+          ry += vy;
+          rx += vx;
+
+          const swayY = -18 + Math.sin((now - startedAt) / 2800) * 8;
+          const swayX = 6 + Math.sin((now - startedAt) / 3600) * 4;
+          ry += (swayY - ry) * 0.015;
+          rx += (swayX - rx) * 0.015;
+          ry = clamp(ry, -55, 30);
+          rx = clamp(rx, -22, 32);
+        }
+
+        paint();
+        requestAnimationFrame(frame);
+      };
+
+      if (!reduced) {
+        requestAnimationFrame(frame);
+      } else {
+        paint();
+      }
+
+      stage.addEventListener("pointerdown", (event) => {
+        dragging = true;
+        lastX = event.clientX;
+        lastY = event.clientY;
+        touchStartX = event.clientX;
+        touchStartY = event.clientY;
+        horizontal = false;
+        vy = 0;
+        vx = 0;
+        stage.classList.add("is-dragging");
+        if (stage.setPointerCapture && event.pointerType === "mouse") {
+          stage.setPointerCapture(event.pointerId);
+        }
+      });
+
+      stage.addEventListener("pointermove", (event) => {
+        if (!dragging) return;
+
+        const dx = event.clientX - lastX;
+        const dy = event.clientY - lastY;
+
+        if (event.pointerType !== "mouse" && !horizontal) {
+          // Let vertical scrolling through; only claim clearly horizontal drags.
+          if (Math.abs(event.clientX - touchStartX) < 8) return;
+          if (Math.abs(event.clientY - touchStartY) > Math.abs(event.clientX - touchStartX)) {
+            dragging = false;
+            stage.classList.remove("is-dragging");
+            return;
+          }
+          horizontal = true;
+        }
+
+        lastX = event.clientX;
+        lastY = event.clientY;
+        ry = clamp(ry + dx * 0.42, -60, 35);
+        rx = clamp(rx - dy * 0.3, -28, 38);
+        vy = dx * 0.32;
+        vx = -dy * 0.22;
+      });
+
+      const stop = () => {
+        dragging = false;
+        stage.classList.remove("is-dragging");
+      };
+
+      stage.addEventListener("pointerup", stop);
+      stage.addEventListener("pointercancel", stop);
+      stage.addEventListener("pointerleave", stop);
+    });
+
+    document.querySelectorAll("[data-tilt]").forEach((card) => {
+      card.addEventListener("pointermove", (event) => {
+        if (reduced || event.pointerType !== "mouse") return;
+        const rect = card.getBoundingClientRect();
+        const px = (event.clientX - rect.left) / rect.width - 0.5;
+        const py = (event.clientY - rect.top) / rect.height - 0.5;
+        card.style.setProperty("--tx", (px * 7).toFixed(2) + "deg");
+        card.style.setProperty("--ty", (-py * 7).toFixed(2) + "deg");
+        card.style.setProperty("--mx", ((px + 0.5) * 100).toFixed(1) + "%");
+        card.style.setProperty("--my", ((py + 0.5) * 100).toFixed(1) + "%");
+      });
+
+      card.addEventListener("pointerleave", () => {
+        card.style.setProperty("--tx", "0deg");
+        card.style.setProperty("--ty", "0deg");
+      });
+    });
+  })();
+</script>

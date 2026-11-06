@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v7.3.0
+
+[+] E-Book landing page 3D redesign.
+
 ## v7.2.1
 
 [+] Minor config and visual changes.

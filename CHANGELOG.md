@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v7.3.1
+
+[+] E-Book landing page 3D redesign. Try 2.
+
 ## v7.3.0
 
 [+] E-Book landing page 3D redesign.

@@ -538,7 +538,7 @@ const dust = Array.from({ length: 18 }, (_, i) => ({
 
   /* ---------- pages ---------- */
   .fj-pages {
-    --cw: 148px;
+    --cw: 200px;
     position: absolute;
     inset: 0;
     z-index: 5;
@@ -564,10 +564,11 @@ const dust = Array.from({ length: 18 }, (_, i) => ({
     position: relative;
     width: 100%;
     height: 100%;
-    padding: 0.78rem 0.7rem 0.7rem;
+    padding: 1rem 0.9rem 0.95rem;
     border-radius: 9px 5px 5px 9px;
     overflow: hidden;
     color: #16211f;
+    text-align: center;
     background:
       linear-gradient(102deg, rgba(255, 255, 255, 0.9), transparent 24%),
       linear-gradient(180deg, #fbf8f1 0%, #f1ece1 78%, #e4ddcf 100%);
@@ -578,6 +579,9 @@ const dust = Array.from({ length: 18 }, (_, i) => ({
       0 0 0 1px rgba(var(--fj-brass-rgb) / 0.22);
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.24rem;
   }
 
   .fj-page-face::before {
@@ -617,11 +621,12 @@ const dust = Array.from({ length: 18 }, (_, i) => ({
     align-items: center;
     justify-content: space-between;
     gap: 0.4rem;
+    width: 100%;
   }
 
   .fj-page-num {
     font-family: theme("fontFamily.mono");
-    font-size: 0.56rem;
+    font-size: 0.68rem;
     letter-spacing: 0.14em;
     color: #9a7b46;
   }
@@ -633,16 +638,16 @@ const dust = Array.from({ length: 18 }, (_, i) => ({
   }
 
   .fj-page-icon :global(svg) {
-    width: 0.82rem;
-    height: 0.82rem;
+    width: 1.05rem;
+    height: 1.05rem;
   }
 
   .fj-page-title {
     position: relative;
-    margin-top: 0.55rem;
+    margin-top: 0.35rem;
     font-family: theme("fontFamily.heading-bn");
-    font-size: 0.78rem;
-    line-height: 1.3;
+    font-size: 1.14rem;
+    line-height: 1.34;
     font-weight: 600;
     color: #12181b;
     opacity: 0.45;
@@ -653,19 +658,20 @@ const dust = Array.from({ length: 18 }, (_, i) => ({
     position: relative;
     display: flex;
     flex-wrap: wrap;
-    gap: 0.22rem;
-    margin-top: 0.5rem;
+    justify-content: center;
+    gap: 0.28rem;
+    margin-top: 0.35rem;
     opacity: 0;
     transition: opacity 0.45s ease;
   }
 
   .fj-page-tags span {
-    padding: 0.16rem 0.34rem;
+    padding: 0.2rem 0.46rem;
     border-radius: 999px;
     border: 1px solid rgba(47, 79, 68, 0.28);
     background: rgba(47, 127, 107, 0.07);
     font-family: theme("fontFamily.mono");
-    font-size: 0.43rem;
+    font-size: 0.54rem;
     letter-spacing: 0.03em;
     color: #3f5a52;
     white-space: nowrap;
@@ -673,12 +679,12 @@ const dust = Array.from({ length: 18 }, (_, i) => ({
 
   .fj-page-out {
     position: relative;
-    margin-top: auto;
-    padding-top: 0.45rem;
-    border-top: 1px solid rgba(176, 141, 87, 0.24);
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(176, 141, 87, 0.3);
     font-family: theme("fontFamily.body-bn");
-    font-size: 0.58rem;
-    line-height: 1.45;
+    font-size: 0.88rem;
+    line-height: 1.58;
     color: #37433f;
     opacity: 0;
     transform: translateY(5px);
@@ -1056,20 +1062,24 @@ const dust = Array.from({ length: 18 }, (_, i) => ({
   .fj-copy {
     position: absolute;
     left: clamp(1.25rem, 5vw, 4.5rem);
-    bottom: clamp(2rem, 7vh, 5rem);
+    top: 50%;
+    bottom: auto;
     z-index: 30;
-    width: min(31rem, 43vw);
+    width: min(33rem, 46vw);
     transition:
       left 0.7s cubic-bezier(0.2, 0.8, 0.2, 1),
       width 0.7s cubic-bezier(0.2, 0.8, 0.2, 1),
       transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1),
-      bottom 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+      top 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
   .fj-copy::before {
     content: "";
     position: absolute;
-    inset: -26% -18% -30% -22%;
+    top: -9rem;
+    bottom: -9rem;
+    left: -22%;
+    right: -18%;
     z-index: -1;
     background: radial-gradient(ellipse at 30% 50%, rgba(0, 0, 0, 0.5), transparent 68%);
     opacity: 0.9;
@@ -1084,10 +1094,11 @@ const dust = Array.from({ length: 18 }, (_, i) => ({
     position: absolute;
     left: 0;
     right: 0;
-    bottom: 0;
+    top: 0;
+    bottom: auto;
     opacity: 0;
     visibility: hidden;
-    transform: translateY(20px);
+    transform: translateY(calc(-50% + 18px));
     transition:
       opacity 0.55s ease,
       transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1),
@@ -1098,7 +1109,7 @@ const dust = Array.from({ length: 18 }, (_, i) => ({
   .fj-ch.is-on {
     opacity: 1;
     visibility: visible;
-    transform: translateY(0);
+    transform: translateY(-50%);
     pointer-events: auto;
   }
 
@@ -1107,8 +1118,8 @@ const dust = Array.from({ length: 18 }, (_, i) => ({
     align-items: center;
     gap: 0.65rem;
     font-family: theme("fontFamily.mono");
-    font-size: 0.6rem;
-    letter-spacing: 0.24em;
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
     color: var(--fj-brass);
   }
@@ -1152,10 +1163,10 @@ const dust = Array.from({ length: 18 }, (_, i) => ({
 
   .fj-body {
     margin-top: 1rem;
-    max-width: 30rem;
+    max-width: 32rem;
     font-family: theme("fontFamily.body-bn");
-    font-size: calc(0.94rem * var(--font-scale));
-    line-height: 1.85;
+    font-size: calc(1.08rem * var(--font-scale));
+    line-height: 1.82;
     color: var(--fj-muted);
   }
 
@@ -1167,13 +1178,13 @@ const dust = Array.from({ length: 18 }, (_, i) => ({
   }
 
   .fj-tags span {
-    padding: 0.32rem 0.7rem;
+    padding: 0.4rem 0.82rem;
     border-radius: 999px;
     border: 1px solid var(--fj-line);
     background: var(--fj-panel);
     backdrop-filter: blur(10px);
     font-family: theme("fontFamily.mono");
-    font-size: 0.55rem;
+    font-size: 0.66rem;
     letter-spacing: 0.06em;
     color: var(--fj-muted);
   }
@@ -1183,12 +1194,12 @@ const dust = Array.from({ length: 18 }, (_, i) => ({
     align-items: center;
     gap: 0.5rem;
     margin-top: 0.85rem;
-    padding: 0.34rem 0.7rem;
+    padding: 0.4rem 0.8rem;
     border-radius: 999px;
     border: 1px solid rgba(var(--fj-jade-rgb) / 0.32);
     background: rgba(var(--fj-jade-rgb) / 0.08);
     font-family: theme("fontFamily.mono");
-    font-size: 0.58rem;
+    font-size: 0.7rem;
     letter-spacing: 0.05em;
     color: var(--fj-ink);
   }
@@ -1233,7 +1244,7 @@ const dust = Array.from({ length: 18 }, (_, i) => ({
     background: linear-gradient(108deg, #efd7a8 0%, #c9a468 48%, #9fc3b5 115%);
     color: #0b1013;
     font-family: theme("fontFamily.body-bn");
-    font-size: calc(0.9rem * var(--font-scale));
+    font-size: calc(1.02rem * var(--font-scale));
     font-weight: 600;
     line-height: 1;
     border: 1px solid rgba(255, 255, 255, 0.28);
@@ -1261,7 +1272,7 @@ const dust = Array.from({ length: 18 }, (_, i) => ({
 
   .fj-secondary {
     font-family: theme("fontFamily.body-bn");
-    font-size: calc(0.8rem * var(--font-scale));
+    font-size: calc(0.9rem * var(--font-scale));
     color: var(--fj-muted);
     border-bottom: 1px solid transparent;
     transition: color 0.2s ease, border-color 0.2s ease;
@@ -1278,7 +1289,7 @@ const dust = Array.from({ length: 18 }, (_, i) => ({
     align-items: center;
     gap: 0.4rem;
     font-family: theme("fontFamily.mono");
-    font-size: 0.56rem;
+    font-size: 0.64rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--fj-faint);
@@ -1293,13 +1304,17 @@ const dust = Array.from({ length: 18 }, (_, i) => ({
     left: 50%;
     transform: translateX(-50%);
     width: min(44rem, 90vw);
-    bottom: 5.5vh;
+    top: 50%;
+    bottom: auto;
     text-align: center;
   }
 
   .fj-viewport[data-align="center"] .fj-copy::before {
-    inset: -40% -30% -40% -30%;
-    background: radial-gradient(ellipse at 50% 60%, rgba(0, 0, 0, 0.55), transparent 70%);
+    top: -10rem;
+    bottom: -10rem;
+    left: -30%;
+    right: -30%;
+    background: radial-gradient(ellipse at 50% 50%, rgba(0, 0, 0, 0.55), transparent 70%);
   }
 
   :global([data-theme="light"]) .fj-viewport[data-align="center"] .fj-copy::before {
@@ -1309,6 +1324,11 @@ const dust = Array.from({ length: 18 }, (_, i) => ({
   .fj-viewport[data-align="center"] .fj-kicker,
   .fj-viewport[data-align="center"] .fj-actions {
     justify-content: center;
+  }
+
+  /* the finale shows the book above the copy — drop the copy below it */
+  .fj-viewport[data-chapter="9"] .fj-copy {
+    top: 68%;
   }
 
   .fj-viewport[data-align="center"] .fj-body {
@@ -1327,6 +1347,8 @@ const dust = Array.from({ length: 18 }, (_, i) => ({
     flex-direction: column;
     gap: 0.55rem;
     padding: 0.6rem 0.35rem;
+    opacity: 1;
+    transition: opacity 0.5s ease;
   }
 
   .fj-rail-dot {
@@ -1484,8 +1506,20 @@ const dust = Array.from({ length: 18 }, (_, i) => ({
     .fj-copy {
       left: 1.15rem;
       right: 1.15rem;
+      top: auto;
       bottom: 1.1rem;
       width: auto;
+      transform: none;
+    }
+
+    .fj-ch {
+      top: auto;
+      bottom: 0;
+      transform: translateY(18px);
+    }
+
+    .fj-ch.is-on {
+      transform: translateY(0);
     }
 
     .fj-copy::before {
@@ -1508,7 +1542,7 @@ const dust = Array.from({ length: 18 }, (_, i) => ({
 
     .fj-body {
       margin-top: 0.7rem;
-      font-size: calc(0.82rem * var(--font-scale));
+      font-size: calc(0.92rem * var(--font-scale));
       line-height: 1.72;
     }
 
@@ -1522,7 +1556,7 @@ const dust = Array.from({ length: 18 }, (_, i) => ({
 
     .fj-cta {
       padding: 0.72rem 1.15rem;
-      font-size: calc(0.8rem * var(--font-scale));
+      font-size: calc(0.92rem * var(--font-scale));
     }
 
     .fj-note {
@@ -1530,31 +1564,36 @@ const dust = Array.from({ length: 18 }, (_, i) => ({
     }
 
     .fj-viewport[data-align="center"] .fj-copy {
+      left: 1.15rem;
+      right: 1.15rem;
+      top: auto;
       bottom: 3vh;
-      width: min(30rem, calc(100vw - 2rem));
+      width: auto;
+      transform: none;
     }
 
     .fj-pages {
-      --cw: 104px;
+      --cw: 118px;
     }
 
     .fj-page-face {
-      padding: 0.6rem 0.52rem 0.5rem;
+      padding: 0.66rem 0.58rem 0.6rem;
+      gap: 0.1rem;
     }
 
     .fj-page-title {
-      font-size: 0.62rem;
-      margin-top: 0.4rem;
+      font-size: 0.8rem;
+      margin-top: 0.3rem;
     }
 
     .fj-page-tags span {
-      font-size: 0.36rem;
-      padding: 0.12rem 0.26rem;
+      font-size: 0.44rem;
+      padding: 0.14rem 0.32rem;
     }
 
     .fj-page-out {
-      font-size: 0.46rem;
-      line-height: 1.4;
+      font-size: 0.58rem;
+      line-height: 1.45;
     }
 
     .fj-page-chip {
@@ -1565,7 +1604,7 @@ const dust = Array.from({ length: 18 }, (_, i) => ({
 
   @media (max-width: 520px) {
     .fj-pages {
-      --cw: 96px;
+      --cw: 108px;
     }
 
     .fj-body {
@@ -1657,6 +1696,7 @@ const dust = Array.from({ length: 18 }, (_, i) => ({
     const liveTitle = film.querySelector("[data-live-title]");
     const liveCount = film.querySelector("[data-live-count]");
     const railDots = Array.from(film.querySelectorAll("[data-goto]"));
+    const rail = film.querySelector(".fj-rail");
     if (!viewport || !scene || !book || !pagesWrap || cards.length === 0) return;
 
     const N = cards.length;
@@ -1676,6 +1716,10 @@ const dust = Array.from({ length: 18 }, (_, i) => ({
       book: [0.94, 1.0],
     };
 
+    // Moment the reader dot reaches the top center (first 55% of the reveal
+    // beat). The bold closing copy must not appear before this.
+    const ARRIVE = T.reveal[0] + (T.reveal[1] - T.reveal[0]) * 0.55;
+
     const CHAPTER_WINDOWS = chapters.map((_, i) => {
       const starts = [
         T.hero[0],
@@ -1686,7 +1730,7 @@ const dust = Array.from({ length: 18 }, (_, i) => ({
         T.path[0],
         T.travel[0],
         T.beacon[0],
-        T.reveal[0],
+        ARRIVE,
         T.book[0],
       ];
       const ends = [
@@ -1738,14 +1782,14 @@ const dust = Array.from({ length: 18 }, (_, i) => ({
     let travelSpacing = 210;
 
     const scatterTable = [
-      [0.52, 0.2],
-      [0.69, 0.14],
-      [0.85, 0.24],
-      [0.57, 0.41],
-      [0.74, 0.35],
-      [0.9, 0.46],
-      [0.62, 0.64],
-      [0.81, 0.59],
+      [0.46, 0.27],
+      [0.66, 0.235],
+      [0.88, 0.3],
+      [0.53, 0.44],
+      [0.76, 0.36],
+      [0.93, 0.51],
+      [0.6, 0.69],
+      [0.85, 0.63],
     ];
     const scatterTableNarrow = [
       [0.24, 0.17],
@@ -1764,7 +1808,7 @@ const dust = Array.from({ length: 18 }, (_, i) => ({
       H = rect.height || window.innerHeight;
       narrow = W < 860;
 
-      baseW = narrow ? Math.min(112, W * 0.265) : Math.min(150, W * 0.115);
+      baseW = narrow ? Math.min(132, W * 0.34) : Math.min(222, W * 0.165);
       baseH = baseW * 1.34;
       pagesWrap.style.setProperty("--cw", baseW.toFixed(1) + "px");
 
@@ -1774,14 +1818,14 @@ const dust = Array.from({ length: 18 }, (_, i) => ({
       const wideGrid = !narrow || W >= 560;
       const cols = wideGrid ? 4 : 2;
       const rows = wideGrid ? 2 : 4;
-      const ax0 = narrow ? W * 0.05 : W * 0.46;
-      const ax1 = narrow ? W * 0.95 : W * 0.96;
-      const ay0 = narrow ? H * 0.1 : H * 0.19;
-      const ay1 = narrow ? H * 0.7 : H * 0.79;
-      const gap = Math.max(8, Math.min(W, H) * 0.025);
+      const ax0 = narrow ? W * 0.05 : W * 0.38;
+      const ax1 = narrow ? W * 0.95 : W * 0.965;
+      const ay0 = narrow ? H * 0.09 : H * 0.08;
+      const ay1 = narrow ? H * 0.7 : H * 0.92;
+      const gap = Math.max(8, Math.min(W, H) * 0.022);
       const fitX = (ax1 - ax0 - (cols - 1) * gap) / (cols * baseW);
       const fitY = (ay1 - ay0 - (rows - 1) * gap) / (rows * baseH);
-      const maxScale = narrow ? 1.2 : 1;
+      const maxScale = narrow ? 1.15 : 1.18;
       gatherScale = Math.max(0.3, Math.min(maxScale, fitX, fitY));
 
       const cw = baseW * gatherScale;
@@ -1802,8 +1846,8 @@ const dust = Array.from({ length: 18 }, (_, i) => ({
 
       overviewSpacing = (H * (narrow ? 0.5 : 0.68)) / (N - 1);
       travelSpacing = narrow
-        ? baseH * 1.4 + 16
-        : baseH * 1.5 + 34;
+        ? baseH * 1.6 + 14
+        : baseH * 1.8 + 30;
 
       if (webSvg) webSvg.setAttribute("viewBox", `0 0 ${W} ${H}`);
       webPath?.setAttribute("d", "");
@@ -1816,7 +1860,7 @@ const dust = Array.from({ length: 18 }, (_, i) => ({
       return {
         x: row[0] * W,
         y: row[1] * H,
-        scale: narrow ? 0.82 : 0.86,
+        scale: narrow ? 0.9 : 0.95,
         rot: (i % 2 ? 1 : -1) * (3.5 + (i % 3) * 1.4),
         ry: (i % 2 ? 1 : -1) * (10 + (i % 3) * 3),
         rx: ((i % 3) - 1) * 4,
@@ -1825,19 +1869,19 @@ const dust = Array.from({ length: 18 }, (_, i) => ({
     }
 
     function pathState(i, active, zoom) {
-      // a gentle sinusoidal sway makes the overview read as a winding journey;
-      // it unwinds as the camera zooms in so the active page settles on center.
+      // a strong S-curve makes the journey snake left ↔ right down the screen;
+      // it settles (but never fully straightens) as the camera zooms in.
       const sway =
-        Math.sin(i * 1.15) * W * (narrow ? 0.032 : 0.055) * (1 - zoom);
-      const x = W * (narrow ? 0.6 : 0.68) + sway;
-      const y0 = lerp(H * (narrow ? 0.14 : 0.16), H * (narrow ? 0.38 : 0.5), zoom);
+        Math.sin(i * 1.3 + 0.5) * W * (narrow ? 0.055 : 0.125) * (1 - zoom * 0.45);
+      const x = W * (narrow ? 0.6 : 0.66) + sway;
+      const y0 = lerp(H * (narrow ? 0.16 : 0.18), H * 0.5, zoom);
       const spacing = lerp(overviewSpacing, travelSpacing, zoom);
       const d = Math.abs(i - active);
       const focus = 1 - clamp01(d / 2);
       return {
         x,
         y: y0 + (i - active) * spacing,
-        scale: lerp(0.42, lerp(0.5, 1.5, Math.pow(focus, 1.5)), zoom),
+        scale: lerp(0.55, lerp(0.62, 2.1, Math.pow(focus, 1.5)), zoom),
         rot: 0,
         ry: lerp(-4, -9, zoom),
         rx: clamp((i - active) * 2.4, -8, 8) * zoom,
@@ -1912,9 +1956,26 @@ const dust = Array.from({ length: 18 }, (_, i) => ({
         el.inert = !on;
       });
 
+      // -1 = no copy at all (the dot is traveling to the top; the screen
+      // shows only the dot and the dark room).
+      if (index < 0) {
+        viewport.removeAttribute("data-chapter");
+        if (rail) {
+          rail.style.opacity = "0";
+          rail.style.pointerEvents = "none";
+        }
+        return;
+      }
+
+      if (rail) {
+        rail.style.opacity = "1";
+        rail.style.pointerEvents = "";
+      }
+
       const c = chapters[index];
       const align = c?.getAttribute("data-align") || "left";
       viewport.setAttribute("data-align", align);
+      viewport.setAttribute("data-chapter", String(index));
 
       if (hudIndex) hudIndex.textContent = bn(index + 1);
       if (hudLabel) hudLabel.textContent = c?.getAttribute("data-label") || "";
@@ -1943,22 +2004,38 @@ const dust = Array.from({ length: 18 }, (_, i) => ({
       [4, 7],
     ];
 
+    // Smooth S-curve through the route points (Catmull-Rom → cubic Bézier),
+    // so the journey path flows instead of zig-zagging in straight lines.
     function buildPath(points) {
-      return points
-        .map((pt, i) => `${i === 0 ? "M" : "L"}${pt.x.toFixed(1)} ${pt.y.toFixed(1)}`)
-        .join(" ");
+      if (points.length === 0) return "";
+      if (points.length === 1) return `M${points[0].x.toFixed(1)} ${points[0].y.toFixed(1)}`;
+      let d = `M${points[0].x.toFixed(1)} ${points[0].y.toFixed(1)}`;
+      for (let i = 0; i < points.length - 1; i++) {
+        const p0 = points[Math.max(0, i - 1)];
+        const p1 = points[i];
+        const p2 = points[i + 1];
+        const p3 = points[Math.min(points.length - 1, i + 2)];
+        const c1x = p1.x + (p2.x - p0.x) / 6;
+        const c1y = p1.y + (p2.y - p0.y) / 6;
+        const c2x = p2.x - (p3.x - p1.x) / 6;
+        const c2y = p2.y - (p3.y - p1.y) / 6;
+        d += ` C${c1x.toFixed(1)} ${c1y.toFixed(1)} ${c2x.toFixed(1)} ${c2y.toFixed(1)} ${p2.x.toFixed(1)} ${p2.y.toFixed(1)}`;
+      }
+      return d;
     }
 
     // ---------- main render ----------
     function render() {
       const t = p;
 
-      pagesWrap.classList.toggle("is-scattered", t >= T.break[0] + 0.01);
+      pagesWrap.classList.toggle("is-scattered", t >= T.scatter[0] + 0.01);
       pagesWrap.classList.toggle("is-gathered", t >= T.gather[0] + 0.02);
       pagesWrap.classList.toggle("is-outcome", t >= T.outcome[0]);
 
-      // book
+      // book — opens fully during the "break" beat while zooming in; then
+      // zooms back out and fades as the pages and topics emerge.
       const breakT = ease(seg(t, T.break));
+      const emergeT = ease(seg(t, [T.scatter[0], T.gather[0] + 0.04]));
       let bookOp = 1;
       let bookScale = 1;
       let btx = 0;
@@ -1967,21 +2044,30 @@ const dust = Array.from({ length: 18 }, (_, i) => ({
 
       if (t < T.break[0]) {
         bookOp = 1;
-      } else if (t < T.break[1]) {
-        open = smoothstep(0, 0.55, breakT);
-        bookOp = 1 - smoothstep(0.5, 1, breakT);
-        bookScale = 1 - 0.2 * breakT;
-        bty = H * 0.02 * breakT;
+        bookScale = 1;
+        open = 0;
+      } else if (t < T.scatter[0]) {
+        // opening: the book opens completely, zooming in gradually
+        open = smoothstep(0, 0.8, breakT);
+        bookScale = 1 + 0.6 * breakT;
+        bookOp = 1;
+      } else if (t < T.gather[0] + 0.04) {
+        // pages & topics emerge: gradual zoom-out, then fade away
+        open = 1;
+        bookScale = lerp(1.6, 0.95, emergeT);
+        bookOp = 1 - smoothstep(0.5, 1, emergeT);
+        bty = H * 0.02 * emergeT;
       } else if (t < T.book[0]) {
         bookOp = 0;
         open = 1;
+        bookScale = 0.95;
       } else {
         const bt = ease(seg(t, T.book));
         bookOp = smoothstep(0, 0.5, bt);
         open = 1 - smoothstep(0, 0.45, bt);
-        bookScale = lerp(0.72, 1.04, bt);
+        bookScale = lerp(0.66, 0.85, bt);
         const fx = 0.5;
-        const fy = narrow ? 0.29 : 0.32;
+        const fy = narrow ? 0.21 : 0.225;
         const fromX = narrow ? 0.5 : 0.64;
         const fromY = narrow ? 0.31 : 0.5;
         btx = (fx - fromX) * W * smoothstep(0, 0.75, bt);
@@ -1996,18 +2082,20 @@ const dust = Array.from({ length: 18 }, (_, i) => ({
       book.style.setProperty("--hintop", (t < 0.012 ? 0.7 : 0).toFixed(2));
       book.style.pointerEvents = bookOp > 0.4 ? "auto" : "none";
 
-      // page states
+      // gather → path → travel beats
       const gatherT = ease(seg(t, T.gather));
       const pathT = ease(seg(t, T.path));
       const travelT = seg(t, T.travel);
-      const zoomT = smoothstep(T.travel[0], T.travel[0] + 0.032, t);
-      const active = travelT * (N - 1);
+      // zoom locks onto the FIRST page before the journey starts moving
+      const zoomT = smoothstep(0, 0.075, travelT);
+      // ...so hold the dot/camera on page 1 until the zoom is done
+      const active = clamp01((travelT - 0.1) / 0.86) * (N - 1);
       const beaconFade = 1 - smoothstep(T.beacon[0], T.beacon[0] + 0.05, t);
 
       const points = [];
 
       cards.forEach((card, i) => {
-        const em = ease(clamp01((t - (T.break[0] + i * 0.007)) / 0.058));
+        const em = ease(clamp01((t - (T.scatter[0] + i * 0.007)) / 0.058));
         const sc = scatterState(i);
         let st = {
           x: lerp(bookX, sc.x, em),
@@ -2050,7 +2138,7 @@ const dust = Array.from({ length: 18 }, (_, i) => ({
           op = lerp(op, op * lerp(1, focusOp, zoomT), pathT);
         }
         op *= beaconFade;
-        if (t < T.break[0]) op = 0;
+        if (t < T.scatter[0]) op = 0;
 
         const dx = st.x - W / 2;
         const dy = st.y - H / 2;
@@ -2067,7 +2155,7 @@ const dust = Array.from({ length: 18 }, (_, i) => ({
 
       // connecting web (scatter → outcomes)
       const webOp =
-        smoothstep(T.break[1] - 0.02, T.break[1] + 0.015, t) *
+        smoothstep(T.scatter[1] - 0.05, T.scatter[1] + 0.02, t) *
         (1 - smoothstep(T.path[0], T.path[0] + 0.03, t));
       if (webSvg) webSvg.style.opacity = "1";
       if (webPath) webPath.style.opacity = webOp.toFixed(3);
@@ -2084,9 +2172,9 @@ const dust = Array.from({ length: 18 }, (_, i) => ({
       const trackOp =
         smoothstep(T.path[0] + 0.02, T.path[0] + 0.045, t) * beaconFade;
       // keep the route and reader clear of the (enlarged) active page
-      const routeOff = lerp(baseW * 0.34 + 8, baseW * 0.75 + 18, zoomT);
+      const routeOff = lerp(baseW * 0.4 + 6, baseW * 1.25 + 24, zoomT);
       const route = points.map((pt, i) => ({
-        x: pt.x - routeOff + Math.sin(i * 1.3) * 10,
+        x: pt.x - routeOff + Math.sin(i * 1.3) * 8,
         y: pt.y,
       }));
       const routeD = buildPath(route);
@@ -2108,12 +2196,13 @@ const dust = Array.from({ length: 18 }, (_, i) => ({
         col = mixColor(C_JADE, C_GOLD, (journeyT - 0.5) * 2);
       }
 
-      const revealT = ease(seg(t, T.reveal));
+      const revealT = ease(seg(t, [T.reveal[0], ARRIVE]));
+      const y0Now = lerp(H * (narrow ? 0.16 : 0.18), H * 0.5, zoomT);
       const readerY =
         t < T.reveal[0]
-          ? lerp(H * (narrow ? 0.14 : 0.16), H * (narrow ? 0.38 : 0.5), zoomT)
-          : lerp(H * (narrow ? 0.38 : 0.5), H * 0.27, revealT);
-      const stackX = W * (narrow ? 0.6 : 0.68);
+          ? y0Now
+          : lerp(H * 0.5, H * 0.27, revealT);
+      const stackX = W * (narrow ? 0.6 : 0.66);
       const readerX =
         t < T.reveal[0]
           ? stackX - routeOff
@@ -2158,9 +2247,9 @@ const dust = Array.from({ length: 18 }, (_, i) => ({
         (1 - smoothstep(T.reveal[0] - 0.015, T.reveal[0] + 0.01, t)).toFixed(3)
       );
 
-      // chapters
+      // chapters — while the dot travels to the top center, no copy shows
       const ci = chapterFor(t);
-      setChapter(ci);
+      setChapter(t >= T.reveal[0] && t < ARRIVE ? -1 : ci);
 
       if (hudBar) hudBar.style.setProperty("--progress", (t * 100).toFixed(2) + "%");
 

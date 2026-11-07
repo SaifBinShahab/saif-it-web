@@ -16,6 +16,8 @@ import Container from "@/components/ui/Container.astro";
 import Button from "@/components/ui/Button.astro";
 import FAQ from "@/components/FAQ.astro";
 import FilmJourney from "@/components/ebook/FilmJourney.astro";
+import ReviewForm from "@/components/ebook/ReviewForm.tsx";
+import { contact } from "@/data/siteConfig";
 import {
   ebookChapters,
   ebookWhy,
@@ -25,6 +27,7 @@ import {
 } from "@/data/ebook";
 
 const orderHref = "#pricing";
+const accessKey = contact.web3formsAccessKey;
 ---
 
 <BaseLayout
@@ -239,6 +242,46 @@ const orderHref = "#pricing";
             <Button href={orderHref} variant="primary" size="md">আপনার কপিটি নিন</Button>
           </div>
           <p class="eb-fine">৳TBA · ডিজিটাল PDF · যেকোনো ডিভাইসে</p>
+        </div>
+      </Container>
+    </section>
+
+    <!-- ============ REVIEW ============ -->
+    <!-- Share links for readers (they open this form with the reader type
+         preset): …#review-partial for partial readers, …#review-full for
+         full readers. The type is not user-selectable. -->
+    <section class="eb-sec eb-review" id="review">
+      <Container>
+        <span id="review-partial" class="eb-anchor" aria-hidden="true"></span>
+        <span id="review-full" class="eb-anchor" aria-hidden="true"></span>
+        <div class="eb-review-grid">
+          <div class="eb-review-aside" data-reveal>
+            <p class="eb-kicker">পাঠকের রিভিউ</p>
+            <h2 class="eb-h2">পড়ে ফেলেছেন? <span class="eb-grad">লিখে দিন।</span></h2>
+            <p class="eb-lede">
+              আংশিক পড়েছেন, নাকি পুরোটাই শেষ করেছেন — আপনার ছোট রিভিউটি
+              সরাসরি লেখকের কাছে পৌঁছে যাবে। এটা দিয়ে বইটা আরও সহজ ও
+              আরও কাজের করার চেষ্টা হবে।
+            </p>
+
+            <div class="eb-review-links">
+              <a class="eb-review-link" href="#review-partial">
+                <b>আংশিক পড়েছি <span aria-hidden="true">→</span></b>
+              </a>
+              <a class="eb-review-link" href="#review-full">
+                <b>সম্পূর্ণ বইটি পড়েছি <span aria-hidden="true">→</span></b>
+              </a>
+            </div>
+          </div>
+
+          <div class="eb-review-panel" data-reveal>
+            <ReviewForm client:load accessKey={accessKey} />
+            <noscript>
+              <p class="text-sm text-[var(--text-muted)]">
+                রিভিউ ফর্মটি দেখাতে জাভাস্ক্রিপ্ট চালু থাকা প্রয়োজন।
+              </p>
+            </noscript>
+          </div>
         </div>
       </Container>
     </section>
@@ -871,6 +914,108 @@ const orderHref = "#pricing";
     background: var(--eb-panel);
     padding: 0.4rem 1.4rem;
     backdrop-filter: blur(12px);
+  }
+
+  /* ---------- review ---------- */
+  .eb-review {
+    border-top: 1px solid var(--eb-line);
+    background:
+      radial-gradient(ellipse 60% 50% at 18% 0%, rgba(var(--accent-rgb) / 0.06), transparent 60%),
+      linear-gradient(180deg, rgba(0, 0, 0, 0.12), transparent 35%);
+  }
+
+  :global([data-theme="light"]) .eb-review {
+    background:
+      radial-gradient(ellipse 60% 50% at 18% 0%, rgba(var(--accent-rgb) / 0.1), transparent 60%);
+  }
+
+  .eb-anchor {
+    display: block;
+    height: 0;
+    scroll-margin-top: 5.5rem;
+  }
+
+  .eb-review-grid {
+    display: grid;
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: start;
+  }
+
+  @media (min-width: 920px) {
+    .eb-review-grid {
+      grid-template-columns: 0.72fr 1.28fr;
+    }
+
+    .eb-review-aside {
+      position: sticky;
+      top: 6rem;
+    }
+  }
+
+  .eb-review-links {
+    display: grid;
+    gap: 0.6rem;
+    margin-top: 1.6rem;
+  }
+
+  .eb-review-links-title {
+    font-family: theme("fontFamily.mono");
+    font-size: 0.66rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .eb-review-link {
+    display: block;
+    padding: 0.9rem 1.05rem;
+    border-radius: 16px;
+    border: 1px solid var(--eb-line);
+    background: var(--eb-panel);
+    text-decoration: none;
+    transition: transform 0.25s ease, border-color 0.25s ease;
+  }
+
+  .eb-review-link:hover {
+    transform: translateY(-2px);
+    border-color: rgba(var(--accent-rgb) / 0.45);
+  }
+
+  .eb-review-link b {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .eb-review-link b span {
+    color: var(--eb-jade);
+  }
+
+  .eb-review-link small {
+    display: block;
+    margin-top: 0.35rem;
+    font-family: theme("fontFamily.mono");
+    font-size: 0.58rem;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+    overflow-wrap: anywhere;
+  }
+
+  .eb-review-panel {
+    border-radius: 20px;
+    border: 1px solid var(--eb-line);
+    background: linear-gradient(165deg, var(--eb-panel-strong), var(--eb-panel));
+    box-shadow: 0 30px 60px -40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(14px);
+    padding: clamp(1.25rem, 3vw, 2rem);
+  }
+
+  :global([data-theme="light"]) .eb-review .eb-review-panel {
+    box-shadow: 0 30px 60px -45px rgba(18, 24, 27, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.8);
   }
 
   /* ---------- final ---------- */

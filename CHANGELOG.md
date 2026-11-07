@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v7.3.3
+
+[+] E-book review form added.
+
 ## v7.3.2
 
 [+] E-Book landing page 3D redesign. Try 2 - Fixes.

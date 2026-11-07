@@ -1,0 +1,2295 @@
+---
+// Cinematic, scroll-driven "film" for the Bangla e-book landing page.
+//
+// The whole thing is one tall wrapper with a sticky 100svh stage. A small
+// vanilla engine maps scroll progress (0 → 1) to a timeline of ten beats:
+// hero → book opens → pages scatter → topics gather into pages → learning
+// outcomes → pages assemble into a path → the reader travels the path and
+// changes colour → beacon in the dark → "you too can become cyber-aware" →
+// the book returns for the final order CTA.
+//
+// The visual effects (3D book, aurora, glass, gradient type) are an
+// owner-approved exception scoped to this page / component only.
+import Button from "@/components/ui/Button.astro";
+import { ebookChapters } from "@/data/ebook";
+
+interface Props {
+  ctaHref: string;
+}
+
+const { ctaHref = "#pricing" } = Astro.props;
+
+const chapters = [
+  {
+    label: "পরিচয়",
+    kicker: "বাংলা ডিজিটাল ই-বুক",
+    title: 'আপনার অনলাইন জীবন, <span class="fj-grad">আরও নিরাপদ।</span>',
+    body: "মোবাইল ব্যাংকিং, ফেসবুক, পাসওয়ার্ড, হোম ওয়াইফাই — প্রতিদিনের ডিজিটাল জীবনের নিরাপত্তা, সহজ বাংলায়। আগে থেকে কোনো টেকনিক্যাল জ্ঞান লাগবে না।",
+    cta: "বইটি সংগ্রহ করুন",
+    note: "স্ক্রল করুন — ভেতরের যাত্রা শুরু হবে",
+    hero: true,
+    tags: ["সহজ বাংলা", "শুরু থেকে", "যেকোনো ডিভাইস"],
+  },
+  {
+    label: "আট অধ্যায়",
+    kicker: "একটি বই, আটটি অধ্যায়",
+    title: "একটা বই খুললে ভেতরে থাকে আলাদা আলাদা বিষয়।",
+    body: "প্রতিদিন আপনি যেসব জিনিস ব্যবহার করেন, তার প্রতিটির জন্য আলাদা করে জানার আছে।",
+    cta: "আটটি অধ্যায় একসাথে নিন",
+  },
+  {
+    label: "ছড়িয়ে",
+    kicker: "ছড়িয়ে থাকা প্রশ্ন",
+    title: "নিরাপত্তার প্রশ্নগুলো আপনার জীবনের সব জায়গায় ছড়িয়ে আছে।",
+    body: "ফোনে, ব্যাংকে, ব্রাউজারে, বাসার ওয়াইফাইয়ে। কোন প্রশ্নটা কোথায় — সেটাই আগে বুঝতে হবে।",
+    cta: "প্রথম অধ্যায় থেকে শুরু করুন",
+  },
+  {
+    label: "এক জায়গায়",
+    kicker: "এক জায়গায়",
+    title: "ছড়িয়ে থাকা বিষয়গুলো যখন এক জায়গায় আসে।",
+    body: "আটটি অধ্যায়ে সাজানো — প্রতিটি পাতায় একটি করে পরিষ্কার উত্তর।",
+    cta: "গুছানো উত্তরগুলো নিন",
+  },
+  {
+    label: "শিক্ষা",
+    kicker: "প্রতিটি পাতার শিক্ষা",
+    title: "এক পাতায়, একটি করে কাজের শিক্ষা।",
+    body: "শুধু তথ্য নয় — কোন পরিস্থিতিতে ঠিক কী করবেন, সেটাই লেখা।",
+    cta: "কাজের শিক্ষাটা নিন",
+  },
+  {
+    label: "পথ",
+    kicker: "আপনার যাত্রা",
+    title: "আটটি অধ্যায়, একটি পথ।",
+    body: "শুরুটা ছোট — একটি অভ্যাস বদলালেই ঝুঁকি অনেকটা কমে আসে। বাকিটা ধাপে ধাপে।",
+    cta: "পথের প্রথম ধাপ নিন",
+  },
+  {
+    label: "যাত্রা",
+    kicker: "ধাপে ধাপে",
+    title: "প্রতিটি পাতায় একটি করে অভ্যাস তৈরি হবে।",
+    body: "যাত্রার মাঝপথে আপনি নিজেই বুঝতে পারবেন — কোনটা আপনার জন্য সবচেয়ে জরুরি।",
+    cta: "এই যাত্রায় যুক্ত হোন",
+    live: true,
+  },
+  {
+    label: "আলো",
+    kicker: "পথের শেষে",
+    title: "শেষে থেকে যায় শুধু একটি অভ্যাস।",
+    body: "জ্ঞানটুকু আপনার সাথে থাকে — বইয়ের বাইরেও, প্রতিদিনের কাজে।",
+    cta: "নিজের জন্য বইটি নিন",
+  },
+  {
+    label: "শেষ কথা",
+    kicker: "শেষ কথা",
+    title: 'আপনিও হতে পারেন <span class="fj-grad">সাইবার-সচেতন।</span>',
+    body: "সাইবার নিরাপত্তা শুধু বিশেষজ্ঞদের জন্য নয় — এটি প্রতিদিনের সচেতনতার অভ্যাস।",
+    cta: "আজই শুরু করুন",
+    align: "center",
+  },
+  {
+    label: "বই",
+    kicker: "সবার জন্য সাইবার নিরাপত্তা",
+    title: "সহজ বাংলায় লেখা, শুরু থেকে পড়ার মতো।",
+    body: "একবার সংগ্রহ করলে যতবার প্রয়োজন, ততবার ডাউনলোড। যেকোনো ডিভাইসে, যেকোনো সময়।",
+    cta: "অর্ডার করুন",
+    price: "৳TBA",
+    secondary: "প্রশ্ন আছে?",
+    align: "center",
+  },
+];
+
+const bn = (value: number) =>
+  String(value).replace(/[0-9]/g, (d) => "০১২৩৪৫৬৭৮৯"[Number(d)]);
+const totalBn = bn(chapters.length);
+const pageTotalBn = bn(ebookChapters.length);
+
+// Deterministic dust so the dark room feels alive without a canvas.
+const dust = Array.from({ length: 18 }, (_, i) => ({
+  x: (i * 37 + 11) % 100,
+  y: (i * 53 + 7) % 100,
+  delay: -((i * 1.7) % 12),
+  size: 1 + (i % 3) * 0.7,
+  dur: 9 + (i % 5) * 2.4,
+}));
+---
+
+<section class="fj" data-film aria-labelledby="fj-title">
+  <noscript><style>
+    .fj { height: auto !important; }
+    .fj-viewport { display: none !important; }
+    .fj-fallback { display: grid !important; }
+  </style></noscript>
+
+  <!-- Reduced-motion / no-JS version: a calm editorial read of the same beats. -->
+  <div class="fj-fallback" data-fallback>
+    {chapters.map((c, i) => (
+      <article class:list={["fj-fb-card", i === 0 && "fj-fb-lead"]} data-reveal>
+        <p class="fj-fb-kicker">{c.kicker}</p>
+        {i === 0 ? (
+          <h1 id="fj-title" class="fj-fb-title" set:html={c.title} />
+        ) : (
+          <h2 class="fj-fb-title" set:html={c.title} />
+        )}
+        <p class="fj-fb-body">{c.body}</p>
+        {c.price && <p class="fj-fb-price">{c.price}</p>}
+        <a class="fj-fb-cta" href={ctaHref}>
+          {c.cta}
+          <span aria-hidden="true">↗</span>
+        </a>
+      </article>
+    ))}
+  </div>
+
+  <div class="fj-viewport" data-viewport data-align="left">
+    <!-- ---------- backdrop ---------- -->
+    <div class="fj-bg" aria-hidden="true">
+      <div class="fj-grid"></div>
+      <div class="fj-light"></div>
+      <div class="fj-light fj-light-brass"></div>
+      <div class="fj-vignette"></div>
+      <div class="fj-dust">
+        {dust.map((d) => (
+          <span
+            style={`left:${d.x}%;top:${d.y}%;--d:${d.delay}s;--s:${d.size}px;--dur:${d.dur}s`}
+          />
+        ))}
+      </div>
+      <div class="fj-shade" data-shade></div>
+    </div>
+
+    <!-- ---------- progress HUD ---------- -->
+    <div class="fj-hud" data-hud aria-hidden="true">
+      <span class="fj-hud-count"><b data-hud-index>০১</b> / {totalBn}</span>
+      <span class="fj-hud-track"><i data-hud-bar></i></span>
+      <span class="fj-hud-label" data-hud-label>পরিচয়</span>
+    </div>
+
+    <!-- ---------- the scene ---------- -->
+    <div class="fj-scene" data-scene>
+      <svg class="fj-web" data-web viewBox="0 0 1000 800" aria-hidden="true">
+        <path class="fj-web-lines" data-web-path></path>
+        <path class="fj-track-glow" data-track-glow></path>
+        <path class="fj-track" data-track></path>
+      </svg>
+
+      <!-- 3D book -->
+      <div class="fj-book" data-book role="img" aria-label="বইয়ের থ্রি-ডি প্রিভিউ — ড্র্যাগ করে ঘোরানো যায়">
+        <div class="fj-book-aura"></div>
+        <div class="fj-shield" aria-hidden="true">
+          <svg viewBox="0 0 400 440" fill="none">
+            <polygon class="fj-shield-1" points="200,14 384,116 384,324 200,426 16,324 16,116" />
+            <polygon class="fj-shield-2" points="200,54 348,134 348,306 200,386 52,306 52,134" />
+            <polygon class="fj-shield-3" points="200,94 312,152 312,288 200,346 88,288 88,152" />
+            <path class="fj-shield-lines" d="M200 14v412M16 116l368 208M384 116L16 324M200 54 348 306M200 54 52 306M200 386 348 134M200 386 52 134" />
+          </svg>
+        </div>
+        <div class="fj-sway">
+          <div class="fj-tilt" data-book-tilt>
+            <div class="fj-book3d">
+              <div class="fj-bface fj-bback" aria-hidden="true"></div>
+              <div class="fj-bface fj-bspine" aria-hidden="true"></div>
+              <div class="fj-bface fj-bpages" aria-hidden="true"></div>
+              <div class="fj-bsheet" style="--i:1" aria-hidden="true"></div>
+              <div class="fj-bsheet" style="--i:2" aria-hidden="true"></div>
+              <div class="fj-bsheet" style="--i:3" aria-hidden="true"></div>
+              <div class="fj-bsheet" style="--i:4" aria-hidden="true"></div>
+              <div class="fj-bface fj-bfront" data-book-front>
+                <img
+                  class="fj-cover-art"
+                  src="/images/works/ebook-cover-art.svg"
+                  alt=""
+                  width="640"
+                  height="870"
+                  loading="eager"
+                  fetchpriority="high"
+                />
+                <span class="fj-cover-shade" aria-hidden="true"></span>
+                <span class="fj-cover-text" aria-hidden="true">
+                  <span class="fj-cover-kicker">ই-বুক</span>
+                  <span class="fj-cover-title">সবার জন্য<br />সাইবার নিরাপত্তা</span>
+                  <span class="fj-cover-author">সাইফ বিন শাহাব</span>
+                </span>
+                <span class="fj-sheen" aria-hidden="true"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="fj-bshadow" aria-hidden="true"></div>
+        <span class="fj-bhint" aria-hidden="true">ড্র্যাগ করে ঘুরিয়ে দেখুন</span>
+      </div>
+
+      <!-- loose pages -->
+      <div class="fj-pages" data-pages>
+        {ebookChapters.map((c, i) => (
+          <article class="fj-page" data-page style={`--i:${i}`}>
+            <span class="fj-page-chip" aria-hidden="true">{c.title}</span>
+            <div class="fj-page-face">
+              <span class="fj-page-ruler" aria-hidden="true"></span>
+              <div class="fj-page-top">
+                <span class="fj-page-num">{c.n}</span>
+                <span class="fj-page-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" set:html={c.icon} />
+                </span>
+              </div>
+              <h3 class="fj-page-title">{c.title}</h3>
+              <div class="fj-page-tags" aria-hidden="true">
+                {c.tags.map((t) => <span>{t}</span>)}
+              </div>
+              <p class="fj-page-out">{c.outcome}</p>
+              <span class="fj-page-glow" aria-hidden="true"></span>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <!-- the reader / beacon -->
+      <div class="fj-reader" data-reader aria-hidden="true">
+        <span class="fj-reader-halo"></span>
+        <span class="fj-reader-ring"></span>
+        <span class="fj-reader-core"></span>
+      </div>
+    </div>
+
+    <!-- ---------- copy ---------- -->
+    <div class="fj-copy" data-copy>
+      {chapters.map((c, i) => (
+        <article
+          class:list={["fj-ch", i === 0 && "is-on"]}
+          data-chapter={i}
+          data-align={c.align ?? "left"}
+          data-label={c.label}
+        >
+          <p class="fj-kicker"><span class="fj-kicker-line"></span>{c.kicker}</p>
+          {c.hero ? (
+            <h1 id="fj-title" class="fj-title fj-title-hero" set:html={c.title} />
+          ) : (
+            <h2 class="fj-title" set:html={c.title} />
+          )}
+          {c.live && (
+            <p class="fj-live">
+              <span class="fj-live-dot" aria-hidden="true"></span>
+              <span data-live-title>{ebookChapters[0].title}</span>
+              <span class="fj-live-count">
+                <span data-live-count>{bn(1)}</span> / {pageTotalBn}
+              </span>
+            </p>
+          )}
+          <p class="fj-body">{c.body}</p>
+          {c.hero && (
+            <div class="fj-tags">
+              {c.tags?.map((t) => <span>{t}</span>)}
+            </div>
+          )}
+          {c.price && <p class="fj-price">{c.price}</p>}
+          <div class="fj-actions">
+            <a class="fj-cta" href={ctaHref}>
+              <span>{c.cta}</span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M5 12h14M13 6l6 6-6 6" />
+              </svg>
+            </a>
+            {c.secondary && (
+              <a class="fj-secondary" href="#faq">{c.secondary} <span aria-hidden="true">↓</span></a>
+            )}
+          </div>
+          {c.note && <p class="fj-note"><span aria-hidden="true">↓</span> {c.note}</p>}
+        </article>
+      ))}
+    </div>
+
+    <!-- ---------- chapter rail ---------- -->
+    <nav class="fj-rail" aria-label="অধ্যায়সমূহ">
+      {chapters.map((c, i) => (
+        <button
+          type="button"
+          class:list={["fj-rail-dot", i === 0 && "is-active"]}
+          data-goto={i}
+          aria-label={`${bn(i + 1)} — ${c.label}`}
+          title={c.label}
+        >
+          <span aria-hidden="true"></span>
+        </button>
+      ))}
+    </nav>
+  </div>
+</section>
+
+<style>
+  /* ============================================================
+     Page-scoped cinematic system. Everything is namespaced .fj-*
+     so none of it leaks into the rest of the site.
+     ============================================================ */
+  .fj {
+    --fj-bg: #070b0d;
+    --fj-bg-2: #0c1417;
+    --fj-ink: #f4f1ea;
+    --fj-muted: rgba(244, 241, 234, 0.62);
+    --fj-faint: rgba(244, 241, 234, 0.34);
+    --fj-line: rgba(244, 241, 234, 0.1);
+    --fj-panel: rgba(255, 255, 255, 0.05);
+    --fj-jade: #5fd3b0;
+    --fj-jade-rgb: 95 211 176;
+    --fj-brass: #e2bd85;
+    --fj-brass-rgb: 226 189 133;
+    --fj-shadow: rgba(0, 0, 0, 0.7);
+    --fj-shade: #000000;
+    --fj-shade-max: 0.62;
+
+    position: relative;
+    height: 900svh;
+    color: var(--fj-ink);
+    background: var(--fj-bg);
+  }
+
+  :global([data-theme="light"]) .fj {
+    --fj-bg: #ece7dc;
+    --fj-bg-2: #f5f1e8;
+    --fj-ink: #12181b;
+    --fj-muted: #5a636a;
+    --fj-faint: rgba(18, 24, 27, 0.4);
+    --fj-line: rgba(18, 24, 27, 0.13);
+    --fj-panel: rgba(255, 255, 255, 0.58);
+    --fj-jade: #2f7f6b;
+    --fj-jade-rgb: 47 127 107;
+    --fj-brass: #98743a;
+    --fj-brass-rgb: 152 116 58;
+    --fj-shadow: rgba(18, 24, 27, 0.26);
+    --fj-shade: #241d12;
+    --fj-shade-max: 0.4;
+  }
+
+  .fj-viewport {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    overflow: hidden;
+    isolation: isolate;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(var(--fj-jade-rgb) / 0.05), transparent 70%),
+      linear-gradient(180deg, var(--fj-bg-2), var(--fj-bg));
+    transition: background-color 0.4s ease;
+  }
+
+  /* ---------- backdrop ---------- */
+  .fj-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .fj-grid {
+    position: absolute;
+    inset: -20%;
+    background-image:
+      repeating-linear-gradient(60deg, var(--fj-line) 0 1px, transparent 1px 72px),
+      repeating-linear-gradient(-60deg, var(--fj-line) 0 1px, transparent 1px 72px),
+      repeating-linear-gradient(0deg, var(--fj-line) 0 1px, transparent 1px 144px);
+    opacity: 0.34;
+    mask-image: radial-gradient(ellipse 60% 55% at 55% 45%, #000 10%, transparent 76%);
+    -webkit-mask-image: radial-gradient(ellipse 60% 55% at 55% 45%, #000 10%, transparent 76%);
+  }
+
+  .fj-light {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      circle at var(--lx, 64%) var(--ly, 48%),
+      rgb(var(--lc, 95 211 176) / 0.2) 0%,
+      rgb(var(--lc, 95 211 176) / 0.07) 26%,
+      transparent 60%
+    );
+    transition: background 0.3s linear;
+  }
+
+  .fj-light-brass {
+    background: radial-gradient(
+      ellipse 55% 45% at 20% 100%,
+      rgb(var(--fj-brass-rgb) / 0.12),
+      transparent 70%
+    );
+  }
+
+  .fj-vignette {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 70% 65% at 50% 45%, transparent 40%, rgba(0, 0, 0, 0.5) 100%),
+      linear-gradient(180deg, rgba(0, 0, 0, 0.35), transparent 18%, transparent 82%, rgba(0, 0, 0, 0.45));
+  }
+
+  :global([data-theme="light"]) .fj-vignette {
+    background:
+      radial-gradient(ellipse 70% 65% at 50% 45%, transparent 45%, rgba(52, 42, 28, 0.22) 100%),
+      linear-gradient(180deg, rgba(52, 42, 28, 0.1), transparent 18%, transparent 82%, rgba(52, 42, 28, 0.12));
+  }
+
+  .fj-dust span {
+    position: absolute;
+    width: var(--s, 1px);
+    height: var(--s, 1px);
+    border-radius: 50%;
+    background: var(--fj-brass);
+    opacity: 0.5;
+    animation: fj-dust var(--dur, 12s) linear var(--d, 0s) infinite;
+  }
+
+  .fj-shade {
+    position: absolute;
+    inset: 0;
+    background: var(--fj-shade);
+    opacity: calc(var(--dim, 0) * var(--fj-shade-max));
+  }
+
+  /* ---------- HUD ---------- */
+  .fj-hud {
+    position: absolute;
+    top: calc(4.85rem + env(safe-area-inset-top, 0px));
+    left: clamp(1.25rem, 5vw, 4.5rem);
+    right: clamp(2.6rem, 5vw, 4.5rem);
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-family: theme("fontFamily.mono");
+    font-size: 0.62rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--fj-faint);
+    opacity: var(--hudop, 1);
+    transition: opacity 0.5s ease;
+  }
+
+  .fj-hud-count b {
+    font-weight: 500;
+    color: var(--fj-brass);
+  }
+
+  .fj-hud-track {
+    position: relative;
+    flex: 1;
+    max-width: 9rem;
+    height: 1px;
+    background: var(--fj-line);
+    overflow: hidden;
+  }
+
+  .fj-hud-track i {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: var(--progress, 0%);
+    background: linear-gradient(90deg, var(--fj-jade), var(--fj-brass));
+  }
+
+  .fj-hud-label {
+    margin-left: auto;
+    color: var(--fj-muted);
+    white-space: nowrap;
+  }
+
+  /* ---------- scene shell ---------- */
+  .fj-scene {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  .fj-web {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+    overflow: visible;
+  }
+
+  .fj-web-lines {
+    fill: none;
+    stroke: var(--fj-jade);
+    stroke-width: 1;
+    stroke-opacity: 0.24;
+    vector-effect: non-scaling-stroke;
+    opacity: 0;
+  }
+
+  .fj-track,
+  .fj-track-glow {
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .fj-track {
+    stroke: var(--fj-jade);
+    stroke-width: 1.9;
+    stroke-dasharray: 3 8;
+    stroke-opacity: 0.85;
+  }
+
+  .fj-track-glow {
+    stroke: var(--fj-jade);
+    stroke-width: 7;
+    stroke-opacity: 0.1;
+  }
+
+  /* ---------- pages ---------- */
+  .fj-pages {
+    --cw: 148px;
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    perspective: 1500px;
+    perspective-origin: 50% 48%;
+    pointer-events: none;
+  }
+
+  .fj-page {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: var(--cw);
+    height: calc(var(--cw) * 1.34);
+    margin-left: calc(var(--cw) / -2);
+    margin-top: calc(var(--cw) * -0.67);
+    opacity: 0;
+    transform-style: preserve-3d;
+    will-change: transform, opacity;
+  }
+
+  .fj-page-face {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 0.78rem 0.7rem 0.7rem;
+    border-radius: 9px 5px 5px 9px;
+    overflow: hidden;
+    color: #16211f;
+    background:
+      linear-gradient(102deg, rgba(255, 255, 255, 0.9), transparent 24%),
+      linear-gradient(180deg, #fbf8f1 0%, #f1ece1 78%, #e4ddcf 100%);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.7) inset,
+      0 24px 46px -22px rgba(0, 0, 0, 0.72),
+      0 0 0 1px rgba(var(--fj-brass-rgb) / 0.22);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .fj-page-face::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(0deg, rgba(18, 24, 27, 0.045) 0 1px, transparent 1px 7px);
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  .fj-page-face::after {
+    content: "";
+    position: absolute;
+    top: 4%;
+    bottom: 4%;
+    left: 4px;
+    width: 2px;
+    border-radius: 2px;
+    background: linear-gradient(180deg, transparent, rgba(176, 141, 87, 0.45), transparent);
+  }
+
+  .fj-page-ruler {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: repeating-linear-gradient(0deg, rgba(18, 24, 27, 0.12) 0 1px, transparent 1px 9px);
+    opacity: 0.7;
+  }
+
+  .fj-page-top {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.4rem;
+  }
+
+  .fj-page-num {
+    font-family: theme("fontFamily.mono");
+    font-size: 0.56rem;
+    letter-spacing: 0.14em;
+    color: #9a7b46;
+  }
+
+  .fj-page-icon {
+    display: inline-flex;
+    color: #2f7f6b;
+    opacity: 0.85;
+  }
+
+  .fj-page-icon :global(svg) {
+    width: 0.82rem;
+    height: 0.82rem;
+  }
+
+  .fj-page-title {
+    position: relative;
+    margin-top: 0.55rem;
+    font-family: theme("fontFamily.heading-bn");
+    font-size: 0.78rem;
+    line-height: 1.3;
+    font-weight: 600;
+    color: #12181b;
+    opacity: 0.45;
+    transition: opacity 0.5s ease;
+  }
+
+  .fj-page-tags {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.22rem;
+    margin-top: 0.5rem;
+    opacity: 0;
+    transition: opacity 0.45s ease;
+  }
+
+  .fj-page-tags span {
+    padding: 0.16rem 0.34rem;
+    border-radius: 999px;
+    border: 1px solid rgba(47, 79, 68, 0.28);
+    background: rgba(47, 127, 107, 0.07);
+    font-family: theme("fontFamily.mono");
+    font-size: 0.43rem;
+    letter-spacing: 0.03em;
+    color: #3f5a52;
+    white-space: nowrap;
+  }
+
+  .fj-page-out {
+    position: relative;
+    margin-top: auto;
+    padding-top: 0.45rem;
+    border-top: 1px solid rgba(176, 141, 87, 0.24);
+    font-family: theme("fontFamily.body-bn");
+    font-size: 0.58rem;
+    line-height: 1.45;
+    color: #37433f;
+    opacity: 0;
+    transform: translateY(5px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  .fj-page-glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(120% 90% at 100% 0%, rgba(95, 211, 176, 0.2), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+  }
+
+  .fj-pages.is-scattered .fj-page-chip {
+    opacity: 1;
+  }
+
+  .fj-pages.is-scattered .fj-page-chip {
+    transform: translate3d(-26px, -46px, 0) rotate(-6deg);
+  }
+
+  .fj-pages.is-gathered .fj-page-title {
+    opacity: 1;
+  }
+
+  .fj-pages.is-gathered .fj-page-tags {
+    opacity: 1;
+  }
+
+  .fj-pages.is-gathered .fj-page-chip {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+
+  .fj-pages.is-outcome .fj-page-out {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: calc(var(--i) * 70ms);
+  }
+
+  .fj-pages.is-outcome .fj-page-tags {
+    opacity: 0;
+    transition-delay: 0ms;
+  }
+
+  .fj-page-glow {
+    opacity: 0.35;
+  }
+
+  .fj-page-chip {
+    position: absolute;
+    z-index: 4;
+    left: 8%;
+    top: 6%;
+    padding: 0.28rem 0.55rem;
+    border-radius: 999px;
+    background: rgba(8, 13, 15, 0.88);
+    border: 1px solid rgba(var(--fj-brass-rgb) / 0.45);
+    box-shadow: 0 10px 24px -12px rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    color: #f4f1ea;
+    font-family: theme("fontFamily.mono");
+    font-size: 0.5rem;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translate3d(0, 0, 0) rotate(0deg);
+    transition: opacity 0.6s ease, transform 0.75s cubic-bezier(0.2, 0.8, 0.2, 1);
+    pointer-events: none;
+  }
+
+  /* ---------- 3D book ---------- */
+  .fj-book {
+    --bw: clamp(168px, 16vw, 250px);
+    --bh: calc(var(--bw) * 1.36);
+    --bd: clamp(24px, 2.4vw, 40px);
+    position: absolute;
+    left: 64%;
+    top: 50%;
+    width: calc(var(--bw) * 1.8);
+    height: calc(var(--bh) * 1.7);
+    margin-left: calc(var(--bw) * -0.9);
+    margin-top: calc(var(--bh) * -0.85);
+    z-index: 4;
+    opacity: var(--bop, 1);
+    will-change: transform, opacity;
+    transform: translate3d(var(--btx, 0px), var(--bty, 0px), 0) scale(var(--bscale, 1));
+    transform-style: preserve-3d;
+  }
+
+  .fj-book-aura {
+    position: absolute;
+    inset: -30%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(var(--fj-jade-rgb) / 0.24), transparent 60%);
+    filter: blur(38px);
+  }
+
+  .fj-shield {
+    position: absolute;
+    inset: 4% 12%;
+    display: grid;
+    place-items: center;
+    animation: fj-turn 26s linear infinite;
+    opacity: 0.9;
+  }
+
+  .fj-shield svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .fj-shield-1 {
+    stroke: var(--fj-brass);
+    stroke-opacity: 0.55;
+    stroke-width: 1.2;
+  }
+
+  .fj-shield-2 {
+    stroke: var(--fj-jade);
+    stroke-opacity: 0.4;
+    stroke-width: 0.8;
+  }
+
+  .fj-shield-3 {
+    stroke: var(--fj-brass);
+    stroke-opacity: 0.22;
+    stroke-width: 0.7;
+  }
+
+  .fj-shield-lines {
+    stroke: var(--fj-jade);
+    stroke-opacity: 0.16;
+    stroke-width: 0.6;
+  }
+
+  .fj-sway {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    transform-style: preserve-3d;
+    animation: fj-sway 9s ease-in-out infinite;
+  }
+
+  .fj-tilt {
+    transform-style: preserve-3d;
+    transform: rotateX(var(--brx, 6deg)) rotateY(var(--bry, -18deg));
+    transition: transform 0.2s ease-out;
+    will-change: transform;
+  }
+
+  .fj-tilt.is-dragging {
+    transition: none;
+  }
+
+  .fj-book3d {
+    position: relative;
+    width: var(--bw);
+    height: var(--bh);
+    transform-style: preserve-3d;
+  }
+
+  .fj-bface {
+    position: absolute;
+    inset: 0;
+    border-radius: 5px 10px 10px 5px;
+  }
+
+  .fj-bfront {
+    z-index: 5;
+    overflow: hidden;
+    background: #0a0f12;
+    transform: translateZ(calc(var(--bd) / 2 + var(--open, 0) * 22px)) rotateY(calc(var(--open, 0) * -54deg));
+    transform-origin: left center;
+    box-shadow:
+      0 0 0 1px rgba(var(--fj-jade-rgb) / 0.4),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+      0 45px 80px -34px rgba(0, 0, 0, 0.9);
+    transition: transform 0.1s linear;
+  }
+
+  .fj-cover-art {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.92;
+  }
+
+  .fj-cover-shade {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(6, 10, 12, 0.1) 0%, rgba(6, 10, 12, 0.12) 38%, rgba(6, 10, 12, 0.94) 100%),
+      linear-gradient(90deg, rgba(6, 10, 12, 0.45) 0%, transparent 26%);
+  }
+
+  .fj-cover-text {
+    position: absolute;
+    inset: auto 0 0;
+    display: block;
+    padding: 1.1rem 0.95rem 1.15rem 1.35rem;
+    color: #f4f1ea;
+  }
+
+  .fj-cover-kicker {
+    display: block;
+    font-family: theme("fontFamily.mono");
+    font-size: 0.54rem;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--fj-brass);
+    margin-bottom: 0.42rem;
+  }
+
+  .fj-cover-title {
+    display: block;
+    font-family: theme("fontFamily.heading-bn");
+    font-size: clamp(0.95rem, 1.5vw, 1.3rem);
+    line-height: 1.3;
+    font-weight: 600;
+    color: #f4f1ea;
+  }
+
+  .fj-cover-author {
+    display: block;
+    margin-top: 0.45rem;
+    font-family: theme("fontFamily.body-bn");
+    font-size: 0.64rem;
+    color: rgba(244, 241, 234, 0.72);
+  }
+
+  .fj-sheen {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.18) 46%, transparent 60%);
+    transform: translateX(-30%);
+    animation: fj-sheen 8s ease-in-out infinite;
+    pointer-events: none;
+    mix-blend-mode: screen;
+  }
+
+  .fj-bspine {
+    width: var(--bd);
+    height: 100%;
+    left: calc(var(--bd) / -2);
+    right: auto;
+    transform: rotateY(90deg);
+    border-radius: 2px;
+    background: linear-gradient(90deg, #5a4527 0%, #a67f4a 28%, #edcf95 52%, #8a6a3c 78%, #4a3a22 100%);
+    box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.45);
+  }
+
+  .fj-bpages {
+    width: var(--bd);
+    height: 100%;
+    right: calc(var(--bd) / -2);
+    left: auto;
+    transform: rotateY(-90deg);
+    background: repeating-linear-gradient(90deg, #efe9dc 0 1px, #cfc7b6 2px, #e6dfd0 3px);
+    box-shadow: inset 0 0 16px rgba(0, 0, 0, 0.3);
+  }
+
+  .fj-bback {
+    transform: rotateY(180deg) translateZ(calc(var(--bd) / 2));
+    background: linear-gradient(135deg, #162025 0%, #0a0e10 70%);
+    border-radius: 10px 5px 5px 10px;
+    box-shadow: inset 0 0 0 1px rgba(var(--fj-jade-rgb) / 0.22);
+  }
+
+  .fj-bsheet {
+    position: absolute;
+    inset: 3% 1.5% 3% 1%;
+    border-radius: 1px 5px 5px 1px;
+    background: linear-gradient(90deg, #d4ccba, #faf6ed 9%, #efe9dc 62%, #d8d0bf);
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.05);
+    transform: translateZ(calc(var(--bd) / 2 - 5px - var(--i, 1) * 2.4px)) rotateZ(calc(var(--open, 0) * var(--i, 1) * 0.5deg));
+    opacity: calc(var(--open, 0) * 0.75);
+  }
+
+  .fj-bsheet::after {
+    content: "";
+    position: absolute;
+    inset: 13% 13% 11% 17%;
+    background: repeating-linear-gradient(
+      180deg,
+      transparent 0 7px,
+      rgba(86, 74, 52, 0.2) 7px 8px
+    );
+    opacity: calc(var(--open, 0) * 0.9);
+  }
+
+  .fj-bshadow {
+    position: absolute;
+    left: 50%;
+    bottom: 11%;
+    width: calc(var(--bw) * 1.15);
+    height: 44px;
+    margin-left: calc(var(--bw) * -0.575);
+    border-radius: 50%;
+    background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.66), transparent 68%);
+    filter: blur(14px);
+    transform: rotateX(70deg);
+    animation: fj-shadow 9s ease-in-out infinite;
+  }
+
+  .fj-bhint {
+    position: absolute;
+    left: 50%;
+    bottom: -0.4rem;
+    transform: translateX(-50%);
+    font-family: theme("fontFamily.mono");
+    font-size: 0.55rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--fj-faint);
+    white-space: nowrap;
+    opacity: var(--hintop, 0.7);
+    transition: opacity 0.4s ease;
+  }
+
+  /* ---------- reader ---------- */
+  .fj-reader {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 6;
+    width: 0;
+    height: 0;
+    opacity: var(--ro, 0);
+    transform: translate3d(var(--rx, 0px), var(--ry, 0px), 0) scale(var(--rs, 1));
+    will-change: transform, opacity;
+  }
+
+  .fj-reader-core {
+    position: absolute;
+    left: -7px;
+    top: -7px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: rgb(var(--rc, 150 160 171));
+    box-shadow:
+      0 0 22px 7px rgb(var(--rc, 150 160 171) / 0.6),
+      0 0 70px 24px rgb(var(--rc, 150 160 171) / 0.26);
+  }
+
+  .fj-reader-halo {
+    position: absolute;
+    left: -52px;
+    top: -52px;
+    width: 104px;
+    height: 104px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgb(var(--rc, 107 117 128) / 0.22), transparent 62%);
+    animation: fj-breathe 3.4s ease-in-out infinite;
+  }
+
+  .fj-reader-ring {
+    position: absolute;
+    left: -26px;
+    top: -26px;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    border: 1px solid rgb(var(--rc, 107 117 128) / 0.45);
+    animation: fj-ping 3.4s ease-out infinite;
+  }
+
+  /* ---------- copy ---------- */
+  .fj-copy {
+    position: absolute;
+    left: clamp(1.25rem, 5vw, 4.5rem);
+    bottom: clamp(2rem, 7vh, 5rem);
+    z-index: 30;
+    width: min(31rem, 43vw);
+    transition:
+      left 0.7s cubic-bezier(0.2, 0.8, 0.2, 1),
+      width 0.7s cubic-bezier(0.2, 0.8, 0.2, 1),
+      transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1),
+      bottom 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .fj-copy::before {
+    content: "";
+    position: absolute;
+    inset: -26% -18% -30% -22%;
+    z-index: -1;
+    background: radial-gradient(ellipse at 30% 50%, rgba(0, 0, 0, 0.5), transparent 68%);
+    opacity: 0.9;
+    pointer-events: none;
+  }
+
+  :global([data-theme="light"]) .fj-copy::before {
+    background: radial-gradient(ellipse at 30% 50%, rgba(236, 231, 220, 0.82), transparent 70%);
+  }
+
+  .fj-ch {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition:
+      opacity 0.55s ease,
+      transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1),
+      visibility 0.55s;
+    pointer-events: none;
+  }
+
+  .fj-ch.is-on {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .fj-kicker {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    font-family: theme("fontFamily.mono");
+    font-size: 0.6rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--fj-brass);
+  }
+
+  .fj-kicker-line {
+    width: 1.6rem;
+    height: 1px;
+    background: linear-gradient(90deg, var(--fj-brass), transparent);
+  }
+
+  .fj-title {
+    margin-top: 0.85rem;
+    font-family: theme("fontFamily.heading-bn");
+    font-size: calc(clamp(1.75rem, 3vw, 2.75rem) * var(--font-scale));
+    line-height: 1.22;
+    letter-spacing: -0.015em;
+    font-weight: 600;
+    color: var(--fj-ink);
+    text-wrap: balance;
+  }
+
+  .fj-title-hero {
+    font-size: calc(clamp(2.35rem, 5vw, 4.3rem) * var(--font-scale));
+    line-height: 1.08;
+    letter-spacing: -0.025em;
+  }
+
+  .fj-grad {
+    background: linear-gradient(102deg, var(--fj-brass) 0%, #f6e3bb 42%, var(--fj-jade) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  :global([data-theme="light"]) .fj-grad {
+    background: linear-gradient(102deg, #8a6626 0%, #b08d57 45%, #2f7f6b 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .fj-body {
+    margin-top: 1rem;
+    max-width: 30rem;
+    font-family: theme("fontFamily.body-bn");
+    font-size: calc(0.94rem * var(--font-scale));
+    line-height: 1.85;
+    color: var(--fj-muted);
+  }
+
+  .fj-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 1.1rem;
+  }
+
+  .fj-tags span {
+    padding: 0.32rem 0.7rem;
+    border-radius: 999px;
+    border: 1px solid var(--fj-line);
+    background: var(--fj-panel);
+    backdrop-filter: blur(10px);
+    font-family: theme("fontFamily.mono");
+    font-size: 0.55rem;
+    letter-spacing: 0.06em;
+    color: var(--fj-muted);
+  }
+
+  .fj-live {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.85rem;
+    padding: 0.34rem 0.7rem;
+    border-radius: 999px;
+    border: 1px solid rgba(var(--fj-jade-rgb) / 0.32);
+    background: rgba(var(--fj-jade-rgb) / 0.08);
+    font-family: theme("fontFamily.mono");
+    font-size: 0.58rem;
+    letter-spacing: 0.05em;
+    color: var(--fj-ink);
+  }
+
+  .fj-live-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--fj-jade);
+    box-shadow: 0 0 10px 3px rgba(var(--fj-jade-rgb) / 0.55);
+  }
+
+  .fj-live-count {
+    color: var(--fj-muted);
+  }
+
+  .fj-price {
+    margin-top: 0.4rem;
+    font-family: theme("fontFamily.heading-bn");
+    font-size: calc(clamp(2rem, 4vw, 3rem) * var(--font-scale));
+    line-height: 1.1;
+    background: linear-gradient(100deg, var(--fj-brass), #f6e3bb 55%, var(--fj-jade));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .fj-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.9rem;
+    margin-top: 1.35rem;
+  }
+
+  .fj-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.82rem 1.4rem;
+    border-radius: 999px;
+    background: linear-gradient(108deg, #efd7a8 0%, #c9a468 48%, #9fc3b5 115%);
+    color: #0b1013;
+    font-family: theme("fontFamily.body-bn");
+    font-size: calc(0.9rem * var(--font-scale));
+    font-weight: 600;
+    line-height: 1;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    box-shadow:
+      0 18px 40px -18px rgba(var(--fj-brass-rgb) / 0.55),
+      inset 0 1px 0 rgba(255, 255, 255, 0.55);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+  }
+
+  .fj-cta:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.06);
+    box-shadow:
+      0 24px 52px -18px rgba(var(--fj-brass-rgb) / 0.65),
+      inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  }
+
+  .fj-cta svg {
+    transition: transform 0.25s ease;
+  }
+
+  .fj-cta:hover svg {
+    transform: translateX(3px);
+  }
+
+  .fj-secondary {
+    font-family: theme("fontFamily.body-bn");
+    font-size: calc(0.8rem * var(--font-scale));
+    color: var(--fj-muted);
+    border-bottom: 1px solid transparent;
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .fj-secondary:hover {
+    color: var(--fj-ink);
+    border-color: var(--fj-brass);
+  }
+
+  .fj-note {
+    margin-top: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: theme("fontFamily.mono");
+    font-size: 0.56rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--fj-faint);
+  }
+
+  .fj-note span {
+    animation: fj-bob 2.4s ease-in-out infinite;
+  }
+
+  /* centered closing beats */
+  .fj-viewport[data-align="center"] .fj-copy {
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(44rem, 90vw);
+    bottom: 5.5vh;
+    text-align: center;
+  }
+
+  .fj-viewport[data-align="center"] .fj-copy::before {
+    inset: -40% -30% -40% -30%;
+    background: radial-gradient(ellipse at 50% 60%, rgba(0, 0, 0, 0.55), transparent 70%);
+  }
+
+  :global([data-theme="light"]) .fj-viewport[data-align="center"] .fj-copy::before {
+    background: radial-gradient(ellipse at 50% 60%, rgba(236, 231, 220, 0.9), transparent 72%);
+  }
+
+  .fj-viewport[data-align="center"] .fj-kicker,
+  .fj-viewport[data-align="center"] .fj-actions {
+    justify-content: center;
+  }
+
+  .fj-viewport[data-align="center"] .fj-body {
+    margin-inline: auto;
+    max-width: 34rem;
+  }
+
+  /* ---------- chapter rail ---------- */
+  .fj-rail {
+    position: absolute;
+    right: clamp(0.85rem, 2.6vw, 2.2rem);
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 40;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    padding: 0.6rem 0.35rem;
+  }
+
+  .fj-rail-dot {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  .fj-rail-dot span {
+    display: block;
+    width: 4px;
+    height: 4px;
+    border-radius: 999px;
+    background: var(--fj-faint);
+    opacity: 0.55;
+    transition: height 0.3s ease, background 0.3s ease, opacity 0.3s ease;
+  }
+
+  .fj-rail-dot.is-past span {
+    background: var(--fj-jade);
+    opacity: 0.7;
+  }
+
+  .fj-rail-dot.is-active span {
+    height: 16px;
+    background: linear-gradient(180deg, var(--fj-brass), var(--fj-jade));
+    opacity: 1;
+    box-shadow: 0 0 12px rgba(var(--fj-jade-rgb) / 0.5);
+  }
+
+  .fj-rail-dot:focus-visible {
+    outline: 2px solid var(--fj-brass);
+    outline-offset: 2px;
+    border-radius: 999px;
+  }
+
+  /* ---------- fallback (no-JS / reduced motion) ---------- */
+  .fj-fallback {
+    display: none;
+    gap: 1px;
+    max-width: 72rem;
+    margin-inline: auto;
+    padding: clamp(2rem, 6vw, 4rem) 1.5rem;
+    background: var(--bg);
+    color: var(--text);
+  }
+
+  .fj-fb-card {
+    padding: clamp(1.4rem, 4vw, 2.4rem) 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .fj-fb-card:first-child {
+    border-top: 0;
+  }
+
+  .fj-fb-kicker {
+    font-family: theme("fontFamily.mono");
+    font-size: var(--fs-xs);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.7rem;
+  }
+
+  .fj-fb-title {
+    font-family: theme("fontFamily.heading-bn");
+    font-size: calc(clamp(1.6rem, 4vw, 2.6rem) * var(--font-scale));
+    line-height: 1.25;
+    font-weight: 600;
+  }
+
+  .fj-fb-body {
+    margin-top: 0.8rem;
+    max-width: 38rem;
+    font-family: theme("fontFamily.body-bn");
+    font-size: var(--fs-base);
+    line-height: 1.85;
+    color: var(--text-muted);
+  }
+
+  .fj-fb-price {
+    margin-top: 0.6rem;
+    font-family: theme("fontFamily.heading-bn");
+    font-size: var(--fs-3xl);
+    color: var(--accent);
+  }
+
+  .fj-fb-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 1.2rem;
+    padding: 0.65rem 1.2rem;
+    border-radius: 999px;
+    background: var(--accent);
+    color: var(--ink);
+    font-family: theme("fontFamily.body-bn");
+    font-size: var(--fs-sm);
+    font-weight: 600;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fj {
+      height: auto;
+    }
+
+    .fj-viewport {
+      display: none;
+    }
+
+    .fj-fallback {
+      display: grid;
+    }
+  }
+
+  /* ---------- mobile ---------- */
+  @media (max-width: 859px) {
+    .fj {
+      height: 880svh;
+    }
+
+    .fj-hud {
+      top: calc(4.5rem + env(safe-area-inset-top, 0px));
+      left: 1.25rem;
+      right: 1.25rem;
+      font-size: 0.55rem;
+    }
+
+    .fj-hud-label {
+      display: none;
+    }
+
+    .fj-rail {
+      display: none;
+    }
+
+    .fj-book {
+      --bw: clamp(128px, 30vw, 178px);
+      left: 50%;
+      top: 31%;
+    }
+
+    .fj-bhint {
+      display: none;
+    }
+
+    .fj-copy {
+      left: 1.15rem;
+      right: 1.15rem;
+      bottom: 1.1rem;
+      width: auto;
+    }
+
+    .fj-copy::before {
+      inset: -30% -14% -30% -14%;
+      background: radial-gradient(ellipse at 50% 70%, rgba(0, 0, 0, 0.62), transparent 72%);
+    }
+
+    :global([data-theme="light"]) .fj-copy::before {
+      background: radial-gradient(ellipse at 50% 70%, rgba(236, 231, 220, 0.9), transparent 74%);
+    }
+
+    .fj-title {
+      margin-top: 0.65rem;
+      font-size: calc(clamp(1.35rem, 5.4vw, 1.9rem) * var(--font-scale));
+    }
+
+    .fj-title-hero {
+      font-size: calc(clamp(1.95rem, 8.4vw, 2.7rem) * var(--font-scale));
+    }
+
+    .fj-body {
+      margin-top: 0.7rem;
+      font-size: calc(0.82rem * var(--font-scale));
+      line-height: 1.72;
+    }
+
+    .fj-tags {
+      display: none;
+    }
+
+    .fj-actions {
+      margin-top: 1rem;
+    }
+
+    .fj-cta {
+      padding: 0.72rem 1.15rem;
+      font-size: calc(0.8rem * var(--font-scale));
+    }
+
+    .fj-note {
+      display: none;
+    }
+
+    .fj-viewport[data-align="center"] .fj-copy {
+      bottom: 3vh;
+      width: min(30rem, calc(100vw - 2rem));
+    }
+
+    .fj-pages {
+      --cw: 104px;
+    }
+
+    .fj-page-face {
+      padding: 0.6rem 0.52rem 0.5rem;
+    }
+
+    .fj-page-title {
+      font-size: 0.62rem;
+      margin-top: 0.4rem;
+    }
+
+    .fj-page-tags span {
+      font-size: 0.36rem;
+      padding: 0.12rem 0.26rem;
+    }
+
+    .fj-page-out {
+      font-size: 0.46rem;
+      line-height: 1.4;
+    }
+
+    .fj-page-chip {
+      font-size: 0.42rem;
+      padding: 0.22rem 0.45rem;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .fj-pages {
+      --cw: 96px;
+    }
+
+    .fj-body {
+      font-size: calc(0.78rem * var(--font-scale));
+    }
+  }
+
+  /* ---------- motion ---------- */
+  @keyframes fj-sway {
+    0%, 100% { transform: translateY(-6px) rotateZ(-0.6deg); }
+    50% { transform: translateY(8px) rotateZ(0.6deg); }
+  }
+
+  @keyframes fj-shadow {
+    0%, 100% { opacity: 0.8; transform: rotateX(70deg) scaleX(0.94); }
+    50% { opacity: 0.5; transform: rotateX(70deg) scaleX(1.05); }
+  }
+
+  @keyframes fj-sheen {
+    0%, 68% { transform: translateX(-40%); opacity: 0; }
+    78% { opacity: 0.9; }
+    100% { transform: translateX(48%); opacity: 0; }
+  }
+
+  @keyframes fj-turn {
+    from { rotate: 0deg; }
+    to { rotate: 360deg; }
+  }
+
+  @keyframes fj-breathe {
+    0%, 100% { transform: scale(0.9); opacity: 0.55; }
+    50% { transform: scale(1.18); opacity: 1; }
+  }
+
+  @keyframes fj-ping {
+    0% { transform: scale(0.55); opacity: 0.7; }
+    75%, 100% { transform: scale(1.5); opacity: 0; }
+  }
+
+  @keyframes fj-dust {
+    0% { transform: translate3d(0, 0, 0); opacity: 0.15; }
+    30% { opacity: 0.55; }
+    100% { transform: translate3d(14px, -46px, 0); opacity: 0; }
+  }
+
+  @keyframes fj-bob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(3px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fj-shield,
+    .fj-sway,
+    .fj-bshadow,
+    .fj-sheen,
+    .fj-reader-halo,
+    .fj-reader-ring,
+    .fj-note span,
+    .fj-dust span {
+      animation: none !important;
+    }
+  }
+</style>
+
+<script>
+  (() => {
+    const film = document.querySelector("[data-film]");
+    if (!film) return;
+
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) return; // CSS already shows the static fallback.
+
+    const viewport = film.querySelector("[data-viewport]");
+    const scene = film.querySelector("[data-scene]");
+    const book = film.querySelector("[data-book]");
+    const bookTilt = film.querySelector("[data-book-tilt]");
+    const pagesWrap = film.querySelector("[data-pages]");
+    const cards = Array.from(film.querySelectorAll("[data-page]"));
+    const chapters = Array.from(film.querySelectorAll("[data-chapter]"));
+    const webPath = film.querySelector("[data-web-path]");
+    const webSvg = film.querySelector("[data-web]");
+    const track = film.querySelector("[data-track]");
+    const trackGlow = film.querySelector("[data-track-glow]");
+    const reader = film.querySelector("[data-reader]");
+    const shade = film.querySelector("[data-shade]");
+    const hudBar = film.querySelector("[data-hud-bar]");
+    const hudIndex = film.querySelector("[data-hud-index]");
+    const hudLabel = film.querySelector("[data-hud-label]");
+    const liveTitle = film.querySelector("[data-live-title]");
+    const liveCount = film.querySelector("[data-live-count]");
+    const railDots = Array.from(film.querySelectorAll("[data-goto]"));
+    if (!viewport || !scene || !book || !pagesWrap || cards.length === 0) return;
+
+    const N = cards.length;
+    const SVG_NS = "http://www.w3.org/2000/svg";
+
+    // Timeline. Every beat is a slice of 0 → 1 scroll progress.
+    const T = {
+      hero: [0.0, 0.07],
+      break: [0.07, 0.17],
+      scatter: [0.17, 0.29],
+      gather: [0.29, 0.41],
+      outcome: [0.41, 0.51],
+      path: [0.51, 0.61],
+      travel: [0.61, 0.76],
+      beacon: [0.76, 0.84],
+      reveal: [0.84, 0.94],
+      book: [0.94, 1.0],
+    };
+
+    const CHAPTER_WINDOWS = chapters.map((_, i) => {
+      const starts = [
+        T.hero[0],
+        T.break[0],
+        T.scatter[0],
+        T.gather[0],
+        T.outcome[0],
+        T.path[0],
+        T.travel[0],
+        T.beacon[0],
+        T.reveal[0],
+        T.book[0],
+      ];
+      const ends = [
+        T.break[0],
+        T.scatter[0],
+        T.gather[0],
+        T.outcome[0],
+        T.path[0],
+        T.travel[0],
+        T.beacon[0],
+        T.reveal[0],
+        T.book[0],
+        1.001,
+      ];
+      return [starts[i] ?? 0, ends[i] ?? 1];
+    });
+
+    const clamp01 = (v) => (v < 0 ? 0 : v > 1 ? 1 : v);
+    const clamp = (v, a, b) => (v < a ? a : v > b ? b : v);
+    const lerp = (a, b, t) => a + (b - a) * t;
+    const smooth = (t) => t * t * (3 - 2 * t);
+    const seg = (p, range) => clamp01((p - range[0]) / (range[1] - range[0]));
+    const ease = (t) => smooth(clamp01(t));
+    const smoothstep = (a, b, v) => smooth(clamp01((v - a) / (b - a)));
+    const mixColor = (a, b, t) => [
+      Math.round(lerp(a[0], b[0], t)),
+      Math.round(lerp(a[1], b[1], t)),
+      Math.round(lerp(a[2], b[2], t)),
+    ];
+
+    const C_GRAY = [150, 160, 171];
+    const C_JADE = [95, 211, 176];
+    const C_GOLD = [242, 217, 168];
+
+    const bn = (value) =>
+      String(value).replace(/[0-9]/g, (d) => "০১২৩৪৫৬৭৮৯"[Number(d)]);
+
+    // ---------- measured layout ----------
+    let W = 1;
+    let H = 1;
+    let narrow = false;
+    let baseW = 148;
+    let baseH = 198;
+    let bookX = 0;
+    let bookY = 0;
+    let gatherScale = 1;
+    let gatherPos = [];
+    let overviewSpacing = 80;
+    let travelSpacing = 210;
+
+    const scatterTable = [
+      [0.52, 0.2],
+      [0.69, 0.14],
+      [0.85, 0.24],
+      [0.57, 0.41],
+      [0.74, 0.35],
+      [0.9, 0.46],
+      [0.62, 0.64],
+      [0.81, 0.59],
+    ];
+    const scatterTableNarrow = [
+      [0.24, 0.17],
+      [0.52, 0.12],
+      [0.8, 0.17],
+      [0.35, 0.34],
+      [0.66, 0.3],
+      [0.18, 0.47],
+      [0.49, 0.45],
+      [0.81, 0.48],
+    ];
+
+    function measure() {
+      const rect = viewport.getBoundingClientRect();
+      W = rect.width || window.innerWidth;
+      H = rect.height || window.innerHeight;
+      narrow = W < 860;
+
+      baseW = narrow ? Math.min(112, W * 0.265) : Math.min(150, W * 0.115);
+      baseH = baseW * 1.34;
+      pagesWrap.style.setProperty("--cw", baseW.toFixed(1) + "px");
+
+      bookX = W * (narrow ? 0.5 : 0.64);
+      bookY = H * (narrow ? 0.31 : 0.5);
+
+      const wideGrid = !narrow || W >= 560;
+      const cols = wideGrid ? 4 : 2;
+      const rows = wideGrid ? 2 : 4;
+      const ax0 = narrow ? W * 0.05 : W * 0.46;
+      const ax1 = narrow ? W * 0.95 : W * 0.96;
+      const ay0 = narrow ? H * 0.1 : H * 0.19;
+      const ay1 = narrow ? H * 0.7 : H * 0.79;
+      const gap = Math.max(8, Math.min(W, H) * 0.025);
+      const fitX = (ax1 - ax0 - (cols - 1) * gap) / (cols * baseW);
+      const fitY = (ay1 - ay0 - (rows - 1) * gap) / (rows * baseH);
+      const maxScale = narrow ? 1.2 : 1;
+      gatherScale = Math.max(0.3, Math.min(maxScale, fitX, fitY));
+
+      const cw = baseW * gatherScale;
+      const ch = baseH * gatherScale;
+      let gx = Math.max(6, (ax1 - ax0 - cols * cw) / (cols - 1));
+      if (narrow) gx = Math.min(gx, Math.max(20, W * (wideGrid ? 0.055 : 0.13)));
+      let gy = Math.max(6, (ay1 - ay0 - rows * ch) / (rows - 1));
+      if (narrow) gy = Math.min(gy, Math.max(24, Math.min(W, H) * 0.05));
+      const totalW = cols * cw + (cols - 1) * gx;
+      const totalH = rows * ch + (rows - 1) * gy;
+      const startX = (ax0 + ax1) / 2 - totalW / 2 + cw / 2;
+      const startY = (ay0 + ay1) / 2 - totalH / 2 + ch / 2;
+
+      gatherPos = cards.map((_, i) => ({
+        x: startX + (i % cols) * (cw + gx),
+        y: startY + Math.floor(i / cols) * (ch + gy),
+      }));
+
+      overviewSpacing = (H * (narrow ? 0.5 : 0.68)) / (N - 1);
+      travelSpacing = narrow
+        ? baseH * 1.4 + 16
+        : baseH * 1.5 + 34;
+
+      if (webSvg) webSvg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+      webPath?.setAttribute("d", "");
+    }
+
+    // ---------- per-card layout states ----------
+    function scatterState(i) {
+      const table = narrow ? scatterTableNarrow : scatterTable;
+      const row = table[i % table.length];
+      return {
+        x: row[0] * W,
+        y: row[1] * H,
+        scale: narrow ? 0.82 : 0.86,
+        rot: (i % 2 ? 1 : -1) * (3.5 + (i % 3) * 1.4),
+        ry: (i % 2 ? 1 : -1) * (10 + (i % 3) * 3),
+        rx: ((i % 3) - 1) * 4,
+        z: -40 + (i % 3) * 35,
+      };
+    }
+
+    function pathState(i, active, zoom) {
+      // a gentle sinusoidal sway makes the overview read as a winding journey;
+      // it unwinds as the camera zooms in so the active page settles on center.
+      const sway =
+        Math.sin(i * 1.15) * W * (narrow ? 0.032 : 0.055) * (1 - zoom);
+      const x = W * (narrow ? 0.6 : 0.68) + sway;
+      const y0 = lerp(H * (narrow ? 0.14 : 0.16), H * (narrow ? 0.38 : 0.5), zoom);
+      const spacing = lerp(overviewSpacing, travelSpacing, zoom);
+      const d = Math.abs(i - active);
+      const focus = 1 - clamp01(d / 2);
+      return {
+        x,
+        y: y0 + (i - active) * spacing,
+        scale: lerp(0.42, lerp(0.5, 1.5, Math.pow(focus, 1.5)), zoom),
+        rot: 0,
+        ry: lerp(-4, -9, zoom),
+        rx: clamp((i - active) * 2.4, -8, 8) * zoom,
+        z: lerp(0, 40 - d * 20, zoom),
+        focus,
+        d,
+      };
+    }
+
+    const mixState = (a, b, t) => ({
+      x: lerp(a.x, b.x, t),
+      y: lerp(a.y, b.y, t),
+      scale: lerp(a.scale, b.scale, t),
+      rot: lerp(a.rot, b.rot, t),
+      ry: lerp(a.ry, b.ry, t),
+      rx: lerp(a.rx, b.rx, t),
+      z: lerp(a.z, b.z, t),
+    });
+
+    // ---------- scroll progress ----------
+    let p = 0;
+    let target = 0;
+    let running = false;
+    let lastFrame = 0;
+
+    function readScroll() {
+      const rect = film.getBoundingClientRect();
+      const total = film.offsetHeight - viewport.offsetHeight;
+      target = total > 0 ? clamp01(-rect.top / total) : 0;
+      startLoop();
+    }
+
+    function startLoop() {
+      if (running) return;
+      running = true;
+      lastFrame = performance.now();
+      requestAnimationFrame(tick);
+    }
+
+    function tick(now) {
+      const dt = Math.min(64, now - lastFrame) || 16;
+      lastFrame = now;
+      const diff = target - p;
+      if (Math.abs(diff) < 0.00035) {
+        p = target;
+        render();
+        running = false;
+        return;
+      }
+      p += diff * Math.min(1, 0.11 * (dt / 16.67));
+      render();
+      requestAnimationFrame(tick);
+    }
+
+    // ---------- chapter copy / HUD / rail ----------
+    let activeChapter = -1;
+    let lastLive = -1;
+
+    function chapterFor(progress) {
+      for (let i = CHAPTER_WINDOWS.length - 1; i >= 0; i--) {
+        if (progress >= CHAPTER_WINDOWS[i][0] - 0.0001) return i;
+      }
+      return 0;
+    }
+
+    function setChapter(index) {
+      if (index === activeChapter) return;
+      activeChapter = index;
+      chapters.forEach((el, i) => {
+        const on = i === index;
+        el.classList.toggle("is-on", on);
+        el.inert = !on;
+      });
+
+      const c = chapters[index];
+      const align = c?.getAttribute("data-align") || "left";
+      viewport.setAttribute("data-align", align);
+
+      if (hudIndex) hudIndex.textContent = bn(index + 1);
+      if (hudLabel) hudLabel.textContent = c?.getAttribute("data-label") || "";
+
+      railDots.forEach((dot, i) => {
+        dot.classList.toggle("is-active", i === index);
+        dot.classList.toggle("is-past", i < index);
+      });
+    }
+
+    // ---------- web + track paths ----------
+    const WEB_PAIRS = [
+      [0, 1],
+      [1, 2],
+      [2, 3],
+      [3, 4],
+      [4, 5],
+      [5, 6],
+      [6, 7],
+      [0, 4],
+      [1, 5],
+      [2, 6],
+      [3, 7],
+      [0, 5],
+      [2, 7],
+      [4, 7],
+    ];
+
+    function buildPath(points) {
+      return points
+        .map((pt, i) => `${i === 0 ? "M" : "L"}${pt.x.toFixed(1)} ${pt.y.toFixed(1)}`)
+        .join(" ");
+    }
+
+    // ---------- main render ----------
+    function render() {
+      const t = p;
+
+      pagesWrap.classList.toggle("is-scattered", t >= T.break[0] + 0.01);
+      pagesWrap.classList.toggle("is-gathered", t >= T.gather[0] + 0.02);
+      pagesWrap.classList.toggle("is-outcome", t >= T.outcome[0]);
+
+      // book
+      const breakT = ease(seg(t, T.break));
+      let bookOp = 1;
+      let bookScale = 1;
+      let btx = 0;
+      let bty = 0;
+      let open = 0;
+
+      if (t < T.break[0]) {
+        bookOp = 1;
+      } else if (t < T.break[1]) {
+        open = smoothstep(0, 0.55, breakT);
+        bookOp = 1 - smoothstep(0.5, 1, breakT);
+        bookScale = 1 - 0.2 * breakT;
+        bty = H * 0.02 * breakT;
+      } else if (t < T.book[0]) {
+        bookOp = 0;
+        open = 1;
+      } else {
+        const bt = ease(seg(t, T.book));
+        bookOp = smoothstep(0, 0.5, bt);
+        open = 1 - smoothstep(0, 0.45, bt);
+        bookScale = lerp(0.72, 1.04, bt);
+        const fx = 0.5;
+        const fy = narrow ? 0.29 : 0.32;
+        const fromX = narrow ? 0.5 : 0.64;
+        const fromY = narrow ? 0.31 : 0.5;
+        btx = (fx - fromX) * W * smoothstep(0, 0.75, bt);
+        bty = (fy - fromY) * H * smoothstep(0, 0.75, bt);
+      }
+
+      book.style.setProperty("--bop", bookOp.toFixed(3));
+      book.style.setProperty("--bscale", bookScale.toFixed(3));
+      book.style.setProperty("--btx", btx.toFixed(1) + "px");
+      book.style.setProperty("--bty", bty.toFixed(1) + "px");
+      book.style.setProperty("--open", open.toFixed(3));
+      book.style.setProperty("--hintop", (t < 0.012 ? 0.7 : 0).toFixed(2));
+      book.style.pointerEvents = bookOp > 0.4 ? "auto" : "none";
+
+      // page states
+      const gatherT = ease(seg(t, T.gather));
+      const pathT = ease(seg(t, T.path));
+      const travelT = seg(t, T.travel);
+      const zoomT = smoothstep(T.travel[0], T.travel[0] + 0.032, t);
+      const active = travelT * (N - 1);
+      const beaconFade = 1 - smoothstep(T.beacon[0], T.beacon[0] + 0.05, t);
+
+      const points = [];
+
+      cards.forEach((card, i) => {
+        const em = ease(clamp01((t - (T.break[0] + i * 0.007)) / 0.058));
+        const sc = scatterState(i);
+        let st = {
+          x: lerp(bookX, sc.x, em),
+          y: lerp(bookY, sc.y, em),
+          scale: lerp(0.12, sc.scale, em),
+          rot: lerp(0, sc.rot, em),
+          ry: lerp(0, sc.ry, em),
+          rx: lerp(0, sc.rx, em),
+          z: lerp(0, sc.z, em),
+        };
+
+        if (gatherT > 0) {
+          const gp = gatherPos[i];
+          st = mixState(
+            st,
+            {
+              x: gp.x,
+              y: gp.y,
+              scale: gatherScale,
+              rot: 0,
+              ry: 0,
+              rx: 0,
+              z: i * 2,
+            },
+            gatherT
+          );
+        }
+
+        const ps = pathState(i, active, zoomT);
+        if (pathT > 0) {
+          st = mixState(st, ps, pathT);
+        }
+
+        let op = em;
+        if (gatherT > 0) op = lerp(em, 1, gatherT);
+        if (pathT > 0) {
+          const focusOp =
+            Math.max(0, Math.pow(ps.focus, 1.4) * 1.02 - 0.02) *
+            (1 - smoothstep(1.45, 1.75, ps.d));
+          op = lerp(op, op * lerp(1, focusOp, zoomT), pathT);
+        }
+        op *= beaconFade;
+        if (t < T.break[0]) op = 0;
+
+        const dx = st.x - W / 2;
+        const dy = st.y - H / 2;
+
+        card.style.opacity = op.toFixed(3);
+        card.style.transform =
+          `translate3d(${dx.toFixed(1)}px, ${dy.toFixed(1)}px, ${st.z.toFixed(1)}px) ` +
+          `rotateX(${st.rx.toFixed(2)}deg) rotateY(${st.ry.toFixed(2)}deg) ` +
+          `rotateZ(${st.rot.toFixed(2)}deg) scale(${st.scale.toFixed(3)})`;
+        card.style.zIndex = String(20 + Math.round(50 - Math.abs(i - active) * 10));
+
+        points.push({ x: st.x, y: st.y });
+      });
+
+      // connecting web (scatter → outcomes)
+      const webOp =
+        smoothstep(T.break[1] - 0.02, T.break[1] + 0.015, t) *
+        (1 - smoothstep(T.path[0], T.path[0] + 0.03, t));
+      if (webSvg) webSvg.style.opacity = "1";
+      if (webPath) webPath.style.opacity = webOp.toFixed(3);
+      if (webPath && webOp > 0.01) {
+        const segments = WEB_PAIRS.map(([a, b]) => {
+          const pa = points[a];
+          const pb = points[b];
+          return `M${pa.x.toFixed(1)} ${pa.y.toFixed(1)}L${pb.x.toFixed(1)} ${pb.y.toFixed(1)}`;
+        });
+        webPath.setAttribute("d", segments.join(" "));
+      }
+
+      // journey track
+      const trackOp =
+        smoothstep(T.path[0] + 0.02, T.path[0] + 0.045, t) * beaconFade;
+      // keep the route and reader clear of the (enlarged) active page
+      const routeOff = lerp(baseW * 0.34 + 8, baseW * 0.75 + 18, zoomT);
+      const route = points.map((pt, i) => ({
+        x: pt.x - routeOff + Math.sin(i * 1.3) * 10,
+        y: pt.y,
+      }));
+      const routeD = buildPath(route);
+      if (track) {
+        track.setAttribute("d", routeD);
+        track.style.opacity = (trackOp * 0.95).toFixed(3);
+      }
+      if (trackGlow) {
+        trackGlow.setAttribute("d", routeD);
+        trackGlow.style.opacity = (trackOp * 0.38).toFixed(3);
+      }
+
+      // reader / beacon
+      const journeyT = smoothstep(0, 1, travelT);
+      let col;
+      if (journeyT < 0.5) {
+        col = mixColor(C_GRAY, C_JADE, journeyT * 2);
+      } else {
+        col = mixColor(C_JADE, C_GOLD, (journeyT - 0.5) * 2);
+      }
+
+      const revealT = ease(seg(t, T.reveal));
+      const readerY =
+        t < T.reveal[0]
+          ? lerp(H * (narrow ? 0.14 : 0.16), H * (narrow ? 0.38 : 0.5), zoomT)
+          : lerp(H * (narrow ? 0.38 : 0.5), H * 0.27, revealT);
+      const stackX = W * (narrow ? 0.6 : 0.68);
+      const readerX =
+        t < T.reveal[0]
+          ? stackX - routeOff
+          : lerp(stackX - routeOff, W * 0.5, revealT);
+
+      const showReader =
+        smoothstep(T.path[1] - 0.025, T.path[1], t) *
+        (1 - smoothstep(T.book[0] + 0.005, T.book[0] + 0.02, t));
+      const readerScale = 1 + 1.5 * smoothstep(T.beacon[0], T.reveal[0] + 0.02, t);
+
+      if (reader) {
+        reader.style.setProperty("--rx", readerX.toFixed(1) + "px");
+        reader.style.setProperty("--ry", readerY.toFixed(1) + "px");
+        reader.style.setProperty("--ro", showReader.toFixed(3));
+        reader.style.setProperty("--rs", readerScale.toFixed(3));
+        reader.style.setProperty("--rc", col.join(" "));
+      }
+
+      // light follows the action
+      let lx = W * (narrow ? 0.5 : 0.66);
+      let ly = H * (narrow ? 0.38 : 0.46);
+      let lightCol = C_JADE;
+      if (t >= T.path[0]) {
+        const follow = smoothstep(T.path[0], T.path[0] + 0.035, t);
+        lx = lerp(W * (narrow ? 0.5 : 0.66), readerX, follow);
+        ly = lerp(H * (narrow ? 0.34 : 0.45), readerY, follow);
+        lightCol = mixColor(C_JADE, col, smoothstep(T.travel[0], T.travel[0] + 0.05, t));
+      } else if (t >= T.break[0]) {
+        lx = W * (narrow ? 0.5 : 0.66);
+        ly = H * (narrow ? 0.34 : 0.45);
+      }
+      viewport.style.setProperty("--lx", lx.toFixed(0) + "px");
+      viewport.style.setProperty("--ly", ly.toFixed(0) + "px");
+      viewport.style.setProperty("--lc", lightCol.join(" "));
+
+      // dark room for the last two beats
+      const dim =
+        smoothstep(T.beacon[0] - 0.015, T.beacon[0] + 0.035, t);
+      viewport.style.setProperty("--dim", dim.toFixed(3));
+      viewport.style.setProperty(
+        "--hudop",
+        (1 - smoothstep(T.reveal[0] - 0.015, T.reveal[0] + 0.01, t)).toFixed(3)
+      );
+
+      // chapters
+      const ci = chapterFor(t);
+      setChapter(ci);
+
+      if (hudBar) hudBar.style.setProperty("--progress", (t * 100).toFixed(2) + "%");
+
+      // live "now passing" line
+      if (t >= T.travel[0] && t <= T.beacon[0] + 0.01) {
+        const idx = clamp(Math.round(active), 0, N - 1);
+        if (idx !== lastLive) {
+          lastLive = idx;
+          const data = cards[idx];
+          const name = data?.querySelector(".fj-page-title")?.textContent || "";
+          if (liveTitle) liveTitle.textContent = name;
+          if (liveCount) liveCount.textContent = bn(idx + 1);
+        }
+      }
+    }
+
+    // ---------- book pointer interaction ----------
+    let brx = 6;
+    let bry = -18;
+    let dragging = false;
+    let lastX = 0;
+    let lastY = 0;
+    let touchX = 0;
+    let touchY = 0;
+    let horizontal = false;
+
+    const applyTilt = () => {
+      if (!bookTilt) return;
+      bookTilt.style.setProperty("--brx", brx.toFixed(2) + "deg");
+      bookTilt.style.setProperty("--bry", bry.toFixed(2) + "deg");
+    };
+
+    if (book && bookTilt) {
+      book.addEventListener("pointerdown", (event) => {
+        if (book.style.pointerEvents === "none") return;
+        dragging = true;
+        lastX = event.clientX;
+        lastY = event.clientY;
+        touchX = event.clientX;
+        touchY = event.clientY;
+        horizontal = false;
+        bookTilt.classList.add("is-dragging");
+        if (book.setPointerCapture && event.pointerType === "mouse") {
+          book.setPointerCapture(event.pointerId);
+        }
+      });
+
+      book.addEventListener("pointermove", (event) => {
+        if (book.style.pointerEvents === "none") return;
+        if (!dragging) {
+          if (event.pointerType === "mouse") {
+            const rect = book.getBoundingClientRect();
+            const px = (event.clientX - rect.left) / Math.max(1, rect.width) - 0.5;
+            const py = (event.clientY - rect.top) / Math.max(1, rect.height) - 0.5;
+            brx = 6 - py * 10;
+            bry = -18 + px * 16;
+            applyTilt();
+          }
+          return;
+        }
+
+        const dx = event.clientX - lastX;
+        const dy = event.clientY - lastY;
+
+        if (event.pointerType !== "mouse" && !horizontal) {
+          if (Math.abs(event.clientX - touchX) < 8) return;
+          if (Math.abs(event.clientY - touchY) > Math.abs(event.clientX - touchX)) {
+            dragging = false;
+            bookTilt.classList.remove("is-dragging");
+            return;
+          }
+          horizontal = true;
+        }
+
+        lastX = event.clientX;
+        lastY = event.clientY;
+        bry = clamp(bry + dx * 0.45, -62, 34);
+        brx = clamp(brx - dy * 0.32, -26, 36);
+        applyTilt();
+      });
+
+      const stop = () => {
+        if (!dragging) return;
+        dragging = false;
+        bookTilt.classList.remove("is-dragging");
+      };
+
+      book.addEventListener("pointerup", stop);
+      book.addEventListener("pointercancel", stop);
+      book.addEventListener("pointerleave", () => {
+        stop();
+        if (bookTilt.classList.contains("is-dragging")) return;
+        brx = 6;
+        bry = -18;
+        applyTilt();
+      });
+    }
+
+    // ---------- rail ----------
+    railDots.forEach((dot) => {
+      dot.addEventListener("click", () => {
+        const idx = Number(dot.getAttribute("data-goto"));
+        if (Number.isNaN(idx)) return;
+        const total = film.offsetHeight - viewport.offsetHeight;
+        const top = film.getBoundingClientRect().top + window.scrollY;
+        const start = CHAPTER_WINDOWS[idx] ? CHAPTER_WINDOWS[idx][0] : 0;
+        const dest = top + start * total + 4;
+        window.scrollTo({ top: dest, behavior: "smooth" });
+      });
+    });
+
+    // ---------- boot ----------
+    measure();
+    readScroll();
+    render();
+
+    window.addEventListener("scroll", readScroll, { passive: true });
+    window.addEventListener("resize", () => {
+      measure();
+      readScroll();
+      render();
+    });
+
+    // Re-measure once after fonts/layout settle.
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => {
+        measure();
+        render();
+      });
+    }
+  })();
+</script>

@@ -76,6 +76,14 @@ Projects, Works, and Achievements/Certs cards each accept an optional `size` fie
 
 To add a new page (e.g. a services page): create `src/pages/your-page.astro`, wrap content in `<BaseLayout>`, and compose it from existing sections/`ui` primitives. Nav links live in `src/data/siteConfig.ts`.
 
+## Legal pages
+
+`/privacy`, `/terms`, and `/works-license-v1` share one frame — `src/layouts/LegalLayout.astro` (kicker, title, the "Last updated and effective as of …" line directly under the title, an optional one-line summary, prose body, links to the sibling documents). Edit the copy directly in each page; change the shared `updated` date per page (default in the layout is `13 November 2026`). The three are linked from the footer only — the main nav stays Blogs / Works / Contact, and the footer also carries the line "This site is under the Works License - V1." linking to the license.
+
+- **Privacy Policy** (`src/pages/privacy.astro`) — no analytics, no tracking, no cookies of its own; only Cloudflare's standard request handling, plus the theme choice in local storage and the voluntary forms (Web3Forms). The contact form is treated as private; submitted reviews may be published for testimonials and marketing, and submitting one is agreement to that. Links to Cloudflare's, Google's, and Web3Forms' policies.
+- **Terms & Conditions** (`src/pages/terms.astro`) — acceptable use, "freely means freedom, not free of cost", educational-only disclaimer, no warranty, user responsibility, no harassment/claims, written works under Works License - V1 unless stated otherwise.
+- **Works License - V1** (`src/pages/works-license-v1.astro`) — a standalone, linkable license. It applies to any work that includes it, states it, or links to it: reuse permitted (copy, distribute, sell, print, store, any Sharia'-permitted use) on three conditions — attribution, a copy/link of the license travels with the work, no modification. Modification is allowed only for the greater good of the Ummah with due Sharia' attribution. The license URL in the attribution template is built from `site.url` in `siteConfig.ts`; `/license` permanently redirects here via `public/_redirects`.
+
 ## Background field & cursor glow
 
 `BackgroundField.tsx` (canvas constellation animation) and `CursorGlow.tsx`

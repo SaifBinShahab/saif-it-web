@@ -102,7 +102,7 @@ export default function ReviewForm({ accessKey }: { accessKey: string }) {
 
       <div>
         <label htmlFor="review-name" className={labelClass}>নাম</label>
-        <input id="review-name" name="name" type="text" placeholder="আপনার নাম" className={inputClass} autoComplete="name" />
+        <input id="review-name" name="name" type="text" required placeholder="আপনার নাম" className={inputClass} autoComplete="name" />
       </div>
 
       <fieldset>
@@ -141,7 +141,6 @@ export default function ReviewForm({ accessKey }: { accessKey: string }) {
         <textarea
           id="review-best"
           name="best"
-          required
           rows={3}
           placeholder="যে অংশটি বা যে বিষয়টি আপনার সবচেয়ে কাজে লেগেছে…"
           className={inputClass}
@@ -149,7 +148,7 @@ export default function ReviewForm({ accessKey }: { accessKey: string }) {
       </div>
 
       <div>
-        <label htmlFor="review-improve" className={labelClass}>যেটা আরও ভালো হতে পারত (ঐচ্ছিক)</label>
+        <label htmlFor="review-improve" className={labelClass}>যেটা আরও ভালো হতে পারত</label>
         <textarea
           id="review-improve"
           name="improve"
@@ -158,11 +157,6 @@ export default function ReviewForm({ accessKey }: { accessKey: string }) {
           className={inputClass}
         />
       </div>
-
-      <label className="flex cursor-pointer items-start gap-2.5 text-[0.82rem] leading-relaxed text-[var(--text-muted)]">
-        <input type="checkbox" name="permission" value="yes" className="mt-0.5 h-4 w-4 shrink-0 accent-[var(--accent)]" />
-        <span>(ঐচ্ছিক) আমার রিভিউ (নামসহ) শেয়ার করার অনুমতি দিচ্ছি।</span>
-      </label>
 
       <button
         type="submit"

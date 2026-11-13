@@ -32,7 +32,14 @@ const year = new Date().getFullYear();
       ))}
     </div>
   </Container>
-  <p class="mt-8 text-center font-mono text-xs text-[var(--text-muted)]">
-    © {year} {site.fullName}. All rights reserved.
+  <div
+    class="mx-auto mt-8 flex flex-wrap justify-center gap-x-6 gap-y-2 px-6 font-mono text-xs text-[var(--text-muted)] md:px-10"
+  >
+    <a href="/privacy" class="hover:text-[var(--accent)]">Privacy Policy</a>
+    <a href="/terms" class="hover:text-[var(--accent)]">Terms &amp; Conditions</a>
+  </div>
+  <p class="mt-2 text-center font-mono text-xs text-[var(--text-muted)]">
+    This site is under the
+    <a href="/works-license-v1" class="text-[var(--accent)] hover:underline">Works License - V1</a>.
   </p>
 </footer>

@@ -1,0 +1,157 @@
+---
+import LegalLayout from "@/layouts/LegalLayout.astro";
+import { site, contact } from "@/data/siteConfig";
+---
+<LegalLayout
+  title="Privacy Policy"
+  description="Nothing about you is collected, except the specific things listed in this policy. No tracking, no profiling, no selling."
+>
+  <p>
+    The short version: nothing about you is collected beyond what is explicitly written here.
+    What follows is the complete list, in plain words.
+  </p>
+
+  <h2>1. Definitions</h2>
+  <ul>
+    <li>
+      <strong>“This site”, “the site”</strong> — the website at {site.url}, including every page
+      and file served from it.
+    </li>
+    <li>
+      <strong>“I”, “me”, “the owner”</strong> — {site.fullName}, who runs this site.
+    </li>
+    <li>
+      <strong>“You”, “visitor”</strong> — anyone who visits the site or submits a form on it.
+    </li>
+    <li>
+      <strong>“Personal information”</strong> — information that identifies you or can be
+      linked to you, such as a name, an email address, or a phone number.
+    </li>
+    <li>
+      <strong>“Forms”</strong> — the contact form and the review forms.
+    </li>
+    <li>
+      <strong>“Review forms”</strong> — the feedback forms for written works published on this
+      site.
+    </li>
+    <li>
+      <strong>“Host”</strong> — Cloudflare Pages, the service that delivers this site to your
+      browser.
+    </li>
+  </ul>
+
+  <h2>2. What this site does not do</h2>
+  <ul>
+    <li>No analytics and no visitor statistics that identify you.</li>
+    <li>No advertising, tracking pixels, or behavioural profiling.</li>
+    <li>No cookies set by this site for tracking.</li>
+    <li>No personal information is sold.</li>
+    <li>
+      No database of visitors. The only information that exists is what you deliberately
+      submit through a form, and it is handled as described below.
+    </li>
+  </ul>
+
+  <h2>3. What is processed to deliver a page</h2>
+  <p>
+    This site is hosted on <strong>Cloudflare Pages</strong>. Like any web host, Cloudflare
+    processes standard technical request data in order to serve pages and keep the site
+    online: your IP address, the page or file requested, the date and time, your browser and
+    device type (user-agent), the page you came from, and an approximate location.
+  </p>
+  <p>
+    Cloudflare uses this for normal operation and security — caching, bot protection, and
+    defence against attacks. It is processed on Cloudflare's systems, under
+    <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener noreferrer"
+      >Cloudflare's Privacy Policy</a
+    >. I do not receive it as a readable record and I do not keep copies of it.
+  </p>
+
+  <h2>4. Cookies and local storage</h2>
+  <p>
+    This site does not use cookies of its own. The only thing it stores on your device is
+    your light/dark theme preference, kept in your browser's local storage. That value stays
+    in your browser and is never sent to me.
+  </p>
+  <p>
+    Cloudflare may set its own security cookies (for example, to verify that a visitor is
+    not a bot). Those cookies belong to Cloudflare and are governed by their policy above.
+    Clearing site data in your browser removes the local theme setting.
+  </p>
+
+  <h2>5. Third-party services</h2>
+  <p>
+    A few outside services are involved in showing this site. None of them are used for
+    advertising or tracking, but each one receives your IP address as part of any normal web
+    request:
+  </p>
+  <ul>
+    <li><strong>Cloudflare Pages</strong> — hosting, caching, and security.</li>
+    <li>
+      <strong>Google Fonts</strong> — delivers the typefaces used on the site
+      (<a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer"
+        >Google Privacy Policy</a
+      >).
+    </li>
+    <li>
+      <strong>Web3Forms</strong> — only if you choose to submit one of the forms
+      (<a href="https://web3forms.com/privacy" target="_blank" rel="noopener noreferrer"
+        >Web3Forms Privacy Policy</a
+      >).
+    </li>
+  </ul>
+
+  <h2>6. The forms, and what they send</h2>
+  <p>
+    Forms are the only way this site receives anything from you, and using them is entirely
+    voluntary. Both types are delivered through Web3Forms to my inbox, but they are treated
+    differently.
+  </p>
+
+  <h3>(a) Contact form — private</h3>
+  <p>
+    The contact form asks for your name, an email address or phone number, and your message.
+    It is used only to read your message and reply to you. What you send through it is not
+    published, not shared, and not added to a mailing list. Please do not send passwords,
+    financial details, identity documents, or anything else sensitive. Emailing me directly
+    works the same way.
+  </p>
+
+  <h3>(b) Review forms — may be published</h3>
+  <p>
+    Review forms ask for your name (required), a star rating, what helped you, and any
+    suggestions, plus an optional permission checkbox. A submitted review is not private.
+    By submitting a review form, you agree that the content you submit may be used and shared
+    for testimonial and marketing purposes — on this site or elsewhere, together with your
+    name. Do not include anything you would not want published. If you do not agree to that,
+    please email me instead:
+    <a href={`mailto:${contact.email}`}>{contact.email}</a>.
+  </p>
+
+  <h2>7. What you control</h2>
+  <ul>
+    <li>You can use the entire site without submitting anything.</li>
+    <li>You can block third-party requests (such as fonts) in your browser.</li>
+    <li>You can clear cookies and local storage at any time.</li>
+    <li>
+      You can ask me to delete a contact message you have sent at any time by emailing
+      <a href={`mailto:${contact.email}`}>{contact.email}</a>.
+    </li>
+    <li>
+      You can ask me to take down a published review. Once a review has been shared, copies
+      made elsewhere may stay outside my control.
+    </li>
+  </ul>
+
+  <h2>8. Changes to this policy</h2>
+  <p>
+    If this policy changes, the date at the top of this page changes with it. There is no
+    hidden collection now, and any future change will be written here, not discovered later.
+  </p>
+
+  <h2>9. Contact</h2>
+  <p>
+    Questions about privacy on this site:
+    <a href={`mailto:${contact.email}`}>{contact.email}</a>.
+  </p>
+</LegalLayout>

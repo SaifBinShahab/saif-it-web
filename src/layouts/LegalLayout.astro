@@ -1,0 +1,65 @@
+---
+// Shared frame for the legal pages (/privacy, /terms, /works-license-v1).
+// Keeps the documents visually identical: kicker, title, the "last updated
+// and effective as of" line directly under the title, an optional one-line
+// summary, the prose body, and links to the sibling documents.
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Container from "@/components/ui/Container.astro";
+
+interface Props {
+  title: string;
+  kicker?: string;
+  // One-sentence plain-language summary shown under the date. Omit it when
+  // the document itself is the content (e.g. the license), so the text
+  // starts immediately after the title and date.
+  description?: string;
+  updated?: string;
+}
+const {
+  title,
+  kicker = "Legal",
+  description,
+  updated = "13 November 2026",
+} = Astro.props;
+
+const legalPages = [
+  { label: "Privacy Policy", href: "/privacy" },
+  { label: "Terms & Conditions", href: "/terms" },
+  { label: "Works License - V1", href: "/works-license-v1" },
+];
+const here = Astro.url.pathname.replace(/\/$/, "");
+const siblings = legalPages.filter((page) => page.href !== here);
+---
+<BaseLayout title={title} description={description ?? title}>
+  <Container class="py-16 md:py-24">
+    <article class="mx-auto w-full max-w-3xl">
+      <header class="border-b border-[var(--border)] pb-8">
+        <p class="font-mono text-xs uppercase tracking-[0.2em] text-[var(--accent)]">{kicker}</p>
+        <h1 class="mt-3 font-heading text-3xl font-semibold md:text-4xl">{title}</h1>
+        <p class="mt-4 font-mono text-xs text-[var(--text-muted)]">
+          Last updated and effective as of {updated}.
+        </p>
+        {description && (
+          <p class="mt-6 text-lg leading-relaxed text-[var(--text-muted)]">{description}</p>
+        )}
+      </header>
+
+      <div
+        class="prose prose-brand mt-10 prose-headings:font-heading prose-h2:mt-10 prose-h2:mb-4 prose-h2:text-2xl prose-h3:mt-8 prose-h3:text-lg prose-p:leading-relaxed prose-li:leading-relaxed prose-a:text-[var(--accent)]"
+      >
+        <slot />
+      </div>
+
+      <nav
+        class="mt-14 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-[var(--border)] pt-6 font-mono text-sm"
+        aria-label="Other legal documents"
+      >
+        {siblings.map((page) => (
+          <a href={page.href} class="text-[var(--text-muted)] hover:text-[var(--accent)]">
+            {page.label}
+          </a>
+        ))}
+      </nav>
+    </article>
+  </Container>
+</BaseLayout>

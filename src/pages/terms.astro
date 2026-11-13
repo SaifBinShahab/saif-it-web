@@ -1,0 +1,132 @@
+---
+import LegalLayout from "@/layouts/LegalLayout.astro";
+import { site, contact } from "@/data/siteConfig";
+---
+<LegalLayout
+  title="Terms & Conditions"
+  description="Read, learn, and share what is here — but do not attack the site, and do not treat anything written here as professional advice."
+>
+  <p>
+    These terms are short on purpose. By using this site you accept them. If you do not
+    accept them, please do not use the site.
+  </p>
+
+  <h2>1. Definitions</h2>
+  <ul>
+    <li>
+      <strong>“This site”, “the site”</strong> — the website at {site.url}, including every page
+      and file served from it.
+    </li>
+    <li>
+      <strong>“I”, “me”, “the owner”</strong> — {site.fullName}, who runs this site.
+    </li>
+    <li>
+      <strong>“Author”</strong> — the author of any written work published on this site.
+    </li>
+    <li>
+      <strong>“You”, “visitor”, “user”</strong> — anyone who uses the site or anything on it.
+    </li>
+    <li>
+      <strong>“Content”</strong> — everything published on this site: articles, blog posts,
+      books and e-books, notes, project and experience entries, images, and downloads.
+    </li>
+    <li>
+      <strong>“Written works”</strong> — the written content on this site, covered by the
+      <a href="/works-license-v1">Works License - V1</a>.
+    </li>
+    <li>
+      <strong>“Works License - V1”</strong> — the license published at
+      <a href="/works-license-v1">{site.url}/works-license-v1</a>.
+    </li>
+  </ul>
+
+  <h2>2. What you may do</h2>
+  <ul>
+    <li>
+      Read everything here freely. “Freely” means freedom, not free of cost: some things on
+      this site are paid, and the price of each is stated explicitly on its own page.
+    </li>
+    <li>Share links to any page.</li>
+    <li>
+      Copy and reuse the written works under the Works License - V1, which is the license
+      that applies to them unless a work explicitly states otherwise — including its
+      attribution and no-modification conditions.
+    </li>
+  </ul>
+
+  <h2>3. What you may not do</h2>
+  <p>The site runs for visitors, not for exploitation. You may not:</p>
+  <ul>
+    <li>
+      access, probe, scan, or attempt to break into any part of the site or its host that you
+      are not authorised to access;
+    </li>
+    <li>
+      hack, exploit, inject anything into, or attempt to bypass the security or access
+      controls of the site;
+    </li>
+    <li>
+      attack, flood, overload, or otherwise disrupt the site (denial of service, brute force,
+      or similar);
+    </li>
+    <li>upload or transmit malware, or use the site to distribute it;</li>
+    <li>
+      run automated requests at a volume that degrades the site or blocks other visitors;
+    </li>
+    <li>impersonate the owner or anyone else;</li>
+    <li>use the site to break any law or to harm another person;</li>
+    <li>
+      use anything you learn here about security against a system you do not own or have
+      written permission to test.
+    </li>
+  </ul>
+
+  <h2>4. Educational purpose only — not advice</h2>
+  <p>
+    Everything on this site — cybersecurity, Islamic knowledge, business, and personal
+    writing — is general educational material. It is not financial, investment, legal,
+    medical, or professional advice, and it is not a consultation. Reading it creates no
+    advisor, client, or professional relationship of any kind.
+  </p>
+  <p>
+    For religious rulings, consult a qualified scholar. For financial, medical, or legal
+    decisions, consult a qualified professional. Verify anything technical before relying on
+    it; such content can become outdated quickly.
+  </p>
+
+  <h2>5. No warranty</h2>
+  <p>
+    The site and its contents are provided as they are. No guarantee is made that they are
+    accurate, complete, current, or always available. Links to other sites are not
+    endorsements, and those sites are outside my control.
+  </p>
+
+  <h2>6. You are responsible for your own actions</h2>
+  <p>
+    You use this site, and anything you take from it, entirely at your own risk. The owner of
+    this site and the author of any writing on it are not responsible or liable for any
+    action you take based on the content, or for any loss, damage, or legal consequence that
+    follows from it. That responsibility belongs to you alone.
+  </p>
+
+  <h2>7. No harassment, attacks, or claims</h2>
+  <p>
+    You agree not to harass, threaten, defame, or attack the author — in person, online, or
+    technically — and not to bring any claim or legal action against the author regarding the
+    contents of this site. Disagreement is welcome and can be raised directly; abuse is not.
+  </p>
+  <p>
+    Nothing in this section removes a right that the law does not allow to be removed.
+  </p>
+
+  <h2>8. Changes to these terms</h2>
+  <p>
+    These terms may be updated. The date at the top of this page shows the current version.
+    Continuing to use the site after a change means you accept the updated terms.
+  </p>
+
+  <h2>9. Contact</h2>
+  <p>
+    Questions about these terms: <a href={`mailto:${contact.email}`}>{contact.email}</a>.
+  </p>
+</LegalLayout>

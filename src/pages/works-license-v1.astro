@@ -1,0 +1,137 @@
+---
+import LegalLayout from "@/layouts/LegalLayout.astro";
+import { site, contact } from "@/data/siteConfig";
+
+const licenseUrl = `${site.url}/works-license-v1`;
+---
+<LegalLayout title="Works License - V1" kicker="License">
+  <h2>1. Application</h2>
+  <p>
+    This license applies to any work that includes a copy of it, states that it is licensed
+    under it, or links to it. From that point, these terms govern how that work may be used.
+    A work that neither includes nor links to this license is not covered by it.
+  </p>
+
+  <h2>2. Definitions</h2>
+  <ul>
+    <li>
+      <strong>“The work”</strong> — the work covered by this license, in whole or in part, in
+      any medium: written, printed, digital, audio, or video.
+    </li>
+    <li>
+      <strong>“The author”</strong> — the person or people credited as the original author of
+      the work. In this case, the author is "Saif Bin Shahab".
+    </li>
+    <li>
+      <strong>“You”</strong> — any person or organisation using the work.
+    </li>
+    <li>
+      <strong>“Modification”</strong> — any change to the work, including editing it,
+      shortening or abridging it, adding to it, rearranging it or retitling it.
+    </li>
+    <li>
+      <strong>“Sharia'”</strong> — Islamic Law, as understood by a qualified Islamic Scholar.
+    </li>
+  </ul>
+
+  <h2>3. What you are permitted to do</h2>
+  <p>
+    You may copy, distribute, redistribute, publish, sell, resell, print, store, and use the work in any
+    way that Sharia' permits. The permission is deliberately broad: if Sharia' permits a use,
+    this license permits it.
+  </p>
+
+  <h2>4. The conditions</h2>
+  <h3>(a) Attribute the original author</h3>
+  <p>
+    Name the original author clearly wherever the work appears. Do not present the work as
+    your own, and do not suggest that the author endorses you or your use of it.
+  </p>
+
+  <h3>(b) A copy of this license travels with the work</h3>
+  <p>Every copy you distribute must include this license, in one of these forms:</p>
+  <ul>
+    <li>inside the work itself, or</li>
+    <li>in printed form alongside the work, or</li>
+    <li>
+      a link or URL to this license:
+      <a href={licenseUrl}>{licenseUrl}</a>
+    </li>
+  </ul>
+
+  <h3>(c) No modification</h3>
+  <p>
+    The work may not be changed. That includes editing it, shortening or abridging it, adding
+    to it, rearranging it, retitling it, or presenting an altered version as
+    the work. The one exception follows in Section 5.
+  </p>
+
+  <h2>5. The exception: modification for the greater good of The Muslim Ummah and people in general</h2>
+  <p>
+    If a modification genuinely serves the greater good of The Muslim Ummah and people in general, the work may be
+    modified — but only in accordance with Sharia', with due attribution to the original author
+    for the work, or for the part of the work that was used in the new work.
+  </p>
+  <p>
+    That attribution must be clear and specific: name the original author, name the work
+    used, and state what was changed. Conditions (a) and (b) above still apply to the
+    modified work. This exception covers modification only; it does not remove the author's
+    attribution, and it does not permit presenting the new work as entirely your own.
+  </p>
+  <p>
+    Translation falls under this exception. As translations can be beneficial to The Muslim Ummah and people in general.
+  </p>
+
+  <h2>6. How to attribute</h2>
+  <p>Attribution in any form is accptable provided that the work title and name of the author is mentioned and 
+    the attribution is visible to the reader. An example is given below:</p>
+  <blockquote class="not-italic">
+    <p class="not-italic before:content-none after:content-none">
+      Based on “[work title]” by [author name].<br />
+      Used under Works License - V1 — <a href={licenseUrl}>{licenseUrl}</a>
+    </p>
+  </blockquote>
+  <p>
+    Place it where the work begins, on its credits or copyright page, or wherever it is
+    clearly visible to the reader. For a modified work, add a line naming what was changed.
+  </p>
+
+  <h2>7. Selling and reselling</h2>
+  <p>
+    Selling and reselling the work is permitted at any price. What you may not do is claim
+    authorship, place the work under a more restrictive license, or add conditions that
+    contradict this one.
+  </p>
+
+  <h2>8. What this license does not cover</h2>
+  <ul>
+    <li>
+      Third-party material inside a work — writings, quotations, images, logos, translations, software, codes 
+      owned or authored by others, unless the owner or author of that third-party material explicitly put that
+      material under this license.
+    </li>
+    <li>Any suggestion that the author endorses your use, product, or group.</li>
+    <li>
+      Religious rulings. This license is a permission between people, not a fatwa.
+    </li>
+    <li>Legal advice. Where the law grants you rights this license cannot change, they remain.</li>
+  </ul>
+
+  <h2>9. Versioning</h2>
+  <p>
+    This is version 1 (V1). A work published under V1 stays under V1, even if a later version
+    appears; later versions apply only to works that say so. A copy distributed under V1 must
+    carry V1 — linking to this page is enough.
+  </p>
+
+  <h2>10. Permission beyond this license</h2>
+  <p>
+    Permission for usage of the work is limited to what is mentioned in this license unless given explcit
+    written permission by the author of the work.
+  </p>
+  <p>
+    If you need a permission this license does not give, ask the author of the work first.
+    For works published on this site:
+    <a href={`mailto:${contact.email}`}>{contact.email}</a>.
+  </p>
+</LegalLayout>

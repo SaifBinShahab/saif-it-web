@@ -1,3 +1,5 @@
 # Permanent redirects (Cloudflare Pages). The e-book landing page moved
 # from /ebook to a nested route under /works.
 /ebook  /works/cybersecurity-for-everyone-ebook  301
+# The Works License page moved from /license to its own route.
+/license  /works-license-v1  301

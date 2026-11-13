@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v7.3.4
+
+[+] Added - LegalLayout, Privacy Policy, Terms, Works License - V1.
+[+] Updated the footer accordingly.
+[+] Updated "rights" thingy in footer.
+[+] Updated the review form.
+
 ## v7.3.3
 
 [+] E-book review form added.

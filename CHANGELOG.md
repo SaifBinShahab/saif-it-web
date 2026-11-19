@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v7.3.5
+
+[+] Updated some landing page content.
+
 ## v7.3.4
 
 [+] Added - LegalLayout, Privacy Policy, Terms, Works License - V1.
